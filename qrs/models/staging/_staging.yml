@@ -1,0 +1,417 @@
+version: 2
+
+models:
+  # ============================================
+  # ERP系统 Staging 模型 (12个)
+  # ============================================
+  - name: stg_purchase_order
+    description: ERP采购订单Staging层 - 1:1映射源表
+    columns:
+      - name: purchase_order_number
+        description: 采购订单号 (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_purchase_order_detail
+    description: ERP采购订单明细Staging层
+    columns:
+      - name: purchase_order_detail_id
+        description: 订单明细ID (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_material_receipt
+    description: ERP物料接收记录Staging层
+    columns:
+      - name: receipt_id
+        description: 接收记录ID (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_material_return
+    description: ERP物料退货记录Staging层
+    columns:
+      - name: return_id
+        description: 退货记录ID (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_material_master
+    description: ERP物料主数据Staging层
+    columns:
+      - name: material_id
+        description: 物料编码 (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_supplier_master
+    description: ERP供应商主数据Staging层
+    columns:
+      - name: supplier_id
+        description: 供应商编码 (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_formula_master
+    description: ERP配方主数据Staging层
+    columns:
+      - name: formula_id
+        description: 配方ID (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_formula_detail
+    description: ERP配方明细Staging层
+    columns:
+      - name: formula_detail_id
+        description: 配方明细ID (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_inventory
+    description: ERP库存主数据Staging层
+    columns:
+      - name: inventory_id
+        description: 库存ID (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_inventory_transaction
+    description: ERP库存事务记录Staging层
+    columns:
+      - name: transaction_id
+        description: 事务ID (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_warehouse
+    description: ERP仓库主数据Staging层
+    columns:
+      - name: warehouse_id
+        description: 仓库ID (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_storage_location
+    description: ERP库位主数据Staging层
+    columns:
+      - name: location_id
+        description: 库位ID (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  # ============================================
+  # MES系统 Staging 模型 (10个)
+  # ============================================
+  - name: stg_work_order
+    description: MES生产工单Staging层
+    columns:
+      - name: work_order_number
+        description: 工单号 (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_operation
+    description: MES工序定义Staging层
+    columns:
+      - name: operation_id
+        description: 工序ID (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_work_order_operation
+    description: MES工单工序执行Staging层
+    columns:
+      - name: work_order_operation_id
+        description: 工单工序ID (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_production_report
+    description: MES生产报工记录Staging层
+    columns:
+      - name: report_id
+        description: 报工ID (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_equipment
+    description: MES设备主数据Staging层
+    columns:
+      - name: equipment_id
+        description: 设备ID (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_equipment_maintenance
+    description: MES设备维护记录Staging层
+    columns:
+      - name: maintenance_id
+        description: 维护记录ID (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_production_line
+    description: MES产线主数据Staging层
+    columns:
+      - name: production_line_id
+        description: 产线ID (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_workshop
+    description: MES车间主数据Staging层
+    columns:
+      - name: workshop_id
+        description: 车间ID (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_material_consumption
+    description: MES物料消耗记录Staging层
+    columns:
+      - name: consumption_id
+        description: 消耗记录ID (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_personnel
+    description: MES生产人员主数据Staging层
+    columns:
+      - name: personnel_id
+        description: 人员ID (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  # ============================================
+  # LIMS系统 Staging 模型 (8个)
+  # ============================================
+  - name: stg_inspection_request
+    description: LIMS检验申请Staging层
+    columns:
+      - name: request_id
+        description: 申请ID (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_inspection_task
+    description: LIMS检验任务Staging层
+    columns:
+      - name: task_id
+        description: 任务ID (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_inspection_result
+    description: LIMS检验结果Staging层
+    columns:
+      - name: result_id
+        description: 结果ID (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_sample
+    description: LIMS样品主数据Staging层
+    columns:
+      - name: sample_id
+        description: 样品ID (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_quality_standard
+    description: LIMS质量标准主数据Staging层
+    columns:
+      - name: standard_id
+        description: 标准ID (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_test_item
+    description: LIMS检验项目主数据Staging层
+    columns:
+      - name: test_item_id
+        description: 项目ID (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_analyst
+    description: LIMS分析员主数据Staging层
+    columns:
+      - name: analyst_id
+        description: 分析员ID (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_inspection_report
+    description: LIMS检验报告Staging层
+    columns:
+      - name: report_id
+        description: 报告ID (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  # ============================================
+  # QMS系统 Staging 模型 (6个)
+  # ============================================
+  - name: stg_change_control
+    description: QMS变更控制Staging层
+    columns:
+      - name: change_id
+        description: 变更ID (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_change_impact
+    description: QMS变更影响评估Staging层
+    columns:
+      - name: impact_id
+        description: 影响评估ID (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_change_implementation
+    description: QMS变更实施记录Staging层
+    columns:
+      - name: implementation_id
+        description: 实施任务ID (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_deviation
+    description: QMS偏差记录Staging层
+    columns:
+      - name: deviation_id
+        description: 偏差ID (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_capa
+    description: QMS CAPA主数据Staging层
+    columns:
+      - name: capa_id
+        description: CAPA ID (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_supplier_audit
+    description: QMS供应商审计记录Staging层
+    columns:
+      - name: audit_id
+        description: 审计ID (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  # ============================================
+  # SCADA系统 Staging 模型 (5个)
+  # ============================================
+  - name: stg_equipment_data
+    description: SCADA设备运行数据Staging层
+    columns:
+      - name: data_id
+        description: 数据ID (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_environment_data
+    description: SCADA环境监控数据Staging层
+    columns:
+      - name: data_id
+        description: 数据ID (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_alarm
+    description: SCADA报警记录Staging层
+    columns:
+      - name: alarm_id
+        description: 报警ID (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_batch_tracking
+    description: SCADA批次追踪记录Staging层
+    columns:
+      - name: tracking_id
+        description: 追踪ID (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_energy_consumption
+    description: SCADA能耗监控数据Staging层
+    columns:
+      - name: consumption_id
+        description: 消耗记录ID (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  # ============================================
+  # PV系统 Staging 模型 (3个)
+  # ============================================
+  - name: stg_adverse_event
+    description: PV不良反应报告Staging层
+    columns:
+      - name: event_id
+        description: 事件ID (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_complaint
+    description: PV产品投诉记录Staging层
+    columns:
+      - name: complaint_id
+        description: 投诉ID (主键)
+        data_tests:
+          - unique
+          - not_null
+
+  - name: stg_product_recall
+    description: PV产品召回记录Staging层
+    columns:
+      - name: recall_id
+        description: 召回ID (主键)
+        data_tests:
+          - unique
+          - not_null
+

@@ -24,12 +24,31 @@ clean-targets: # directories to be removed by `dbt clean`
 models:
   qrs:
     +materialized: table
-    business:
-      +materialized: table
-      +tags: ["business_model"]
+
+    # Staging层: 1:1映射源表,仅做基础清洗
     staging:
       +materialized: view
       +tags: ["staging"]
+
+    # Intermediate层: 复杂Join和中间计算
+    intermediate:
+      +materialized: view
+      +tags: ["intermediate"]
+
+    # Marts层: 业务导向的宽表
+    marts:
+      +materialized: table
+      +tags: ["marts"]
+
+    # Business层: 保留旧配置以兼容现有模型
+    business:
+      +materialized: table
+      +tags: ["business_model"]
+
+    # Reports层: 最终报告
+    reports:
+      +materialized: table
+      +tags: ["reports"]
 
 # Configuring seeds
 seeds:
