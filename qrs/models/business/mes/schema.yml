@@ -1,0 +1,147 @@
+version: 2
+
+models:
+  - name: work_order
+    description: 生产工单业务模型 - 提供工单完整信息
+    config:
+      tags: ['mes', 'production', 'pqr']
+    columns:
+      - name: work_order_number
+        description: 工单号
+        data_tests:
+          - unique
+          - not_null
+      - name: work_order_status
+        description: 工单状态
+        data_tests:
+          - accepted_values:
+              values: ['计划中', '进行中', '已完成', '已取消']
+
+  - name: operation_management
+    description: 工序管理业务模型 - 工单工序执行信息
+    config:
+      tags: ['mes', 'production', 'pqr']
+    columns:
+      - name: work_order_operation_id
+        description: 工单工序ID
+        data_tests:
+          - unique
+          - not_null
+
+  - name: production_report
+    description: 生产报工业务模型 - 产量和质量统计
+    config:
+      tags: ['mes', 'production', 'quality', 'pqr']
+    columns:
+      - name: report_id
+        description: 报工ID
+        data_tests:
+          - unique
+          - not_null
+      - name: review_status
+        description: 审核状态
+        data_tests:
+          - accepted_values:
+              values: ['待审核', '已审核', '已驳回']
+
+  - name: equipment_info
+    description: 设备信息业务模型 - 设备主数据
+    config:
+      tags: ['mes', 'equipment', 'master_data', 'pqr']
+    columns:
+      - name: equipment_id
+        description: 设备ID
+        data_tests:
+          - unique
+          - not_null
+      - name: equipment_status
+        description: 设备状态
+        data_tests:
+          - accepted_values:
+              values: ['运行中', '停机', '维护中', '报废']
+
+  - name: equipment_maintenance
+    description: 设备维护业务模型 - 维护记录
+    config:
+      tags: ['mes', 'equipment', 'maintenance', 'pqr']
+    columns:
+      - name: maintenance_id
+        description: 维护ID
+        data_tests:
+          - unique
+          - not_null
+      - name: maintenance_type
+        description: 维护类型
+        data_tests:
+          - accepted_values:
+              values: ['预防性维护', '故障维修', '计划维护']
+
+  - name: production_line_info
+    description: 产线信息业务模型 - 产线主数据
+    config:
+      tags: ['mes', 'production', 'master_data', 'pqr']
+    columns:
+      - name: line_id
+        description: 产线ID
+        data_tests:
+          - unique
+          - not_null
+
+  - name: workshop_info
+    description: 车间信息业务模型 - 车间主数据
+    config:
+      tags: ['mes', 'production', 'master_data', 'pqr']
+    columns:
+      - name: workshop_id
+        description: 车间ID
+        data_tests:
+          - unique
+          - not_null
+
+  - name: material_consumption
+    description: 物料消耗业务模型 - 生产物料消耗记录
+    config:
+      tags: ['mes', 'production', 'material', 'pqr']
+    columns:
+      - name: consumption_id
+        description: 消耗ID
+        data_tests:
+          - unique
+          - not_null
+
+  - name: personnel_info
+    description: 人员信息业务模型 - 生产人员主数据
+    config:
+      tags: ['mes', 'production', 'master_data', 'pqr']
+    columns:
+      - name: personnel_id
+        description: 人员ID
+        data_tests:
+          - unique
+          - not_null
+      - name: personnel_status
+        description: 人员状态
+        data_tests:
+          - accepted_values:
+              values: ['在岗', '离职', '休假']
+
+  # ============================================
+  # 分析模型
+  # ============================================
+  - name: production_efficiency
+    description: 生产效率分析模型 - 基于工单数据的效率指标分析，用于PQR报告
+    config:
+      tags: ['mes', 'production', 'efficiency', 'analytics', 'pqr']
+    columns:
+      - name: workshop_id
+        description: 车间ID
+        data_tests:
+          - not_null
+      - name: work_order_status
+        description: 工单状态
+      - name: on_time_completion_rate
+        description: 按时完成率(%)
+      - name: avg_yield_rate
+        description: 平均收率(%)
+      - name: overall_yield_rate
+        description: 总体收率(%)

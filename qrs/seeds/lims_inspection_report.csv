@@ -1,0 +1,4 @@
+report_id,request_id,report_code,sample_id,material_id,batch_number,conclusion,report_date,reporter,reviewer,review_date,approver,approval_date,status,create_date
+RPT-LIMS001,REQ202401001,IR202401001,SAM001,MAT001,BATCH001,合格,2024-01-11,分析员A,审核员X,2024-01-11 16:00:00,审批员Z,2024-01-11 17:00:00,已批准,2024-01-11
+RPT-LIMS002,REQ202401002,IR202401002,SAM002,MAT002,BATCH002,合格,2024-01-13,分析员B,审核员Y,2024-01-13 15:00:00,审批员Z,2024-01-13 16:00:00,已批准,2024-01-13
+RPT-LIMS003,REQ202401003,IR202401003,SAM003,PROD001,BATCH001,合格,2024-01-16,分析员C,审核员X,2024-01-16 18:00:00,审批员Z,2024-01-16 18:30:00,已批准,2024-01-16

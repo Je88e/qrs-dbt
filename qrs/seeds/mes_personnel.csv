@@ -1,0 +1,6 @@
+personnel_id,personnel_code,personnel_name,department,position,skill_level,certification,workshop_id,line_id,status,entry_date,create_date
+PER001,EMP001,操作员张三,生产部,操作员,高级,GMP上岗证,WS001,LINE001,在岗,2022-01-15,2022-01-15
+PER002,EMP002,操作员李四,生产部,操作员,中级,GMP上岗证,WS001,LINE001,在岗,2022-03-01,2022-03-01
+PER003,EMP003,操作员王五,生产部,操作员,中级,GMP上岗证,WS001,LINE001,在岗,2022-06-15,2022-06-15
+PER004,EMP004,操作员赵六,生产部,包装操作员,初级,GMP上岗证,WS003,LINE004,在岗,2023-01-10,2023-01-10
+PER005,EMP005,审核员钱七,生产部,班组长,高级,GMP上岗证,WS001,LINE001,在岗,2020-05-01,2020-05-01

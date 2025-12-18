@@ -1,0 +1,6 @@
+test_item_id,item_code,item_name,test_method,standard_id,min_value,max_value,unit,required_equipment,test_duration,test_duration_unit,status,create_date
+TI001,TI-HL-001,含量测定,HPLC法,QS001,99.0,100.5,百分比,高效液相色谱仪,60,分钟,启用,2023-12-15
+TI002,TI-ZZ-001,有关物质,HPLC法,QS001,0,0.5,百分比,高效液相色谱仪,90,分钟,启用,2023-12-15
+TI003,TI-RJ-001,溶解度,崩解法,QS004,98.0,102.0,百分比,崩解仪,30,分钟,启用,2023-12-20
+TI004,TI-WG-001,外观,目检,QS001,,,文字描述,无,5,分钟,启用,2023-12-15
+TI005,TI-SF-001,水分,干燥失重法,QS001,0,0.5,百分比,水分测定仪,20,分钟,启用,2023-12-15

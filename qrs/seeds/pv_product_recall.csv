@@ -1,0 +1,2 @@
+recall_id,recall_code,product_id,batch_numbers,recall_level,recall_reason,recall_scope,recall_date,notification_date,recall_qty,recall_unit,actual_return_qty,status,responsible,regulatory_report_date,close_date,create_date
+RCL001,RCL202401001,PROD003,BATCH-X001,三级召回,标签印刷错误,部分区域,2024-01-20,2024-01-20,5000,盒,4800,已完成,召回专员A,2024-01-21,2024-02-15,2024-01-20

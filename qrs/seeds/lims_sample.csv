@@ -1,0 +1,5 @@
+sample_id,sample_code,material_id,batch_number,sample_type,sample_qty,sample_unit,sample_date,sampler,storage_condition,expiry_date,sample_status,location,create_date
+SAM001,SAM202401001,MAT001,BATCH001,原料,500,g,2024-01-10,取样员A,常温干燥,2024-02-10,已完成,样品库A区,2024-01-10
+SAM002,SAM202401002,MAT002,BATCH002,原料,300,g,2024-01-11,取样员B,常温干燥,2024-02-11,已完成,样品库A区,2024-01-11
+SAM003,SAM202401003,PROD001,BATCH001,成品,100,片,2024-01-15,取样员A,常温干燥,2024-03-15,已完成,样品库B区,2024-01-15
+SAM004,SAM202401004,MAT003,BATCH004,包材,200,粒,2024-01-16,取样员C,常温干燥,2024-03-16,检测中,样品库A区,2024-01-16

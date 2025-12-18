@@ -1,0 +1,139 @@
+version: 2
+
+models:
+  - name: inspection_request
+    description: 检验申请业务模型 - 检验申请信息
+    config:
+      tags: ['lims', 'quality', 'inspection', 'pqr']
+    columns:
+      - name: request_id
+        description: 申请ID
+        data_tests:
+          - unique
+          - not_null
+      - name: request_status
+        description: 申请状态
+        data_tests:
+          - accepted_values:
+              values: ['待分配', '进行中', '已完成', '已取消']
+
+  - name: inspection_task
+    description: 检验任务业务模型 - 检验任务执行信息
+    config:
+      tags: ['lims', 'quality', 'inspection', 'pqr']
+    columns:
+      - name: task_id
+        description: 任务ID
+        data_tests:
+          - unique
+          - not_null
+      - name: task_status
+        description: 任务状态
+        data_tests:
+          - accepted_values:
+              values: ['待执行', '进行中', '已完成', '已取消']
+
+  - name: inspection_result
+    description: 检验结果业务模型 - 检验结果详细信息
+    config:
+      tags: ['lims', 'quality', 'inspection', 'pqr']
+    columns:
+      - name: result_id
+        description: 结果ID
+        data_tests:
+          - unique
+          - not_null
+      - name: result_status
+        description: 结果状态
+        data_tests:
+          - accepted_values:
+              values: ['合格', '不合格', '待判定']
+
+  - name: sample_management
+    description: 样品管理业务模型 - 样品主数据
+    config:
+      tags: ['lims', 'quality', 'sample', 'pqr']
+    columns:
+      - name: sample_id
+        description: 样品ID
+        data_tests:
+          - unique
+          - not_null
+      - name: sample_status
+        description: 样品状态
+        data_tests:
+          - accepted_values:
+              values: ['待检测', '检测中', '已完成', '已过期', '已销毁']
+
+  - name: quality_standard
+    description: 质量标准业务模型 - 质量标准主数据
+    config:
+      tags: ['lims', 'quality', 'standard', 'pqr']
+    columns:
+      - name: standard_id
+        description: 标准ID
+        data_tests:
+          - unique
+          - not_null
+      - name: standard_status
+        description: 标准状态
+        data_tests:
+          - accepted_values:
+              values: ['有效', '无效', '草稿']
+
+  - name: test_item_info
+    description: 检验项目业务模型 - 检验项目主数据
+    config:
+      tags: ['lims', 'quality', 'standard', 'pqr']
+    columns:
+      - name: test_item_id
+        description: 项目ID
+        data_tests:
+          - unique
+          - not_null
+
+  - name: analyst_info
+    description: 分析员信息业务模型 - 分析员主数据
+    config:
+      tags: ['lims', 'quality', 'master_data', 'pqr']
+    columns:
+      - name: analyst_id
+        description: 分析员ID
+        data_tests:
+          - unique
+          - not_null
+
+  - name: inspection_report
+    description: 检验报告业务模型 - 检验报告信息
+    config:
+      tags: ['lims', 'quality', 'inspection', 'pqr']
+    columns:
+      - name: report_id
+        description: 报告ID
+        data_tests:
+          - unique
+          - not_null
+      - name: conclusion
+        description: 检验结论
+        data_tests:
+          - accepted_values:
+              values: ['合格', '不合格', '待判定']
+
+  # ============================================
+  # 分析模型
+  # ============================================
+  - name: quality_analytics
+    description: 质量分析模型 - 基于检验申请数据的质量管理指标分析，用于PQR报告
+    config:
+      tags: ['lims', 'quality', 'analytics', 'pqr']
+    columns:
+      - name: material_id
+        description: 物料ID
+      - name: inspection_type
+        description: 检验类型
+      - name: completion_rate
+        description: 完成率(%)
+      - name: on_time_rate
+        description: 按时完成率(%)
+      - name: avg_processing_days
+        description: 平均处理天数

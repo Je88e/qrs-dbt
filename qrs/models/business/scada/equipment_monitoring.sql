@@ -1,0 +1,63 @@
+{{
+    config(
+        materialized='view',
+        tags=['scada', 'equipment', 'monitoring', 'pqr']
+    )
+}}
+
+/*
+ * 设备运行监控业务模型
+ * 数据来源: SCADA系统
+ * 业务描述: 提供设备运行参数的实时监控数据
+ */
+
+with equipment_data as (
+    select * from {{ ref('scada_equipment_data') }}
+),
+
+equipment as (
+    select * from {{ ref('mes_equipment') }}
+),
+
+work_order as (
+    select * from {{ ref('mes_work_order') }}
+),
+
+operation as (
+    select * from {{ ref('mes_operation') }}
+)
+
+select
+    -- 数据主键
+    ed.data_id,
+    
+    -- 设备信息
+    ed.equipment_id,
+    eq.equipment_code,
+    eq.equipment_name,
+    eq.equipment_type,
+    
+    -- 参数信息
+    ed.parameter_name,
+    ed.parameter_value,
+    ed.unit,
+    ed.quality_code,
+    
+    -- 采集时间
+    ed.collection_time,
+    
+    -- 关联生产信息
+    ed.batch_number,
+    ed.wo_number as work_order_number,
+    wo.product_id,
+    ed.operation_id,
+    op.operation_name,
+    
+    -- 审计字段
+    ed.create_date
+
+from equipment_data ed
+left join equipment eq on ed.equipment_id = eq.equipment_id
+left join work_order wo on ed.wo_number = wo.wo_number
+left join operation op on ed.operation_id = op.operation_id
+
