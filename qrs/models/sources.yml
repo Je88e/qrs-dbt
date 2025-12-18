@@ -1,0 +1,182 @@
+version: 2
+
+sources:
+  # ============================================
+  # ERP系统源表 (12个表)
+  # ============================================
+  - name: erp_raw
+    description: ERP系统原始数据 - 包含采购、物料、配方、库存等核心业务数据
+    schema: public
+    tables:
+      # 采购订单表
+      - name: erp_purchase_order
+        description: 采购订单主表
+      # 采购订单明细表
+      - name: erp_purchase_order_detail
+        description: 采购订单明细表
+      # 物料接收表
+      - name: erp_material_receipt
+        description: 物料接收记录表
+      # 物料退货表
+      - name: erp_material_return
+        description: 物料退货记录表
+      # 物料主数据表
+      - name: erp_material_master
+        description: 物料主数据表
+      # 供应商主数据表
+      - name: erp_supplier_master
+        description: 供应商主数据表
+      # 配方主表
+      - name: erp_formula_master
+        description: 配方主数据表
+      # 配方明细表
+      - name: erp_formula_detail
+        description: 配方明细表
+      # 库存主表
+      - name: erp_inventory
+        description: 库存主数据表
+      # 库存事务表
+      - name: erp_inventory_transaction
+        description: 库存事务记录表
+      # 仓库主表
+      - name: erp_warehouse
+        description: 仓库主数据表
+      # 库位表
+      - name: erp_storage_location
+        description: 库位主数据表
+
+  # ============================================
+  # MES系统源表 (10个表)
+  # ============================================
+  - name: mes_raw
+    description: MES系统原始数据 - 包含生产执行、设备、工艺等制造过程数据
+    schema: public
+    tables:
+      # 生产工单表
+      - name: mes_work_order
+        description: 生产工单主表
+      # 工序表
+      - name: mes_operation
+        description: 工序定义表
+      # 工单工序表
+      - name: mes_work_order_operation
+        description: 工单工序执行表
+      # 生产报工表
+      - name: mes_production_report
+        description: 生产报工记录表
+      # 设备主表
+      - name: mes_equipment
+        description: 设备主数据表
+      # 设备维护记录表
+      - name: mes_equipment_maintenance
+        description: 设备维护记录表
+      # 产线主表
+      - name: mes_production_line
+        description: 产线主数据表
+      # 车间主表
+      - name: mes_workshop
+        description: 车间主数据表
+      # 物料消耗表
+      - name: mes_material_consumption
+        description: 物料消耗记录表
+      # 人员主表
+      - name: mes_personnel
+        description: 生产人员主数据表
+
+  # ============================================
+  # LIMS系统源表 (8个表)
+  # ============================================
+  - name: lims_raw
+    description: LIMS系统原始数据 - 包含检验、样品、质量标准等实验室数据
+    schema: public
+    tables:
+      # 检验申请表
+      - name: lims_inspection_request
+        description: 检验申请单表
+      # 检验任务表
+      - name: lims_inspection_task
+        description: 检验任务表
+      # 检验结果表
+      - name: lims_inspection_result
+        description: 检验结果记录表
+      # 样品表
+      - name: lims_sample
+        description: 样品主数据表
+      # 质量标准表
+      - name: lims_quality_standard
+        description: 质量标准主表
+      # 检验项目表
+      - name: lims_test_item
+        description: 检验项目定义表
+      # 分析员表
+      - name: lims_analyst
+        description: 分析员主数据表
+      # 检验报告表
+      - name: lims_inspection_report
+        description: 检验报告表
+
+  # ============================================
+  # QMS系统源表 (6个表)
+  # ============================================
+  - name: qms_raw
+    description: QMS系统原始数据 - 包含变更、偏差、CAPA等质量管理数据
+    schema: public
+    tables:
+      # 变更控制表
+      - name: qms_change_control
+        description: 变更控制主表
+      # 变更影响评估表
+      - name: qms_change_impact
+        description: 变更影响评估表
+      # 变更实施表
+      - name: qms_change_implementation
+        description: 变更实施记录表
+      # 偏差表
+      - name: qms_deviation
+        description: 偏差记录主表
+      # CAPA表
+      - name: qms_capa
+        description: CAPA主表
+      # 供应商审计表
+      - name: qms_supplier_audit
+        description: 供应商审计记录表
+
+  # ============================================
+  # SCADA系统源表 (5个表)
+  # ============================================
+  - name: scada_raw
+    description: SCADA系统原始数据 - 包含设备运行、环境监控、报警等过程控制数据
+    schema: public
+    tables:
+      # 设备运行数据表
+      - name: scada_equipment_data
+        description: 设备运行数据采集表
+      # 环境监控数据表
+      - name: scada_environment_data
+        description: 环境监控数据采集表
+      # 报警记录表
+      - name: scada_alarm
+        description: 报警记录表
+      # 批次追踪表
+      - name: scada_batch_tracking
+        description: 批次追踪记录表
+      # 能耗数据表
+      - name: scada_energy_consumption
+        description: 能耗监控数据表
+
+  # ============================================
+  # 药物警戒系统源表 (3个表)
+  # ============================================
+  - name: pv_raw
+    description: 药物警戒系统原始数据 - 包含不良反应、投诉、召回等药物警戒数据
+    schema: public
+    tables:
+      # 不良反应报告表
+      - name: pv_adverse_event
+        description: 不良反应报告表
+      # 投诉记录表
+      - name: pv_complaint
+        description: 产品投诉记录表
+      # 产品召回表
+      - name: pv_product_recall
+        description: 产品召回记录表

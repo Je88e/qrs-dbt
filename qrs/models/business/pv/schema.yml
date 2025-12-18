@@ -1,0 +1,76 @@
+version: 2
+
+models:
+  - name: adverse_event
+    description: 不良反应业务模型 - 药物不良反应报告
+    config:
+      tags: ['pv', 'pharmacovigilance', 'safety', 'pqr']
+    columns:
+      - name: event_id
+        description: 事件ID
+        data_tests:
+          - unique
+          - not_null
+      - name: severity
+        description: 严重程度
+        data_tests:
+          - accepted_values:
+              values: ['轻度', '中度', '重度', '危及生命', '死亡']
+      - name: event_status
+        description: 事件状态
+        data_tests:
+          - accepted_values:
+              values: ['待评估', '调查中', '已关闭']
+      - name: causality_assessment
+        description: 因果关系评估
+        data_tests:
+          - accepted_values:
+              values: ['肯定相关', '很可能相关', '可能相关', '可能无关', '待评估']
+
+  - name: complaint_handling
+    description: 投诉处理业务模型 - 产品投诉记录
+    config:
+      tags: ['pv', 'pharmacovigilance', 'quality', 'pqr']
+    columns:
+      - name: complaint_id
+        description: 投诉ID
+        data_tests:
+          - unique
+          - not_null
+      - name: complaint_type
+        description: 投诉类型
+        data_tests:
+          - accepted_values:
+              values: ['产品质量', '包装问题', '疗效问题', '不良反应', '其他']
+      - name: priority
+        description: 优先级
+        data_tests:
+          - accepted_values:
+              values: ['高', '中', '低']
+      - name: complaint_status
+        description: 投诉状态
+        data_tests:
+          - accepted_values:
+              values: ['待处理', '调查中', '已关闭']
+
+  - name: product_recall
+    description: 产品召回业务模型 - 产品召回记录
+    config:
+      tags: ['pv', 'pharmacovigilance', 'safety', 'pqr']
+    columns:
+      - name: recall_id
+        description: 召回ID
+        data_tests:
+          - unique
+          - not_null
+      - name: recall_level
+        description: 召回级别
+        data_tests:
+          - accepted_values:
+              values: ['一级召回', '二级召回', '三级召回']
+      - name: recall_status
+        description: 召回状态
+        data_tests:
+          - accepted_values:
+              values: ['进行中', '已完成', '已取消']
+

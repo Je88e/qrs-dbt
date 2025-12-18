@@ -1,0 +1,6 @@
+transaction_id,inventory_id,material_id,batch_number,transaction_type,quantity,unit,transaction_date,reference_doc,reference_type,operator,remark,create_date
+TRX001,INV001,MAT001,BATCH001,入库,100,kg,2024-01-09,REC202401001,物料接收,操作员A,采购入库,2024-01-09 10:00:00
+TRX002,INV001,MAT001,BATCH001,出库,-5,kg,2024-01-11,RET202401001,物料退货,操作员A,质量问题退货,2024-01-11 10:00:00
+TRX003,INV002,MAT002,BATCH002,入库,200,kg,2024-01-14,REC202401002,物料接收,操作员B,采购入库,2024-01-14 11:00:00
+TRX004,INV002,MAT002,BATCH002,出库,-10,kg,2024-01-16,RET202401002,物料退货,操作员B,质量问题退货,2024-01-16 14:00:00
+TRX005,INV003,MAT001,BATCH003,入库,50,kg,2024-01-10,REC202401003,物料接收,操作员A,采购入库,2024-01-10 14:00:00

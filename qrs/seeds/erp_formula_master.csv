@@ -1,0 +1,4 @@
+formula_id,formula_name,product_id,product_name,version,formula_status,effective_date,expiry_date,batch_size,batch_unit,creator,approver,approval_date,create_date
+FRM001,阿司匹林片配方,PROD001,阿司匹林片,V1.0,有效,2024-01-01,2025-12-31,10000,片,配方员A,审批员X,2024-01-01,2023-12-20
+FRM002,对乙酰氨基酚胶囊配方,PROD002,对乙酰氨基酚胶囊,V1.0,有效,2024-01-01,2025-12-31,5000,粒,配方员B,审批员Y,2024-01-01,2023-12-22
+FRM003,复方感冒口服液配方,PROD003,复方感冒口服液,V2.0,有效,2024-01-01,2025-12-31,1000,ml,配方员A,审批员X,2024-01-01,2023-12-25

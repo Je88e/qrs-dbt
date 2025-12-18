@@ -1,0 +1,5 @@
+standard_id,standard_code,standard_name,material_type,version,effective_date,expiry_date,status,creator,approver,approval_date,create_date
+QS001,QS-YL-001,原料药质量标准,原料,V1.0,2024-01-01,2025-12-31,有效,标准员A,审批员X,2023-12-20,2023-12-15
+QS002,QS-FL-001,辅料质量标准,辅料,V1.0,2024-01-01,2025-12-31,有效,标准员A,审批员X,2023-12-20,2023-12-15
+QS003,QS-BC-001,包材质量标准,包材,V1.0,2024-01-01,2025-12-31,有效,标准员B,审批员Y,2023-12-22,2023-12-18
+QS004,QS-CP-001,成品质量标准,成品,V1.0,2024-01-01,2025-12-31,有效,标准员A,审批员X,2023-12-25,2023-12-20

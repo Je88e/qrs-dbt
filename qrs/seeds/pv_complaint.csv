@@ -1,0 +1,4 @@
+complaint_id,complaint_code,product_id,batch_number,complaint_date,receive_date,complaint_type,complaint_source,complaint_description,contact_name,contact_phone,priority,status,investigator,investigation_result,corrective_action,close_date,response_date,create_date
+CMP001,CMP202401001,PROD001,BATCH001,2024-01-14,2024-01-14,产品质量,消费者,药片外观有斑点,王先生,13912345678,中,已关闭,投诉专员A,经调查为正常工艺特征,向消费者解释说明,2024-01-20,2024-01-15,2024-01-14
+CMP002,CMP202401002,PROD002,BATCH002,2024-01-16,2024-01-17,包装问题,经销商,包装盒破损,李经理,13887654321,低,已关闭,投诉专员B,运输过程中包装受损,改进包装防护措施,2024-01-22,2024-01-18,2024-01-17
+CMP003,CMP202401003,PROD001,BATCH003,2024-01-19,2024-01-19,疗效问题,消费者,服药后效果不明显,赵女士,13756781234,高,调查中,投诉专员A,,,,,2024-01-19

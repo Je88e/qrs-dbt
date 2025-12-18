@@ -1,0 +1,48 @@
+version: 2
+
+models:
+  - name: pqr_summary_report
+    description: PQR汇总报告 - 整合各业务模块的关键指标
+    columns:
+      - name: total_materials
+        description: 物料总数
+      - name: material_approval_rate
+        description: 物料审批通过率(%)
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 100
+      - name: supplier_qualification_rate
+        description: 供应商合格率(%)
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 100
+      - name: production_completion_rate
+        description: 生产完成率(%)
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 100
+      - name: production_on_time_rate
+        description: 生产按时完成率(%)
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 100
+      - name: inspection_completion_rate
+        description: 检验完成率(%)
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 100
+      - name: inspection_on_time_rate
+        description: 检验按时完成率(%)
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 100
+      - name: report_generated_at
+        description: 报告生成时间
+        data_tests:
+          - not_null

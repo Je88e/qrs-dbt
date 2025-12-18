@@ -1,0 +1,4 @@
+event_id,event_code,product_id,batch_number,event_date,report_date,event_type,severity,description,patient_age,patient_gender,outcome,causality_assessment,reporter_type,reporter_name,status,investigator,close_date,create_date
+AE001,AE202401001,PROD001,BATCH001,2024-01-12,2024-01-13,已知不良反应,轻度,服药后出现轻微胃部不适,45,男,已恢复,可能相关,医疗专业人员,张医生,已关闭,PV专员A,2024-01-20,2024-01-13
+AE002,AE202401002,PROD002,BATCH002,2024-01-15,2024-01-16,已知不良反应,轻度,服药后出现头晕,32,女,已恢复,可能相关,患者,李女士,已关闭,PV专员B,2024-01-25,2024-01-16
+AE003,AE202401003,PROD001,BATCH003,2024-01-18,2024-01-18,未知不良反应,中度,服药后出现皮疹,28,女,治疗中,待评估,医疗专业人员,王医生,调查中,PV专员A,,2024-01-18

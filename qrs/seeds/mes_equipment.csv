@@ -1,0 +1,6 @@
+equipment_id,equipment_code,equipment_name,equipment_type,manufacturer,model,serial_number,installation_date,workshop_id,line_id,status,last_maintenance_date,next_maintenance_date,create_date
+EQ001,MIX-001,高速混合机1号,混合机,设备厂商A,MIX-2000,SN2023001,2023-01-15,WS001,LINE001,运行中,2024-01-05,2024-02-05,2023-01-15
+EQ002,GRAN-001,湿法制粒机1号,制粒机,设备厂商B,GRAN-500,SN2023002,2023-01-20,WS001,LINE001,运行中,2024-01-08,2024-02-08,2023-01-20
+EQ003,DRY-001,流化床干燥机1号,干燥机,设备厂商C,DRY-1000,SN2023003,2023-02-01,WS001,LINE001,运行中,2024-01-10,2024-02-10,2023-02-01
+EQ004,COAT-001,高效包衣机1号,包衣机,设备厂商D,COAT-800,SN2023004,2023-02-15,WS001,LINE001,运行中,2024-01-12,2024-02-12,2023-02-15
+EQ005,PACK-001,自动包装机1号,包装机,设备厂商E,PACK-200,SN2023005,2023-03-01,WS001,LINE001,运行中,2024-01-15,2024-02-15,2023-03-01

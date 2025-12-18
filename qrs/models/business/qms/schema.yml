@@ -1,0 +1,104 @@
+version: 2
+
+models:
+  - name: change_control
+    description: 变更控制业务模型 - 变更控制信息
+    config:
+      tags: ['qms', 'quality', 'change', 'pqr']
+    columns:
+      - name: change_id
+        description: 变更ID
+        data_tests:
+          - unique
+          - not_null
+      - name: change_status
+        description: 变更状态
+        data_tests:
+          - accepted_values:
+              values: ['待审批', '已批准', '进行中', '已完成', '已关闭', '已取消']
+
+  - name: change_impact_assessment
+    description: 变更影响评估业务模型 - 变更影响评估详情
+    config:
+      tags: ['qms', 'quality', 'change', 'pqr']
+    columns:
+      - name: impact_id
+        description: 影响评估ID
+        data_tests:
+          - unique
+          - not_null
+      - name: impact_level
+        description: 影响程度
+        data_tests:
+          - accepted_values:
+              values: ['高', '中', '低']
+
+  - name: change_implementation
+    description: 变更实施业务模型 - 变更实施任务信息
+    config:
+      tags: ['qms', 'quality', 'change', 'pqr']
+    columns:
+      - name: implementation_id
+        description: 实施任务ID
+        data_tests:
+          - unique
+          - not_null
+      - name: task_status
+        description: 任务状态
+        data_tests:
+          - accepted_values:
+              values: ['待执行', '进行中', '已完成', '已取消']
+
+  - name: deviation_management
+    description: 偏差管理业务模型 - 偏差记录信息
+    config:
+      tags: ['qms', 'quality', 'deviation', 'pqr']
+    columns:
+      - name: deviation_id
+        description: 偏差ID
+        data_tests:
+          - unique
+          - not_null
+      - name: deviation_status
+        description: 偏差状态
+        data_tests:
+          - accepted_values:
+              values: ['待调查', '调查中', '进行中', '待审核', '已关闭', '已取消']
+
+  - name: capa_management
+    description: CAPA管理业务模型 - 纠正预防措施信息
+    config:
+      tags: ['qms', 'quality', 'capa', 'pqr']
+    columns:
+      - name: capa_id
+        description: CAPA ID
+        data_tests:
+          - unique
+          - not_null
+      - name: capa_status
+        description: CAPA状态
+        data_tests:
+          - accepted_values:
+              values: ['待执行', '进行中', '已完成', '已验证', '已关闭']
+      - name: effectiveness_check
+        description: 有效性检查结果
+        data_tests:
+          - accepted_values:
+              values: ['有效', '无效', '待验证']
+
+  - name: supplier_audit
+    description: 供应商审计业务模型 - 供应商审计记录
+    config:
+      tags: ['qms', 'quality', 'supplier', 'pqr']
+    columns:
+      - name: audit_id
+        description: 审计ID
+        data_tests:
+          - unique
+          - not_null
+      - name: audit_result
+        description: 审计结果
+        data_tests:
+          - accepted_values:
+              values: ['合格', '待整改', '不合格']
+

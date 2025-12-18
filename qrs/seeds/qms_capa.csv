@@ -1,0 +1,4 @@
+capa_id,capa_code,capa_title,capa_type,source_type,source_id,description,root_cause_analysis,corrective_action,preventive_action,responsible,planned_completion,actual_completion,status,effectiveness_check,effectiveness_date,creator,approver,create_date
+CAPA001,CAPA202401001,混合设备故障改进,纠正预防措施,偏差,DEV001,针对混合设备故障导致的工艺偏差,设备老化导致启动延迟,更换设备启动模块,建立设备预防性维护计划,设备主管,2024-01-31,2024-01-28,已完成,有效,2024-02-15,质量员A,审批员X,2024-01-12
+CAPA002,CAPA202401002,来料质量控制加强,纠正措施,偏差,DEV002,针对原料外观异常问题,供应商质量控制不稳定,加强来料抽检比例,开展供应商审计,QA主管,2024-02-28,,进行中,,,质量员B,,2024-01-15
+CAPA003,CAPA202401003,环境监控系统升级,预防措施,偏差,DEV003,针对环境温度超标问题,空调系统监控不及时,安装实时温湿度报警系统,定期校验环境监控设备,设施主管,2024-02-15,,进行中,,,质量员A,,2024-01-17

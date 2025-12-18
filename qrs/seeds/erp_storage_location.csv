@@ -1,0 +1,6 @@
+location_id,warehouse_id,location_code,location_name,location_type,capacity,capacity_unit,current_usage,status,create_date
+LOC001,WH001,WH001-A01,原料区A排1号,货架,500,kg,95,启用,2023-01-01
+LOC002,WH001,WH001-A02,原料区A排2号,货架,500,kg,190,启用,2023-01-01
+LOC003,WH001,WH001-B01,原料区B排1号,货架,500,kg,50,启用,2023-01-01
+LOC004,WH001,WH001-B02,原料区B排2号,货架,500,kg,300,启用,2023-01-01
+LOC005,WH002,WH002-A01,包材区A排1号,货架,1000,万粒,500,启用,2023-01-01
