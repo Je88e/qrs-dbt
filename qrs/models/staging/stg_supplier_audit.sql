@@ -16,7 +16,7 @@ with source_data as (
     select * from {{ source('qms_raw', 'qms_supplier_audit') }}
 ),
 
-renamed as (
+final as (
     select
         audit_id,
         supplier_id,
@@ -33,5 +33,4 @@ renamed as (
     from source_data
 )
 
-select * from renamed
-
+select * from final

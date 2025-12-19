@@ -16,7 +16,7 @@ with source_data as (
     select * from {{ source('mes_raw', 'mes_work_order_operation') }}
 ),
 
-renamed as (
+final as (
     select
         work_order_operation_id,
         work_order_number,
@@ -34,5 +34,4 @@ renamed as (
     from source_data
 )
 
-select * from renamed
-
+select * from final

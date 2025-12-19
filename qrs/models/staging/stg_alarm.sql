@@ -16,21 +16,24 @@ with source_data as (
     select * from {{ source('scada_raw', 'scada_alarm') }}
 ),
 
-renamed as (
+final as (
     select
         alarm_id,
         equipment_id,
+        location_code,
         alarm_type,
         alarm_level,
         alarm_message,
         alarm_time,
-        acknowledgement_time,
-        acknowledged_by,
-        resolution_time,
-        resolved_by,
+        ack_time,
+        ack_by,
+        resolve_time,
+        resolve_by,
+        alarm_status,
+        related_batch,
+        related_wo,
         created_at
     from source_data
 )
 
-select * from renamed
-
+select * from final

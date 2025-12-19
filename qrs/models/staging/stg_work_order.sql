@@ -16,7 +16,7 @@ with source_data as (
     select * from {{ source('mes_raw', 'mes_work_order') }}
 ),
 
-renamed as (
+final as (
     select
         work_order_number,
         product_id,
@@ -32,10 +32,10 @@ renamed as (
         actual_end_date,
         production_line_id,
         workshop_id,
+        create_by,
         created_at,
         updated_at
     from source_data
 )
 
-select * from renamed
-
+select * from final

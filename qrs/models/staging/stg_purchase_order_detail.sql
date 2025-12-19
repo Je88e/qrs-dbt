@@ -16,7 +16,7 @@ with source_data as (
     select * from {{ source('erp_raw', 'erp_purchase_order_detail') }}
 ),
 
-renamed as (
+final as (
     select
         -- 主键
         pod_id as purchase_order_detail_id,
@@ -38,5 +38,4 @@ renamed as (
     from source_data
 )
 
-select * from renamed
-
+select * from final

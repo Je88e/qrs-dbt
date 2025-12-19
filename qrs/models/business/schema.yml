@@ -1,0 +1,666 @@
+version: 2
+
+models:
+  - name: fct_purchase_orders
+    description: 采购订单事实表 - 整合采购订单主表和明细表，提供完整的采购订单信息
+    config:
+      tags: ["erp", "procurement", "pqr"]
+    columns:
+      - name: purchase_order_number
+        description: 采购订单号 (主键)
+        data_tests:
+          - unique
+          - not_null
+      - name: purchase_order_detail_id
+        description: 采购订单明细ID
+        data_tests:
+          - unique
+          - not_null
+      - name: supplier_id
+        description: 供应商ID (外键)
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('stg_supplier_master')
+              field: supplier_id
+      - name: material_id
+        description: 物料ID (外键)
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('stg_material_master')
+              field: material_id
+      - name: order_status
+        description: 订单状态
+        data_tests:
+          - accepted_values:
+              values: ["待审批", "已审批", "进行中", "已完成", "已取消"]
+
+  - name: fct_material_receipts
+    description: 物料接收事实表 - 记录物料入库信息，关联采购订单和仓库
+    config:
+      tags: ["erp", "procurement", "quality", "pqr"]
+    columns:
+      - name: receipt_id
+        description: 接收记录ID (主键)
+        data_tests:
+          - unique
+          - not_null
+      - name: purchase_order_number
+        description: 采购订单号 (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_purchase_order')
+              field: purchase_order_number
+      - name: supplier_id
+        description: 供应商ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_supplier_master')
+              field: supplier_id
+      - name: material_id
+        description: 物料ID (外键)
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('stg_material_master')
+              field: material_id
+      - name: warehouse_id
+        description: 仓库ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_warehouse')
+              field: warehouse_id
+      - name: location_id
+        description: 库位ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_storage_location')
+              field: location_id
+      - name: inspection_status
+        description: 检验状态
+        data_tests:
+          - accepted_values:
+              values: ["待检验", "已检验"]
+
+  - name: fct_material_returns
+    description: 物料退货业务模型 - 记录物料退货信息
+    config:
+      tags: ["erp", "procurement", "quality", "pqr"]
+    columns:
+      - name: return_id
+        description: 退货记录ID
+        data_tests:
+          - unique
+          - not_null
+      - name: return_status
+        description: 退货状态
+        data_tests:
+          - accepted_values:
+              values: ["处理中", "已完成", "已取消"]
+
+  - name: fct_formulas
+    description: 配方管理业务模型 - 整合配方主表和明细表
+    config:
+      tags: ["erp", "production", "formula", "pqr"]
+    columns:
+      - name: formula_id
+        description: 配方ID
+        data_tests:
+          - not_null
+      - name: formula_status
+        description: 配方状态
+        data_tests:
+          - accepted_values:
+              values: ["有效", "无效", "草稿"]
+
+  - name: fct_inventory
+    description: 库存管理业务模型 - 提供库存信息视图
+    config:
+      tags: ["erp", "inventory", "pqr"]
+    columns:
+      - name: inventory_id
+        description: 库存ID
+        data_tests:
+          - unique
+          - not_null
+      - name: inventory_status
+        description: 库存状态
+        data_tests:
+          - accepted_values:
+              values: ["正常", "待检", "冻结", "不合格"]
+
+  - name: fct_inventory_transactions
+    description: 库存事务业务模型 - 记录库存变动事务
+    config:
+      tags: ["erp", "inventory", "pqr"]
+    columns:
+      - name: transaction_id
+        description: 事务ID
+        data_tests:
+          - unique
+          - not_null
+      - name: transaction_type
+        description: 事务类型
+        data_tests:
+          - accepted_values:
+              values: ["入库", "出库", "调拨", "盘点"]
+
+  - name: dim_warehouses
+    description: 仓库信息业务模型 - 整合仓库和库位信息
+    config:
+      tags: ["erp", "inventory", "master_data", "pqr"]
+    columns:
+      - name: warehouse_id
+        description: 仓库ID
+        data_tests:
+          - not_null
+      - name: warehouse_status
+        description: 仓库状态
+        data_tests:
+          - accepted_values:
+              values: ["启用", "停用"]
+
+  - name: fct_inspection_requests
+    description: 检验申请业务模型 - 检验申请信息
+    config:
+      tags: ["lims", "quality", "inspection", "pqr"]
+    columns:
+      - name: request_id
+        description: 申请ID
+        data_tests:
+          - unique
+          - not_null
+      - name: request_status
+        description: 申请状态
+        data_tests:
+          - accepted_values:
+              values: ["待分配", "进行中", "已完成", "已取消"]
+
+  - name: fct_inspection_tasks
+    description: 检验任务业务模型 - 检验任务执行信息
+    config:
+      tags: ["lims", "quality", "inspection", "pqr"]
+    columns:
+      - name: task_id
+        description: 任务ID
+        data_tests:
+          - unique
+          - not_null
+      - name: task_status
+        description: 任务状态
+        data_tests:
+          - accepted_values:
+              values: ["待执行", "进行中", "已完成", "已取消"]
+
+  - name: fct_inspection_results
+    description: 检验结果业务模型 - 检验结果详细信息
+    config:
+      tags: ["lims", "quality", "inspection", "pqr"]
+    columns:
+      - name: result_id
+        description: 结果ID
+        data_tests:
+          - unique
+          - not_null
+      - name: result_status
+        description: 结果状态
+        data_tests:
+          - accepted_values:
+              values: ["合格", "不合格", "待判定"]
+
+  - name: dim_samples
+    description: 样品管理业务模型 - 样品主数据
+    config:
+      tags: ["lims", "quality", "sample", "pqr"]
+    columns:
+      - name: sample_id
+        description: 样品ID
+        data_tests:
+          - unique
+          - not_null
+      - name: sample_status
+        description: 样品状态
+        data_tests:
+          - accepted_values:
+              values: ["待检测", "检测中", "已完成", "已过期", "已销毁"]
+
+  - name: dim_quality_standards
+    description: 质量标准业务模型 - 质量标准主数据
+    config:
+      tags: ["lims", "quality", "standard", "pqr"]
+    columns:
+      - name: standard_id
+        description: 标准ID
+        data_tests:
+          - unique
+          - not_null
+      - name: standard_status
+        description: 标准状态
+        data_tests:
+          - accepted_values:
+              values: ["有效", "无效", "草稿"]
+
+  - name: dim_test_items
+    description: 检验项目业务模型 - 检验项目主数据
+    config:
+      tags: ["lims", "quality", "standard", "pqr"]
+    columns:
+      - name: test_item_id
+        description: 项目ID
+        data_tests:
+          - unique
+          - not_null
+
+  - name: dim_analysts
+    description: 分析员信息业务模型 - 分析员主数据
+    config:
+      tags: ["lims", "quality", "master_data", "pqr"]
+    columns:
+      - name: analyst_id
+        description: 分析员ID
+        data_tests:
+          - unique
+          - not_null
+
+  - name: fct_inspection_reports
+    description: 检验报告业务模型 - 检验报告信息
+    config:
+      tags: ["lims", "quality", "inspection", "pqr"]
+    columns:
+      - name: report_id
+        description: 报告ID
+        data_tests:
+          - unique
+          - not_null
+      - name: conclusion
+        description: 检验结论
+        data_tests:
+          - accepted_values:
+              values: ["合格", "不合格", "待判定"]
+
+  - name: fct_work_orders
+    description: 生产工单业务模型 - 提供工单完整信息
+    config:
+      tags: ["mes", "production", "pqr"]
+    columns:
+      - name: work_order_number
+        description: 工单号
+        data_tests:
+          - unique
+          - not_null
+      - name: work_order_status
+        description: 工单状态
+        data_tests:
+          - accepted_values:
+              values: ["计划中", "进行中", "已完成", "已取消"]
+
+  - name: fct_operations
+    description: 工序管理业务模型 - 工单工序执行信息
+    config:
+      tags: ["mes", "production", "pqr"]
+    columns:
+      - name: work_order_operation_id
+        description: 工单工序ID
+        data_tests:
+          - unique
+          - not_null
+
+  - name: fct_production_reports
+    description: 生产报工业务模型 - 产量和质量统计
+    config:
+      tags: ["mes", "production", "quality", "pqr"]
+    columns:
+      - name: report_id
+        description: 报工ID
+        data_tests:
+          - unique
+          - not_null
+      - name: review_status
+        description: 审核状态
+        data_tests:
+          - accepted_values:
+              values: ["待审核", "已审核", "已驳回"]
+
+  - name: dim_equipment
+    description: 设备信息业务模型 - 设备主数据
+    config:
+      tags: ["mes", "equipment", "master_data", "pqr"]
+    columns:
+      - name: equipment_id
+        description: 设备ID
+        data_tests:
+          - unique
+          - not_null
+      - name: equipment_status
+        description: 设备状态
+        data_tests:
+          - accepted_values:
+              values: ["运行中", "停机", "维护中", "报废"]
+
+  - name: fct_equipment_maintenance
+    description: 设备维护业务模型 - 维护记录
+    config:
+      tags: ["mes", "equipment", "maintenance", "pqr"]
+    columns:
+      - name: maintenance_id
+        description: 维护ID
+        data_tests:
+          - unique
+          - not_null
+      - name: maintenance_type
+        description: 维护类型
+        data_tests:
+          - accepted_values:
+              values: ["预防性维护", "故障维修", "计划维护"]
+
+  - name: dim_production_lines
+    description: 产线信息业务模型 - 产线主数据
+    config:
+      tags: ["mes", "production", "master_data", "pqr"]
+    columns:
+      - name: line_id
+        description: 产线ID
+        data_tests:
+          - unique
+          - not_null
+
+  - name: dim_workshops
+    description: 车间信息业务模型 - 车间主数据
+    config:
+      tags: ["mes", "production", "master_data", "pqr"]
+    columns:
+      - name: workshop_id
+        description: 车间ID
+        data_tests:
+          - unique
+          - not_null
+
+  - name: fct_material_consumption
+    description: 物料消耗业务模型 - 生产物料消耗记录
+    config:
+      tags: ["mes", "production", "material", "pqr"]
+    columns:
+      - name: consumption_id
+        description: 消耗ID
+        data_tests:
+          - unique
+          - not_null
+
+  - name: dim_personnel
+    description: 人员信息业务模型 - 生产人员主数据
+    config:
+      tags: ["mes", "production", "master_data", "pqr"]
+    columns:
+      - name: personnel_id
+        description: 人员ID
+        data_tests:
+          - unique
+          - not_null
+      - name: personnel_status
+        description: 人员状态
+        data_tests:
+          - accepted_values:
+              values: ["在岗", "离职", "休假"]
+
+  - name: fct_adverse_events
+    description: 不良反应业务模型 - 药物不良反应报告
+    config:
+      tags: ["pv", "pharmacovigilance", "safety", "pqr"]
+    columns:
+      - name: event_id
+        description: 事件ID
+        data_tests:
+          - unique
+          - not_null
+      - name: severity
+        description: 严重程度
+        data_tests:
+          - accepted_values:
+              values: ["轻度", "中度", "重度", "危及生命", "死亡"]
+      - name: event_status
+        description: 事件状态
+        data_tests:
+          - accepted_values:
+              values: ["待评估", "调查中", "已关闭"]
+      - name: causality_assessment
+        description: 因果关系评估
+        data_tests:
+          - accepted_values:
+              values:
+                ["肯定相关", "很可能相关", "可能相关", "可能无关", "待评估"]
+
+  - name: fct_complaints
+    description: 投诉处理业务模型 - 产品投诉记录
+    config:
+      tags: ["pv", "pharmacovigilance", "quality", "pqr"]
+    columns:
+      - name: complaint_id
+        description: 投诉ID
+        data_tests:
+          - unique
+          - not_null
+      - name: complaint_type
+        description: 投诉类型
+        data_tests:
+          - accepted_values:
+              values: ["产品质量", "包装问题", "疗效问题", "不良反应", "其他"]
+      - name: priority
+        description: 优先级
+        data_tests:
+          - accepted_values:
+              values: ["高", "中", "低"]
+      - name: complaint_status
+        description: 投诉状态
+        data_tests:
+          - accepted_values:
+              values: ["待处理", "调查中", "已关闭"]
+
+  - name: fct_product_recalls
+    description: 产品召回业务模型 - 产品召回记录
+    config:
+      tags: ["pv", "pharmacovigilance", "safety", "pqr"]
+    columns:
+      - name: recall_id
+        description: 召回ID
+        data_tests:
+          - unique
+          - not_null
+      - name: recall_level
+        description: 召回级别
+        data_tests:
+          - accepted_values:
+              values: ["一级召回", "二级召回", "三级召回"]
+      - name: recall_status
+        description: 召回状态
+        data_tests:
+          - accepted_values:
+              values: ["进行中", "已完成", "已取消"]
+
+  - name: fct_change_controls
+    description: 变更控制业务模型 - 变更控制信息
+    config:
+      tags: ["qms", "quality", "change", "pqr"]
+    columns:
+      - name: change_id
+        description: 变更ID
+        data_tests:
+          - unique
+          - not_null
+      - name: change_status
+        description: 变更状态
+        data_tests:
+          - accepted_values:
+              values:
+                ["待审批", "已批准", "进行中", "已完成", "已关闭", "已取消"]
+
+  - name: fct_change_impacts
+    description: 变更影响评估业务模型 - 变更影响评估详情
+    config:
+      tags: ["qms", "quality", "change", "pqr"]
+    columns:
+      - name: impact_id
+        description: 影响评估ID
+        data_tests:
+          - unique
+          - not_null
+      - name: impact_level
+        description: 影响程度
+        data_tests:
+          - accepted_values:
+              values: ["高", "中", "低"]
+
+  - name: fct_change_implementations
+    description: 变更实施业务模型 - 变更实施任务信息
+    config:
+      tags: ["qms", "quality", "change", "pqr"]
+    columns:
+      - name: implementation_id
+        description: 实施任务ID
+        data_tests:
+          - unique
+          - not_null
+      - name: task_status
+        description: 任务状态
+        data_tests:
+          - accepted_values:
+              values: ["待执行", "进行中", "已完成", "已取消"]
+
+  - name: fct_deviations
+    description: 偏差管理业务模型 - 偏差记录信息
+    config:
+      tags: ["qms", "quality", "deviation", "pqr"]
+    columns:
+      - name: deviation_id
+        description: 偏差ID
+        data_tests:
+          - unique
+          - not_null
+      - name: deviation_status
+        description: 偏差状态
+        data_tests:
+          - accepted_values:
+              values:
+                ["待调查", "调查中", "进行中", "待审核", "已关闭", "已取消"]
+
+  - name: fct_capas
+    description: CAPA管理业务模型 - 纠正预防措施信息
+    config:
+      tags: ["qms", "quality", "capa", "pqr"]
+    columns:
+      - name: capa_id
+        description: CAPA ID
+        data_tests:
+          - unique
+          - not_null
+      - name: capa_status
+        description: CAPA状态
+        data_tests:
+          - accepted_values:
+              values: ["待执行", "进行中", "已完成", "已验证", "已关闭"]
+      - name: effectiveness_check
+        description: 有效性检查结果
+        data_tests:
+          - accepted_values:
+              values: ["有效", "无效", "待验证"]
+
+  - name: fct_supplier_audits
+    description: 供应商审计业务模型 - 供应商审计记录
+    config:
+      tags: ["qms", "quality", "supplier", "pqr"]
+    columns:
+      - name: audit_id
+        description: 审计ID
+        data_tests:
+          - unique
+          - not_null
+      - name: audit_result
+        description: 审计结果
+        data_tests:
+          - accepted_values:
+              values: ["合格", "待整改", "不合格"]
+
+  - name: fct_equipment_monitoring
+    description: 设备运行监控业务模型 - 设备运行参数数据
+    config:
+      tags: ["scada", "equipment", "monitoring", "pqr"]
+    columns:
+      - name: data_id
+        description: 数据ID
+        data_tests:
+          - unique
+          - not_null
+      - name: quality_code
+        description: 数据质量代码
+        data_tests:
+          - accepted_values:
+              values: ["good", "bad", "uncertain"]
+
+  - name: fct_environment_monitoring
+    description: 环境监控业务模型 - 环境参数监控数据
+    config:
+      tags: ["scada", "environment", "monitoring", "pqr"]
+    columns:
+      - name: data_id
+        description: 数据ID
+        data_tests:
+          - unique
+          - not_null
+      - name: monitoring_status
+        description: 监控状态
+        data_tests:
+          - accepted_values:
+              values: ["正常", "异常", "离线"]
+
+  - name: fct_alarms
+    description: 报警管理业务模型 - 报警记录信息
+    config:
+      tags: ["scada", "alarm", "monitoring", "pqr"]
+    columns:
+      - name: alarm_id
+        description: 报警ID
+        data_tests:
+          - unique
+          - not_null
+      - name: alarm_level
+        description: 报警级别
+        data_tests:
+          - accepted_values:
+              values: ["高", "中", "低"]
+      - name: alarm_status
+        description: 报警状态
+        data_tests:
+          - accepted_values:
+              values: ["未确认", "已确认", "已解决", "未解决"]
+
+  - name: fct_batch_tracking
+    description: 批次追踪业务模型 - 批次追踪记录
+    config:
+      tags: ["scada", "production", "tracking", "pqr"]
+    columns:
+      - name: tracking_id
+        description: 追踪ID
+        data_tests:
+          - unique
+          - not_null
+      - name: tracking_status
+        description: 追踪状态
+        data_tests:
+          - accepted_values:
+              values: ["进行中", "已完成", "已暂停", "已取消"]
+
+  - name: fct_energy_consumption
+    description: 能耗监控业务模型 - 能耗数据
+    config:
+      tags: ["scada", "energy", "monitoring", "pqr"]
+    columns:
+      - name: energy_id
+        description: 能耗ID
+        data_tests:
+          - unique
+          - not_null
+      - name: energy_type
+        description: 能源类型
+        data_tests:
+          - accepted_values:
+              values: ["电", "蒸汽", "压缩空气", "水", "天然气"]

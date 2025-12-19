@@ -16,7 +16,7 @@ with source_data as (
     select * from {{ source('scada_raw', 'scada_equipment_data') }}
 ),
 
-renamed as (
+final as (
     select
         data_id,
         equipment_id,
@@ -29,5 +29,4 @@ renamed as (
     from source_data
 )
 
-select * from renamed
-
+select * from final

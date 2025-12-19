@@ -16,7 +16,7 @@ with source_data as (
     select * from {{ source('lims_raw', 'lims_test_item') }}
 ),
 
-renamed as (
+final as (
     select
         test_item_id,
         test_item_name,
@@ -30,5 +30,4 @@ renamed as (
     from source_data
 )
 
-select * from renamed
-
+select * from final

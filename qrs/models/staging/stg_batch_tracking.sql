@@ -16,7 +16,7 @@ with source_data as (
     select * from {{ source('scada_raw', 'scada_batch_tracking') }}
 ),
 
-renamed as (
+final as (
     select
         tracking_id,
         batch_number,
@@ -30,5 +30,4 @@ renamed as (
     from source_data
 )
 
-select * from renamed
-
+select * from final

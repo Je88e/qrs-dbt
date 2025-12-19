@@ -16,7 +16,7 @@ with source_data as (
     select * from {{ source('erp_raw', 'erp_storage_location') }}
 ),
 
-renamed as (
+final as (
     select
         location_id,
         warehouse_id,
@@ -30,5 +30,4 @@ renamed as (
     from source_data
 )
 
-select * from renamed
-
+select * from final

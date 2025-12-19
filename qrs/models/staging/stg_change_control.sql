@@ -16,23 +16,25 @@ with source_data as (
     select * from {{ source('qms_raw', 'qms_change_control') }}
 ),
 
-renamed as (
+final as (
     select
         change_id,
-        change_number,
+        change_code,
         change_title,
         change_type,
-        change_status,
-        initiator,
-        initiation_date,
+        change_category,
         change_description,
-        approval_date,
+        initiator,
+        initiate_date,
+        priority,
+        status,
+        planned_completion,
+        actual_completion,
+        reviewer,
         approver,
-        implementation_date,
-        created_at,
-        updated_at
+        approval_date,
+        created_at
     from source_data
 )
 
-select * from renamed
-
+select * from final

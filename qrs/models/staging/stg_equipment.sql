@@ -16,22 +16,23 @@ with source_data as (
     select * from {{ source('mes_raw', 'mes_equipment') }}
 ),
 
-renamed as (
+final as (
     select
         equipment_id,
+        equipment_code,
         equipment_name,
         equipment_type,
-        equipment_model,
-        production_line_id,
-        workshop_id,
-        equipment_status,
+        manufacturer,
+        model,
+        serial_number,
         installation_date,
+        workshop_id,
+        production_line_id,
+        equipment_status,
         last_maintenance_date,
         next_maintenance_date,
-        created_at,
-        updated_at
+        created_at
     from source_data
 )
 
-select * from renamed
-
+select * from final

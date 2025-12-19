@@ -16,7 +16,7 @@ with source_data as (
     select * from {{ source('erp_raw', 'erp_inventory_transaction') }}
 ),
 
-renamed as (
+final as (
     select
         transaction_id,
         material_id,
@@ -32,5 +32,4 @@ renamed as (
     from source_data
 )
 
-select * from renamed
-
+select * from final

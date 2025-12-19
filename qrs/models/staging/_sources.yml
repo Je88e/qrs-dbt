@@ -209,8 +209,68 @@ sources:
         description: 工单工序执行表
       - name: mes_production_report
         description: 生产报工记录表
+        columns:
+          - name: report_id
+            description: 报工ID (主键)
+          - name: wo_number
+            description: 工单号
+          - name: operation_id
+            description: 工序ID
+          - name: batch_number
+            description: 批次号
+          - name: report_date
+            description: 报工日期
+          - name: shift
+            description: 班次
+          - name: output_qty
+            description: 产出数量
+          - name: defect_qty
+            description: 缺陷数量
+          - name: defect_reason
+            description: 缺陷原因
+          - name: scrap_qty
+            description: 报废数量
+          - name: scrap_reason
+            description: 报废原因
+          - name: operator_id
+            description: 操作员ID
+          - name: reviewer_id
+            description: 审核员ID
+          - name: review_status
+            description: 审核状态
+          - name: create_date
+            description: 创建日期
       - name: mes_equipment
         description: 设备主数据表
+        columns:
+          - name: equipment_id
+            description: 设备ID (主键)
+          - name: equipment_code
+            description: 设备编码
+          - name: equipment_name
+            description: 设备名称
+          - name: equipment_type
+            description: 设备类型
+          - name: manufacturer
+            description: 制造商
+          - name: model
+            description: 型号
+          - name: serial_number
+            description: 序列号
+          - name: installation_date
+            description: 安装日期
+          - name: workshop_id
+            description: 车间ID
+          - name: line_id
+            description: 产线ID
+          - name: status
+            description: 设备状态
+          - name: last_maintenance_date
+            description: 上次维护日期
+          - name: next_maintenance_date
+            description: 下次维护日期
+          - name: create_date
+            description: 创建日期
       - name: mes_equipment_maintenance
         description: 设备维护记录表
       - name: mes_production_line
@@ -235,6 +295,39 @@ sources:
         description: 检验任务表
       - name: lims_inspection_result
         description: 检验结果记录表
+        columns:
+          - name: result_id
+            description: 结果ID (主键)
+          - name: task_id
+            description: 任务ID (外键)
+          - name: test_item_id
+            description: 检验项目ID (外键)
+          - name: sample_id
+            description: 样品ID (外键)
+          - name: test_value
+            description: 检验值
+          - name: test_unit
+            description: 检验单位
+          - name: standard_min
+            description: 标准下限
+          - name: standard_max
+            description: 标准上限
+          - name: result_status
+            description: 结果状态
+          - name: test_date
+            description: 检验日期
+          - name: analyst_id
+            description: 分析员ID
+          - name: reviewer_id
+            description: 审核员ID
+          - name: review_date
+            description: 审核日期
+          - name: review_status
+            description: 审核状态
+          - name: remark
+            description: 备注
+          - name: create_date
+            description: 创建日期
       - name: lims_sample
         description: 样品主数据表
       - name: lims_quality_standard
@@ -255,12 +348,86 @@ sources:
     tables:
       - name: qms_change_control
         description: 变更控制主表
+        columns:
+          - name: change_id
+            description: 变更ID (主键)
+          - name: change_code
+            description: 变更编号
+          - name: change_title
+            description: 变更标题
+          - name: change_type
+            description: 变更类型
+          - name: change_category
+            description: 变更分类
+          - name: change_description
+            description: 变更描述
+          - name: initiator
+            description: 发起人
+          - name: initiate_date
+            description: 发起日期
+          - name: priority
+            description: 优先级
+          - name: status
+            description: 状态
+          - name: planned_completion
+            description: 计划完成日期
+          - name: actual_completion
+            description: 实际完成日期
+          - name: reviewer
+            description: 审核人
+          - name: approver
+            description: 批准人
+          - name: approval_date
+            description: 批准日期
+          - name: create_date
+            description: 创建日期
       - name: qms_change_impact
         description: 变更影响评估表
       - name: qms_change_implementation
         description: 变更实施记录表
       - name: qms_deviation
         description: 偏差记录主表
+        columns:
+          - name: deviation_id
+            description: 偏差ID (主键)
+          - name: deviation_code
+            description: 偏差编号
+          - name: deviation_title
+            description: 偏差标题
+          - name: deviation_type
+            description: 偏差类型
+          - name: deviation_category
+            description: 偏差分类
+          - name: product_id
+            description: 产品ID
+          - name: batch_number
+            description: 批次号
+          - name: occurrence_date
+            description: 发生日期
+          - name: discovery_date
+            description: 发现日期
+          - name: description
+            description: 偏差描述
+          - name: immediate_action
+            description: 即时行动
+          - name: root_cause
+            description: 根本原因
+          - name: corrective_action
+            description: 纠正措施
+          - name: preventive_action
+            description: 预防措施
+          - name: status
+            description: 状态
+          - name: investigator
+            description: 调查员
+          - name: reviewer
+            description: 审核员
+          - name: approver
+            description: 批准人
+          - name: close_date
+            description: 关闭日期
+          - name: create_date
+            description: 创建日期
       - name: qms_capa
         description: CAPA主表
       - name: qms_supplier_audit
@@ -279,6 +446,37 @@ sources:
         description: 环境监控数据采集表
       - name: scada_alarm
         description: 报警记录表
+        columns:
+          - name: alarm_id
+            description: 报警ID (主键)
+          - name: equipment_id
+            description: 设备ID
+          - name: location_code
+            description: 位置代码
+          - name: alarm_type
+            description: 报警类型
+          - name: alarm_level
+            description: 报警级别
+          - name: alarm_message
+            description: 报警信息
+          - name: alarm_time
+            description: 报警时间
+          - name: ack_time
+            description: 确认时间
+          - name: ack_by
+            description: 确认人
+          - name: resolve_time
+            description: 解决时间
+          - name: resolve_by
+            description: 解决人
+          - name: alarm_status
+            description: 报警状态
+          - name: related_batch
+            description: 相关批次
+          - name: related_wo
+            description: 相关工单
+          - name: create_date
+            description: 创建日期
       - name: scada_batch_tracking
         description: 批次追踪记录表
       - name: scada_energy_consumption
@@ -293,6 +491,45 @@ sources:
     tables:
       - name: pv_adverse_event
         description: 不良反应报告表
+        columns:
+          - name: event_id
+            description: 事件ID (主键)
+          - name: event_code
+            description: 事件编号
+          - name: product_id
+            description: 产品ID
+          - name: batch_number
+            description: 批次号
+          - name: event_date
+            description: 事件发生日期
+          - name: report_date
+            description: 报告日期
+          - name: event_type
+            description: 事件类型
+          - name: severity
+            description: 严重程度
+          - name: description
+            description: 事件描述
+          - name: patient_age
+            description: 患者年龄
+          - name: patient_gender
+            description: 患者性别
+          - name: outcome
+            description: 结果
+          - name: causality_assessment
+            description: 因果关系评估
+          - name: reporter_type
+            description: 报告者类型
+          - name: reporter_name
+            description: 报告者姓名
+          - name: status
+            description: 状态
+          - name: investigator
+            description: 调查员
+          - name: close_date
+            description: 关闭日期
+          - name: create_date
+            description: 创建日期
       - name: pv_complaint
         description: 产品投诉记录表
       - name: pv_product_recall

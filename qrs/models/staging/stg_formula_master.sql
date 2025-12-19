@@ -16,7 +16,7 @@ with source_data as (
     select * from {{ source('erp_raw', 'erp_formula_master') }}
 ),
 
-renamed as (
+final as (
     select
         formula_id,
         formula_name,
@@ -30,5 +30,4 @@ renamed as (
     from source_data
 )
 
-select * from renamed
-
+select * from final

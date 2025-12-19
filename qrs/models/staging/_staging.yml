@@ -216,6 +216,28 @@ models:
         data_tests:
           - unique
           - not_null
+      - name: request_date
+        description: 申请日期
+        data_tests:
+          - not_null
+      - name: request_status
+        description: 申请状态
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ['待处理', '进行中', '已完成', '已取消']
+      - name: priority
+        description: 优先级
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ['低', '中', '高']
+      - name: sample_type
+        description: 样品类型
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ['原料', '辅料', '包材', '成品', '中间体']
 
   - name: stg_inspection_task
     description: LIMS检验任务Staging层
@@ -318,6 +340,31 @@ models:
         data_tests:
           - unique
           - not_null
+      - name: deviation_code
+        description: 偏差编号
+        data_tests:
+          - unique
+          - not_null
+      - name: deviation_type
+        description: 偏差类型
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ['工艺偏差', '物料偏差', '环境偏差', '设备偏差']
+      - name: status
+        description: 状态
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ['待审核', '进行中', '已关闭', '已取消']
+      - name: occurrence_date
+        description: 发生日期
+        data_tests:
+          - not_null
+      - name: discovery_date
+        description: 发现日期
+        data_tests:
+          - not_null
 
   - name: stg_capa
     description: QMS CAPA主数据Staging层
@@ -366,6 +413,28 @@ models:
         data_tests:
           - unique
           - not_null
+      - name: alarm_time
+        description: 报警时间
+        data_tests:
+          - not_null
+      - name: alarm_type
+        description: 报警类型
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ['设备故障', '参数超限', '环境异常', '安全报警']
+      - name: alarm_level
+        description: 报警级别
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ['低', '中', '高']
+      - name: alarm_status
+        description: 报警状态
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ['未解决', '已解决', '已取消']
 
   - name: stg_batch_tracking
     description: SCADA批次追踪记录Staging层
@@ -396,6 +465,32 @@ models:
         data_tests:
           - unique
           - not_null
+      - name: event_date
+        description: 事件发生日期
+        data_tests:
+          - not_null
+      - name: report_date
+        description: 报告日期
+        data_tests:
+          - not_null
+      - name: event_type
+        description: 事件类型
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ['已知不良反应', '未知不良反应', '严重不良反应']
+      - name: severity
+        description: 严重程度
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ['轻度', '中度', '重度']
+      - name: status
+        description: 状态
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ['调查中', '已关闭', '已取消']
 
   - name: stg_complaint
     description: PV产品投诉记录Staging层

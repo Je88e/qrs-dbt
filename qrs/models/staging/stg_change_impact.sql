@@ -16,7 +16,7 @@ with source_data as (
     select * from {{ source('qms_raw', 'qms_change_impact') }}
 ),
 
-renamed as (
+final as (
     select
         impact_id,
         change_id,
@@ -30,5 +30,4 @@ renamed as (
     from source_data
 )
 
-select * from renamed
-
+select * from final

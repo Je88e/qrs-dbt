@@ -16,21 +16,24 @@ with source_data as (
     select * from {{ source('lims_raw', 'lims_inspection_request') }}
 ),
 
-renamed as (
+final as (
     select
         request_id,
         material_id,
         batch_number,
-        inspection_type,
+        sample_type,
         request_date,
-        request_status,
         requester,
+        inspection_type,
         priority,
-        expected_completion_date,
+        request_status,
+        planned_completion_date,
+        actual_completion_date,
+        sample_quantity,
+        sample_unit,
         created_at,
         updated_at
     from source_data
 )
 
-select * from renamed
-
+select * from final

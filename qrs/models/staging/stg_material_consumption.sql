@@ -16,7 +16,7 @@ with source_data as (
     select * from {{ source('mes_raw', 'mes_material_consumption') }}
 ),
 
-renamed as (
+final as (
     select
         consumption_id,
         work_order_number,
@@ -30,5 +30,4 @@ renamed as (
     from source_data
 )
 
-select * from renamed
-
+select * from final

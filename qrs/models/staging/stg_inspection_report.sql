@@ -16,7 +16,7 @@ with source_data as (
     select * from {{ source('lims_raw', 'lims_inspection_report') }}
 ),
 
-renamed as (
+final as (
     select
         report_id,
         request_id,
@@ -32,5 +32,4 @@ renamed as (
     from source_data
 )
 
-select * from renamed
-
+select * from final

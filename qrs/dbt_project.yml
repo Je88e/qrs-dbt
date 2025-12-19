@@ -35,12 +35,7 @@ models:
       +materialized: view
       +tags: ["intermediate"]
 
-    # Marts层: 业务导向的宽表
-    marts:
-      +materialized: table
-      +tags: ["marts"]
-
-    # Business层: 保留旧配置以兼容现有模型
+    # Business层: 业务导向的宽表
     business:
       +materialized: table
       +tags: ["business_model"]

@@ -16,7 +16,7 @@ with source_data as (
     select * from {{ source('pv_raw', 'pv_product_recall') }}
 ),
 
-renamed as (
+final as (
     select
         recall_id,
         recall_number,
@@ -35,5 +35,4 @@ renamed as (
     from source_data
 )
 
-select * from renamed
-
+select * from final

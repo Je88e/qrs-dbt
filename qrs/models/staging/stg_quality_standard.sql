@@ -16,7 +16,7 @@ with source_data as (
     select * from {{ source('lims_raw', 'lims_quality_standard') }}
 ),
 
-renamed as (
+final as (
     select
         standard_id,
         material_id,
@@ -30,5 +30,4 @@ renamed as (
     from source_data
 )
 
-select * from renamed
-
+select * from final

@@ -16,7 +16,7 @@ with source_data as (
     select * from {{ source('erp_raw', 'erp_material_return') }}
 ),
 
-renamed as (
+final as (
     select
         -- 主键
         return_id,
@@ -44,5 +44,4 @@ renamed as (
     from source_data
 )
 
-select * from renamed
-
+select * from final

@@ -1,0 +1,86 @@
+version: 2
+
+models:
+  - name: int_production__efficiency_metrics
+    description: 生产效率指标中间模型 - 基于工单数据聚合计算生产效率指标
+    columns:
+      - name: workshop_id
+        description: 车间ID
+        tests:
+          - not_null
+      
+      - name: workshop_name
+        description: 车间名称
+      
+      - name: product_id
+        description: 产品ID
+      
+      - name: work_order_status
+        description: 工单状态
+      
+      - name: total_orders
+        description: 总工单数
+        tests:
+          - not_null
+      
+      - name: on_time_orders
+        description: 按时完成工单数
+      
+      - name: on_time_completion_rate
+        description: 按时完成率 (%)
+      
+      - name: avg_yield_rate
+        description: 平均收率 (%)
+      
+      - name: avg_duration_days
+        description: 平均工期 (天)
+      
+      - name: overall_yield_rate
+        description: 总体收率 (%)
+      
+      - name: total_planned_qty
+        description: 总计划数量
+      
+      - name: total_actual_qty
+        description: 总实际数量
+
+  - name: int_quality__inspection_metrics
+    description: 质量检验指标中间模型 - 基于检验申请数据聚合计算质量管理指标
+    columns:
+      - name: material_id
+        description: 物料ID
+        tests:
+          - not_null
+      
+      - name: material_name
+        description: 物料名称
+      
+      - name: sample_type
+        description: 样品类型
+      
+      - name: inspection_type
+        description: 检验类型
+      
+      - name: total_requests
+        description: 总申请数
+        tests:
+          - not_null
+      
+      - name: completed_requests
+        description: 已完成申请数
+      
+      - name: on_time_requests
+        description: 按时完成申请数
+      
+      - name: completion_rate
+        description: 完成率 (%)
+      
+      - name: on_time_rate
+        description: 按时完成率 (%)
+      
+      - name: avg_processing_days
+        description: 平均处理时长 (天)
+      
+      - name: avg_priority_weight
+        description: 平均优先级权重
+

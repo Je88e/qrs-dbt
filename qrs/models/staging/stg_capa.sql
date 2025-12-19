@@ -16,7 +16,7 @@ with source_data as (
     select * from {{ source('qms_raw', 'qms_capa') }}
 ),
 
-renamed as (
+final as (
     select
         capa_id,
         capa_number,
@@ -34,5 +34,4 @@ renamed as (
     from source_data
 )
 
-select * from renamed
-
+select * from final

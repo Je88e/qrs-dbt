@@ -16,23 +16,30 @@ with source_data as (
     select * from {{ source('qms_raw', 'qms_deviation') }}
 ),
 
-renamed as (
+final as (
     select
         deviation_id,
-        deviation_number,
+        deviation_code,
         deviation_title,
         deviation_type,
-        deviation_status,
-        reporter,
-        report_date,
+        deviation_category,
+        product_id,
+        batch_number,
+        occurrence_date,
+        discovery_date,
         deviation_description,
+        immediate_action,
         root_cause,
         corrective_action,
-        closure_date,
+        preventive_action,
+        status,
+        investigator,
+        reviewer,
+        approver,
+        close_date,
         created_at,
         updated_at
     from source_data
 )
 
-select * from renamed
-
+select * from final
