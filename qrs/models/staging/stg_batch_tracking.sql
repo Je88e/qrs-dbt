@@ -20,13 +20,19 @@ final as (
     select
         tracking_id,
         batch_number,
+        wo_number as work_order_number,
+        product_id,
+        operation_id,
         equipment_id,
-        process_step,
         start_time,
         end_time,
-        process_parameters,
+        status as tracking_status,
         operator_id,
-        created_at
+        yield_qty as yield_quantity,
+        unit,
+        quality_status,
+        remark,
+        create_date
     from source_data
 )
 

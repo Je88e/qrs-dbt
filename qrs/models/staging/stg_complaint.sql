@@ -19,18 +19,24 @@ with source_data as (
 final as (
     select
         complaint_id,
-        complaint_number,
+        complaint_code,
+        complaint_type,
+        complaint_source,
         product_id,
         batch_number,
-        complaint_type,
         complaint_date,
-        complainant,
+        receive_date,
         complaint_description,
+        contact_name,
+        contact_phone,
+        priority,
+        status as complaint_status,
+        investigator,
         investigation_result,
-        resolution,
-        closure_date,
-        created_at,
-        updated_at
+        corrective_action,
+        response_date,
+        close_date,
+        create_date
     from source_data
 )
 

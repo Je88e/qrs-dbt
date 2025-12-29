@@ -26,10 +26,10 @@ select
     wh.warehouse_name,
     wh.warehouse_type,
     wh.address,
-    wh.area as warehouse_area,
+    wh.warehouse_area,
     wh.manager,
     wh.contact_phone,
-    wh.status as warehouse_status,
+    wh.warehouse_status,
     
     -- 库位信息
     sl.location_id,
@@ -39,7 +39,7 @@ select
     sl.capacity,
     sl.capacity_unit,
     sl.current_usage,
-    sl.status as location_status,
+    sl.location_status,
     
     -- 容量使用率
     case 

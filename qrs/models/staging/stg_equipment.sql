@@ -27,11 +27,11 @@ final as (
         serial_number,
         installation_date,
         workshop_id,
-        production_line_id,
-        equipment_status,
+        line_id,
+        status as equipment_status,
         last_maintenance_date,
         next_maintenance_date,
-        created_at
+        create_date
     from source_data
 )
 

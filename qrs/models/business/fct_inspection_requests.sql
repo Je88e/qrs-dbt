@@ -30,7 +30,7 @@ select
     
     -- 样品信息
     ir.sample_type,
-    ir.sample_qty as sample_quantity,
+    ir.sample_quantity,
     ir.sample_unit,
     
     -- 申请信息

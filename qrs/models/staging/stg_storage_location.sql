@@ -24,9 +24,10 @@ final as (
         location_name,
         location_type,
         capacity,
-        location_status,
-        created_at,
-        updated_at
+        capacity_unit,
+        current_usage,
+        status as location_status,
+        create_date
     from source_data
 )
 

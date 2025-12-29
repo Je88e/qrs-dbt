@@ -23,9 +23,12 @@ final as (
         parameter_name,
         parameter_value,
         unit,
-        timestamp,
-        data_quality,
-        created_at
+        collection_time,
+        quality_code,
+        batch_number,
+        wo_number as work_order_number,
+        operation_id,
+        create_date
     from source_data
 )
 

@@ -40,7 +40,7 @@ select
     
     -- 优先级和状态
     priority,
-    status as complaint_status,
+    complaint_status,
     
     -- 调查信息
     investigator,

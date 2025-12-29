@@ -22,6 +22,10 @@
     "memory": {
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-memory"]
+    },
+    "zhipu-web-search-sse": {
+      "url": "https://open.bigmodel.cn/api/mcp-broker/proxy/web-search/mcp?Authorization=a117cdbdbf1af7a293c499795f4351a7.5S9D4DdlYBlTjsQy",
+      "type": "streamable-http"
     }
   }
 }

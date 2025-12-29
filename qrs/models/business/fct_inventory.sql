@@ -38,7 +38,7 @@ select
     inv.material_id,
     m.material_name,
     m.material_type,
-    m.specification as material_specification,
+    m.material_specification,
     inv.batch_number,
     
     -- 仓库位置
@@ -50,7 +50,7 @@ select
     sl.location_code,
     
     -- 库存数量
-    inv.quantity as current_quantity,
+    inv.current_quantity,
     inv.unit,
     inv.inventory_status,
     
@@ -59,7 +59,7 @@ select
     
     -- 盘点信息
     inv.last_count_date,
-    inv.last_count_qty as last_count_quantity,
+    inv.last_count_quantity,
     
     -- 审计字段
     inv.create_date,

@@ -37,8 +37,8 @@ select
     
     -- 事务信息
     it.transaction_type,
-    it.quantity as transaction_quantity,
-    it.unit,
+    it.transaction_quantity,
+    it.transaction_unit,
     it.transaction_date,
     
     -- 参考信息

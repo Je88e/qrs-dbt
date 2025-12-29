@@ -29,10 +29,8 @@ final as (
         request_status,
         planned_completion_date,
         actual_completion_date,
-        sample_quantity,
-        sample_unit,
-        created_at,
-        updated_at
+        sample_qty as sample_quantity,
+        sample_unit
     from source_data
 )
 

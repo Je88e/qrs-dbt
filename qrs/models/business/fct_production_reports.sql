@@ -31,7 +31,7 @@ select
     pr.report_id,
     
     -- 关联工单
-    pr.wo_number as work_order_number,
+    pr.work_order_number,
     wo.product_id,
     pr.batch_number,
     
@@ -45,15 +45,15 @@ select
     pr.shift,
     
     -- 产量信息
-    pr.output_qty as output_quantity,
-    pr.defect_qty as defect_quantity,
+    pr.output_quantity,
+    pr.defect_quantity,
     pr.defect_reason,
-    pr.scrap_qty as scrap_quantity,
+    pr.scrap_quantity,
     pr.scrap_reason,
     
     -- 良品率计算
     case 
-        when pr.output_qty > 0 then round((cast(pr.output_qty as decimal) - pr.defect_qty) / pr.output_qty * 100, 2)
+        when pr.output_quantity > 0 then round((cast(pr.output_quantity as decimal) - pr.defect_quantity) / pr.output_quantity * 100, 2)
         else 0
     end as yield_rate_percent,
     
@@ -70,7 +70,7 @@ select
     pr.create_date
 
 from production_report pr
-left join work_order wo on pr.wo_number = wo.wo_number
+left join work_order wo on pr.work_order_number = wo.work_order_number
 left join operation op on pr.operation_id = op.operation_id
 left join personnel per_op on pr.operator_id = per_op.personnel_id
 left join personnel per_rv on pr.reviewer_id = per_rv.personnel_id

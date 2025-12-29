@@ -19,20 +19,20 @@ with source_data as (
 final as (
     select
         report_id,
-        work_order_number,
+        wo_number as work_order_number,
         operation_id,
         batch_number,
         report_date,
         shift,
-        output_quantity,
-        defect_quantity,
+        output_qty as output_quantity,
+        defect_qty as defect_quantity,
         defect_reason,
-        scrap_quantity,
+        scrap_qty as scrap_quantity,
         scrap_reason,
         operator_id,
         reviewer_id,
         review_status,
-        created_at
+        create_date
     from source_data
 )
 

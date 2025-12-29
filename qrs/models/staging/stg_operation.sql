@@ -19,13 +19,16 @@ with source_data as (
 final as (
     select
         operation_id,
+        operation_code,
         operation_name,
         operation_type,
         standard_duration,
-        equipment_id,
-        operation_status,
-        created_at,
-        updated_at
+        duration_unit,
+        equipment_type,
+        skill_requirement,
+        sop_document,
+        status as operation_status,
+        create_date
     from source_data
 )
 

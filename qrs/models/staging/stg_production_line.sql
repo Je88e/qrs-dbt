@@ -18,14 +18,16 @@ with source_data as (
 
 final as (
     select
-        production_line_id,
-        production_line_name,
+        line_id,
+        line_code,
+        line_name,
         workshop_id,
-        line_type,
+        product_type,
         capacity,
-        line_status,
-        created_at,
-        updated_at
+        capacity_unit,
+        status as line_status,
+        manager as line_manager,
+        create_date
     from source_data
 )
 

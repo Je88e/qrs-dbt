@@ -18,16 +18,20 @@ with source_data as (
 
 final as (
     select
-        implementation_id,
+        impl_id as implementation_id,
         change_id,
+        task_name,
         task_description,
-        task_status,
-        responsible_person,
-        planned_date,
-        actual_date,
-        verification_result,
-        created_at,
-        updated_at
+        responsible,
+        planned_start,
+        planned_end,
+        actual_start,
+        actual_end,
+        status as task_status,
+        completion_evidence,
+        reviewer,
+        review_date,
+        create_date
     from source_data
 )
 

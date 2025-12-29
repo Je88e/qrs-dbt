@@ -46,7 +46,7 @@ select
     pl.product_type,
     
     -- 设备状态
-    eq.status as equipment_status,
+    eq.equipment_status,
     
     -- 维护信息
     eq.last_maintenance_date,

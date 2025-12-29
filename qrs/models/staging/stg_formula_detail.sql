@@ -21,10 +21,13 @@ final as (
         formula_detail_id,
         formula_id,
         material_id,
-        quantity,
-        unit,
-        sequence_number,
-        created_at
+        material_name,
+        quantity as material_quantity,
+        unit as material_unit,
+        sequence as material_sequence,
+        is_critical,
+        usage_notes,
+        create_date
     from source_data
 )
 

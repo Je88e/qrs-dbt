@@ -43,7 +43,7 @@ select
     
     -- 评估人员
     ci.assessor,
-    ci.assess_date,
+    ci.assessment_date,
     
     -- 审计字段
     ci.create_date

@@ -19,14 +19,17 @@ with source_data as (
 final as (
     select
         standard_id,
-        material_id,
+        standard_code,
         standard_name,
-        standard_version,
-        standard_status,
+        material_type,
+        version as standard_version,
         effective_date,
         expiry_date,
-        created_at,
-        updated_at
+        status as standard_status,
+        creator,
+        approver,
+        approval_date,
+        create_date
     from source_data
 )
 

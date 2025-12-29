@@ -31,7 +31,7 @@ select
     priority,
     
     -- 变更状态
-    status as change_status,
+    change_status,
     
     -- 计划和实际完成
     planned_completion,

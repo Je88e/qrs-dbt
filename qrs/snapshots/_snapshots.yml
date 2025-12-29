@@ -1,0 +1,238 @@
+version: 2
+
+snapshots:
+  # ============================================
+  # ERP 系统快照 (2个)
+  # ============================================
+  - name: snap_purchase_orders
+    description: |
+      **采购订单状态变更快照**
+      
+      追踪采购订单从创建到完成的全生命周期状态变更，支持 GMP 合规审计。
+      
+      **业务价值**:
+      - 分析订单审批时长
+      - 追踪订单状态变更历史
+      - 支持合规审计要求
+      
+      **数据粒度**: 每行代表采购订单在特定时间段的状态
+      **更新频率**: 每日
+      **数据保留**: 永久保留（合规要求）
+    
+    config:
+      tags: ['snapshot', 'erp', 'audit', 'compliance']
+    
+    columns:
+      - name: purchase_order_number
+        description: 采购订单号（业务主键）
+        data_tests:
+          - not_null
+      
+      - name: order_status
+        description: |
+          订单状态（追踪字段）
+          - 待审批: 订单已创建，等待审批
+          - 已审批: 订单已通过审批
+          - 进行中: 订单正在执行
+          - 已完成: 订单已完成
+          - 已取消: 订单已取消
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ['待审批', '已审批', '进行中', '已完成', '已取消']
+      
+      - name: valid_from
+        description: 记录生效时间（SCD Type 2）
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        description: |
+          记录失效时间（SCD Type 2）
+          - 9999-12-31: 当前有效记录
+          - 其他日期: 历史记录的失效时间
+        data_tests:
+          - not_null
+      
+      - name: is_deleted
+        description: |
+          记录删除标记
+          - False: 正常记录
+          - True: 已删除记录
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ['True', 'False']
+
+  - name: snap_material_receipts
+    description: |
+      **物料接收状态变更快照**
+      
+      追踪物料接收和检验状态变更，支持来料质量追溯。
+      
+      **更新频率**: 每日
+    
+    config:
+      tags: ['snapshot', 'erp', 'audit', 'quality']
+    
+    columns:
+      - name: receipt_id
+        description: 接收记录ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: inspection_status
+        description: 检验状态（追踪字段）
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  # ============================================
+  # LIMS 系统快照 (2个) - 高频更新
+  # ============================================
+  - name: snap_inspection_requests
+    description: |
+      **检验申请状态变更快照**
+      
+      高频追踪检验申请处理流程，支持实验室效率分析。
+      
+      **更新频率**: 每 4 小时
+    
+    config:
+      tags: ['snapshot', 'lims', 'audit', 'quality', 'high_frequency']
+    
+    columns:
+      - name: request_id
+        description: 申请ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: request_status
+        description: 申请状态（追踪字段）
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ['待处理', '进行中', '已完成', '已取消']
+
+  - name: snap_inspection_tasks
+    description: |
+      **检验任务状态变更快照**
+      
+      追踪检验任务执行进度，支持分析师工作负载分析。
+      
+      **更新频率**: 每 4 小时
+    
+    config:
+      tags: ['snapshot', 'lims', 'audit', 'quality', 'high_frequency']
+    
+    columns:
+      - name: task_id
+        description: 任务ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: task_status
+        description: 任务状态（追踪字段）
+        data_tests:
+          - not_null
+
+  # ============================================
+  # QMS 系统快照 (3个)
+  # ============================================
+  - name: snap_change_controls
+    description: |
+      **变更控制状态变更快照**
+
+      追踪变更控制审批和实施流程，确保 GMP 合规。
+
+      **更新频率**: 每日
+
+    config:
+      tags: ['snapshot', 'qms', 'audit', 'compliance']
+
+    columns:
+      - name: change_id
+        description: 变更ID（主键）
+        data_tests:
+          - not_null
+
+      - name: change_status
+        description: 变更状态（追踪字段）
+        data_tests:
+          - not_null
+
+      - name: valid_from
+        data_tests:
+          - not_null
+
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_deviations
+    description: |
+      **偏差管理状态变更快照**
+
+      追踪偏差调查和关闭流程，支持质量事件管理。
+
+      **更新频率**: 每日
+
+    config:
+      tags: ['snapshot', 'qms', 'audit', 'compliance', 'quality']
+
+    columns:
+      - name: deviation_id
+        description: 偏差ID（主键）
+        data_tests:
+          - not_null
+
+      - name: deviation_status
+        description: 偏差状态（追踪字段）
+        data_tests:
+          - not_null
+
+      - name: valid_from
+        data_tests:
+          - not_null
+
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_capas
+    description: |
+      **CAPA 状态变更快照**
+
+      追踪纠正预防措施执行和有效性验证，确保质量持续改进。
+
+      **更新频率**: 每日
+
+    config:
+      tags: ['snapshot', 'qms', 'audit', 'compliance', 'quality']
+
+    columns:
+      - name: capa_id
+        description: CAPA ID（主键）
+        data_tests:
+          - not_null
+
+      - name: capa_status
+        description: CAPA 状态（追踪字段）
+        data_tests:
+          - not_null
+
+      - name: valid_from
+        data_tests:
+          - not_null
+
+      - name: valid_to
+        data_tests:
+          - not_null
+

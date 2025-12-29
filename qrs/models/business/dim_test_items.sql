@@ -43,7 +43,7 @@ select
     ti.test_duration_unit,
     
     -- 项目状态
-    ti.status as item_status,
+    ti.item_status,
     
     -- 审计字段
     ti.create_date

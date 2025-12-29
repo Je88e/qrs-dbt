@@ -20,15 +20,19 @@ final as (
     select
         report_id,
         request_id,
-        report_number,
-        report_date,
+        report_code,
+        sample_id,
+        material_id,
+        batch_number,
         conclusion,
+        report_date,
+        reporter,
         reviewer,
         review_date,
         approver,
         approval_date,
-        created_at,
-        updated_at
+        status as report_status,
+        create_date
     from source_data
 )
 

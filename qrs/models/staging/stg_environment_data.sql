@@ -19,13 +19,15 @@ with source_data as (
 final as (
     select
         data_id,
-        location_id,
-        parameter_name,
-        parameter_value,
-        unit,
-        timestamp,
-        data_quality,
-        created_at
+        location_code,
+        location_name,
+        temperature,
+        humidity,
+        pressure_diff as pressure_difference,
+        particle_count,
+        collection_time,
+        status as monitoring_status,
+        create_date
     from source_data
 )
 

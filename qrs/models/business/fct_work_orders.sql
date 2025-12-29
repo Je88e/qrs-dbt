@@ -36,7 +36,6 @@ final as (
 
         -- 工单状态
         wo.work_order_status,
-        wo.priority,
 
         -- 计划时间
         wo.planned_start_date,
@@ -50,11 +49,8 @@ final as (
         wo.workshop_id,
         ws.workshop_name,
         ws.workshop_type,
-        ws.manager as workshop_manager,
-        ws.workshop_status,
-
-        -- 产线信息
-        wo.production_line_id,
+        ws.workshop_manager,
+        ws.workshop_status, 
 
         -- 完成率计算
         case
@@ -64,8 +60,8 @@ final as (
         end as completion_rate_percent,
 
         -- 审计字段
-        wo.created_at,
-        wo.updated_at
+        wo.create_by,
+        wo.create_date
 
     from work_order wo
     left join workshop ws on wo.workshop_id = ws.workshop_id

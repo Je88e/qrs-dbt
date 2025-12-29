@@ -19,13 +19,14 @@ with source_data as (
 final as (
     select
         analyst_id,
+        analyst_code,
         analyst_name,
         department,
         qualification,
         certification_date,
-        analyst_status,
-        created_at,
-        updated_at
+        certification_expiry,
+        status as analyst_status,
+        create_date
     from source_data
 )
 

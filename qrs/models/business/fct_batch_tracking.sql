@@ -36,7 +36,7 @@ select
     
     -- 批次信息
     bt.batch_number,
-    bt.wo_number as work_order_number,
+    bt.work_order_number,
     bt.product_id,
     
     -- 工序信息
@@ -61,14 +61,14 @@ select
     end as duration_minutes,
     
     -- 状态
-    bt.status as tracking_status,
+    bt.tracking_status,
     
     -- 操作员
     bt.operator_id,
     per.personnel_name as operator_name,
     
     -- 产量信息
-    bt.yield_qty as yield_quantity,
+    bt.yield_quantity,
     bt.unit,
     bt.quality_status,
     
@@ -79,7 +79,7 @@ select
     bt.create_date
 
 from batch_tracking bt
-left join work_order wo on bt.wo_number = wo.wo_number
+left join work_order wo on bt.work_order_number = wo.work_order_number
 left join operation op on bt.operation_id = op.operation_id
 left join equipment eq on bt.equipment_id = eq.equipment_id
 left join personnel per on bt.operator_id = per.personnel_id

@@ -18,19 +18,20 @@ with source_data as (
 
 final as (
     select
-        work_order_operation_id,
-        work_order_number,
+        woo_id as work_order_operation_id,
+        wo_number as work_order_number,
         operation_id,
-        sequence_number,
-        operation_status,
-        planned_start_time,
-        planned_end_time,
-        actual_start_time,
-        actual_end_time,
-        operator_id,
+        sequence as operation_sequence,
+        planned_start,
+        planned_end,
+        actual_start,
+        actual_end,
+        status  as operation_status,
         equipment_id,
-        created_at,
-        updated_at
+        operator_id,
+        yield_qty as yield_quantity,
+        defect_qty as defect_quantity,
+        create_date
     from source_data
 )
 

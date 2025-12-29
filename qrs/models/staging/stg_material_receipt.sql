@@ -31,7 +31,7 @@ final as (
         batch_number,
 
         -- 数量信息
-        receipt_qty as receipt_quantity,
+        received_qty as receipt_quantity,
         unit,
 
         -- 接收信息
@@ -40,9 +40,10 @@ final as (
 
         -- 检验状态
         inspection_status,
+        inspection_result,
 
         -- 审计字段
-        create_date as created_at
+        create_date
 
     from source_data
 )

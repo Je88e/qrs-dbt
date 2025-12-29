@@ -36,7 +36,7 @@ final as (
         audit_score,
         
         -- 审计字段
-        create_date as created_at
+        create_date
         
     from source_data
 )

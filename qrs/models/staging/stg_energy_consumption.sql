@@ -18,13 +18,17 @@ with source_data as (
 
 final as (
     select
-        consumption_id,
+        energy_id,
         equipment_id,
+        workshop_id,
         energy_type,
         consumption_value,
         unit,
-        timestamp,
-        created_at
+        collection_date,
+        collection_hour,
+        wo_number as work_order_number,
+        batch_number,
+        create_date
     from source_data
 )
 

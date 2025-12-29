@@ -27,18 +27,17 @@ final as (
         batch_number,
         occurrence_date,
         discovery_date,
-        deviation_description,
+        description as deviation_description,
         immediate_action,
         root_cause,
         corrective_action,
         preventive_action,
-        status,
+        status as deviation_status,
         investigator,
         reviewer,
         approver,
         close_date,
-        created_at,
-        updated_at
+        create_date
     from source_data
 )
 

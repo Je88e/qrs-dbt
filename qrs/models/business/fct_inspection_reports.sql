@@ -65,7 +65,7 @@ select
     rpt.approval_date,
     
     -- 报告状态
-    rpt.status as report_status,
+    rpt.report_status,
     
     -- 审计字段
     rpt.create_date

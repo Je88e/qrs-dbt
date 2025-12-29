@@ -27,13 +27,13 @@ final as (
         initiator,
         initiate_date,
         priority,
-        status,
+        status as change_status,
         planned_completion,
         actual_completion,
         reviewer,
         approver,
         approval_date,
-        created_at
+        create_date
     from source_data
 )
 

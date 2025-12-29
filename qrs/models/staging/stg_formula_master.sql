@@ -20,13 +20,18 @@ final as (
     select
         formula_id,
         formula_name,
-        formula_version,
         product_id,
+        product_name,
+        version as formula_version,
         formula_status,
         effective_date,
         expiry_date,
-        created_at,
-        updated_at
+        batch_size,
+        batch_unit,
+        creator,
+        approver,
+        approval_date,
+        create_date
     from source_data
 )
 

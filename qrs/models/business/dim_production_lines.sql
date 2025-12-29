@@ -32,10 +32,10 @@ select
     pl.capacity_unit,
     
     -- 产线状态
-    pl.status as line_status,
+    pl.line_status,
     
     -- 管理信息
-    pl.manager as line_manager,
+    pl.line_manager,
     
     -- 车间信息
     pl.workshop_id,

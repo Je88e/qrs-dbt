@@ -19,14 +19,18 @@ with source_data as (
 final as (
     select
         test_item_id,
-        test_item_name,
+        item_code,
+        item_name,
         test_method,
+        standard_id,
+        min_value,
+        max_value,
         unit,
-        lower_limit,
-        upper_limit,
-        test_item_status,
-        created_at,
-        updated_at
+        required_equipment,
+        test_duration,
+        test_duration_unit,
+        status as item_status,
+        create_date
     from source_data
 )
 

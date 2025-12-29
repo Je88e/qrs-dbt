@@ -22,11 +22,14 @@ final as (
         equipment_id,
         maintenance_type,
         maintenance_date,
-        maintenance_duration,
-        maintenance_description,
+        maintenance_content,
         maintenance_result,
-        technician_id,
-        created_at
+        downtime_hours,
+        technician,
+        reviewer,
+        review_status,
+        next_maintenance_date,
+        create_date
     from source_data
 )
 

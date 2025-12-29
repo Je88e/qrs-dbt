@@ -19,15 +19,17 @@ with source_data as (
 final as (
     select
         personnel_id,
+        personnel_code,
         personnel_name,
-        personnel_type,
-        workshop_id,
+        department,
         position,
         skill_level,
-        personnel_status,
-        hire_date,
-        created_at,
-        updated_at
+        certification,
+        workshop_id,
+        line_id,
+        status as personnel_status,
+        entry_date,
+        create_date
     from source_data
 )
 

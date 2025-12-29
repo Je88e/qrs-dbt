@@ -33,7 +33,7 @@ final as (
         review_date,
         review_status,
         remark,
-        created_at
+        create_date
     from source_data
 )
 

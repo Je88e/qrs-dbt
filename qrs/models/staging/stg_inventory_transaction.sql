@@ -19,16 +19,18 @@ with source_data as (
 final as (
     select
         transaction_id,
+        inventory_id,
         material_id,
         batch_number,
-        warehouse_id,
-        location_id,
         transaction_type,
+        quantity as transaction_quantity,
+        unit as transaction_unit,
         transaction_date,
-        quantity,
-        unit,
-        reference_number,
-        created_at
+        reference_doc,
+        reference_type,
+        operator,
+        remark,
+        create_date
     from source_data
 )
 

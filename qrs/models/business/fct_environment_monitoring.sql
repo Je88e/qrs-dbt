@@ -25,14 +25,14 @@ select
     -- 环境参数
     temperature,
     humidity,
-    pressure_diff as pressure_difference,
+    pressure_difference,
     particle_count,
     
     -- 采集时间
     collection_time,
     
     -- 状态
-    status as monitoring_status,
+    monitoring_status,
     
     -- 温度是否超标 (假设标准范围18-26℃)
     case 

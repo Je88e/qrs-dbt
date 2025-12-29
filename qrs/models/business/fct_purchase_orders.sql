@@ -43,7 +43,7 @@ final as (
         pod.material_id,
         m.material_name,
         m.material_type,
-        m.specification as material_specification,
+        m.material_specification,
 
         -- 订单信息
         po.order_type,
@@ -70,8 +70,8 @@ final as (
         po.approval_date,
 
         -- 审计字段
-        po.created_at,
-        po.updated_at
+        po.create_date,
+        po.update_date
 
     from purchase_order po
     left join purchase_order_detail pod on po.purchase_order_number = pod.purchase_order_number

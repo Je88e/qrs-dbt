@@ -19,18 +19,19 @@ with source_data as (
 final as (
     select
         sample_id,
-        request_id,
-        material_id,
+        sample_code,
+        sample_type,
+        sample_qty as sample_quantity,
+        sample_unit,
+        material_id, 
         batch_number,
-        sample_quantity,
-        unit,
-        sampling_date,
+        sample_date,
         sampler,
-        sample_status,
-        storage_location,
+        storage_condition,
+        location,
         expiry_date,
-        created_at,
-        updated_at
+        sample_status,
+        create_date
     from source_data
 )
 

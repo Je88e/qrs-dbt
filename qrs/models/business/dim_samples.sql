@@ -25,7 +25,7 @@ select
     -- 样品信息
     s.sample_code,
     s.sample_type,
-    s.sample_qty as sample_quantity,
+    s.sample_quantity,
     s.sample_unit,
     
     -- 物料信息

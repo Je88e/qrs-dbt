@@ -19,18 +19,24 @@ with source_data as (
 final as (
     select
         capa_id,
-        capa_number,
+        capa_code,
+        capa_title,
         capa_type,
-        capa_status,
-        source_reference,
-        capa_description,
-        responsible_person,
-        due_date,
-        completion_date,
+        source_type,
+        source_id,
+        description as capa_description,
+        root_cause_analysis,
+        corrective_action,
+        preventive_action,
+        responsible,
+        planned_completion,
+        actual_completion,
+        status as capa_status,
         effectiveness_check,
-        effectiveness_check_date,
-        created_at,
-        updated_at
+        effectiveness_date,
+        creator,
+        approver,
+        create_date
     from source_data
 )
 

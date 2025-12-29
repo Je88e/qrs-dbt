@@ -22,12 +22,12 @@ select
     standard_code,
     standard_name,
     material_type,
-    version as standard_version,
+    standard_version,
     
     -- 有效期
     effective_date,
     expiry_date,
-    status as standard_status,
+    standard_status,
     
     -- 创建和审批
     creator,

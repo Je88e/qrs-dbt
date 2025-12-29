@@ -24,15 +24,15 @@ select
     workshop_type,
     
     -- 车间规模
-    area as workshop_area,
+    workshop_area,
     clean_level,
     
     -- 管理信息
-    manager as workshop_manager,
+    workshop_manager,
     contact_phone,
     
     -- 车间状态
-    status as workshop_status,
+    workshop_status,
     
     -- 审计字段
     create_date

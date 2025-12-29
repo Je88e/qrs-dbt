@@ -23,12 +23,14 @@ final as (
         batch_number,
         warehouse_id,
         location_id,
-        quantity,
+        quantity as current_quantity,
         unit,
         inventory_status,
         expiry_date,
-        created_at,
-        updated_at
+        last_count_date,
+        last_count_qty as last_count_quantity,
+        create_date,
+        update_date
     from source_data
 )
 

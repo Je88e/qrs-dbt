@@ -21,12 +21,15 @@ final as (
         impact_id,
         change_id,
         impact_area,
-        impact_level,
         impact_description,
-        mitigation_plan,
+        impact_level,
+        affected_documents,
+        affected_processes,
+        risk_assessment,
+        mitigation_measures,
         assessor,
-        assessment_date,
-        created_at
+        assess_date as assessment_date,
+        create_date
     from source_data
 )
 

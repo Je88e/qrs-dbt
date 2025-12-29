@@ -26,17 +26,13 @@ final as (
         analyst_name,
         department,
         qualification,
-        skill_level,
 
         -- 认证信息
         certification_date,
         certification_expiry,
 
-        -- 主管信息
-        supervisor_id,
-
         -- 状态
-        status as analyst_status,
+        analyst_status,
 
         -- 认证剩余天数
         case

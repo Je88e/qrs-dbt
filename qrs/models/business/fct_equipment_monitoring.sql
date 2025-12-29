@@ -47,7 +47,7 @@ select
     
     -- 关联生产信息
     ed.batch_number,
-    ed.wo_number as work_order_number,
+    ed.work_order_number,
     wo.product_id,
     ed.operation_id,
     op.operation_name,
@@ -57,6 +57,6 @@ select
 
 from equipment_data ed
 left join equipment eq on ed.equipment_id = eq.equipment_id
-left join work_order wo on ed.wo_number = wo.wo_number
+left join work_order wo on ed.work_order_number = wo.work_order_number
 left join operation op on ed.operation_id = op.operation_id
 

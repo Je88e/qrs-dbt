@@ -21,11 +21,12 @@ final as (
         warehouse_id,
         warehouse_name,
         warehouse_type,
-        location,
+        address,
+        area as warehouse_area,
         manager,
-        warehouse_status,
-        created_at,
-        updated_at
+        contact_phone,
+        status as warehouse_status,
+        create_date
     from source_data
 )
 

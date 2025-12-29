@@ -33,13 +33,15 @@ final as (
         unit,
         
         -- 退货信息
-        return_date,
         return_reason,
+        return_type,
+        return_date,
         return_status,
-        handler,
+        supplier_id,
+        processor,
         
         -- 审计字段
-        create_date as created_at
+        create_date
         
     from source_data
 )

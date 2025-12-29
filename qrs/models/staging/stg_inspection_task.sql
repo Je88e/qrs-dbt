@@ -20,14 +20,16 @@ final as (
     select
         task_id,
         request_id,
+        sample_id,
         test_item_id,
-        analyst_id,
-        task_status,
+        assigned_analyst,
         assigned_date,
-        start_date,
-        completion_date,
-        created_at,
-        updated_at
+        planned_completion,
+        actual_completion,
+        task_status,
+        priority,
+        equipment_id,
+        create_date
     from source_data
 )
 

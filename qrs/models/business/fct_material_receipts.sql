@@ -45,7 +45,7 @@ final as (
         mr.material_id,
         m.material_name,
         m.material_type,
-        m.specification as material_specification,
+        m.material_specification,
         mr.batch_number,
 
         -- 接收数量
@@ -65,7 +65,7 @@ final as (
         mr.inspection_status,
 
         -- 审计字段
-        mr.created_at
+        mr.create_date
 
     from material_receipt mr
     left join purchase_order po on mr.purchase_order_number = po.purchase_order_number

@@ -50,7 +50,7 @@ select
     ec.collection_hour,
     
     -- 关联生产信息
-    ec.wo_number as work_order_number,
+    ec.work_order_number,
     wo.product_id,
     ec.batch_number,
     
@@ -60,5 +60,5 @@ select
 from energy_consumption ec
 left join equipment eq on ec.equipment_id = eq.equipment_id
 left join workshop ws on ec.workshop_id = ws.workshop_id
-left join work_order wo on ec.wo_number = wo.wo_number
+left join work_order wo on ec.work_order_number = wo.work_order_number
 

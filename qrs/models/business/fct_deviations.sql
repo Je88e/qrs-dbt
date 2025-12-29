@@ -33,7 +33,7 @@ select
     discovery_date,
     
     -- 偏差描述
-    description as deviation_description,
+    deviation_description,
     
     -- 处理措施
     immediate_action,
@@ -42,7 +42,7 @@ select
     preventive_action,
     
     -- 偏差状态
-    status as deviation_status,
+    deviation_status,
     
     -- 调查和审批
     investigator,

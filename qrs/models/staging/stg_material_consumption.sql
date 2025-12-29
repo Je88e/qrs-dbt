@@ -19,14 +19,17 @@ with source_data as (
 final as (
     select
         consumption_id,
-        work_order_number,
+        wo_number as work_order_number,
+        operation_id,
         material_id,
         batch_number,
-        consumption_quantity,
+        planned_qty as planned_quantity,
+        actual_qty as actual_quantity,
         unit,
         consumption_date,
         operator_id,
-        created_at
+        variance_reason,
+        create_date
     from source_data
 )
 

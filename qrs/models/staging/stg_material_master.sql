@@ -24,7 +24,7 @@ final as (
         -- 物料信息
         material_name,
         material_type,
-        specification,
+        specification as material_specification,
         unit,
         
         -- 供应商信息
@@ -35,8 +35,8 @@ final as (
         is_deleted,
         
         -- 审计字段
-        create_date as created_at,
-        update_date as updated_at
+        create_date,
+        update_date
         
     from source_data
 )

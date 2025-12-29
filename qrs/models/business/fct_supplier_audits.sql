@@ -36,7 +36,7 @@ select
     
     -- 审计结果
     sa.audit_result,
-    sa.score as audit_score,
+    sa.audit_score,
     
     -- 发现问题统计
     sa.findings_count,
@@ -50,7 +50,7 @@ select
     sa.follow_up_date,
     
     -- 审计状态
-    sa.status as audit_status,
+    sa.audit_status,
     
     -- 报告日期
     sa.report_date,

@@ -26,24 +26,133 @@ models:
     +materialized: table
 
     # Staging层: 1:1映射源表,仅做基础清洗
+    # 策略: view - 保持数据实时性,减少存储开销
     staging:
       +materialized: view
       +tags: ["staging"]
 
     # Intermediate层: 复杂Join和中间计算
+    # 策略: view - 中间层模型较少,保持灵活性
     intermediate:
       +materialized: view
       +tags: ["intermediate"]
 
     # Business层: 业务导向的宽表
+    # 策略: 混合策略 - 维度表用 view, 事实表用 table
     business:
       +materialized: table
       +tags: ["business_model"]
 
+      # ============================================
+      # 维度表 (Dimension Tables) - 使用 view
+      # 原因: 数据量小、更新频率低、保证实时性
+      # ============================================
+      dim_suppliers:
+        +materialized: view
+      dim_materials:
+        +materialized: view
+      dim_warehouses:
+        +materialized: view
+      dim_quality_standards:
+        +materialized: view
+      dim_test_items:
+        +materialized: view
+      dim_analysts:
+        +materialized: view
+      dim_workshops:
+        +materialized: view
+      dim_production_lines:
+        +materialized: view
+      dim_equipment:
+        +materialized: view
+      dim_personnel:
+        +materialized: view
+      dim_samples:
+        +materialized: view
+
+      # ============================================
+      # 事实表 (Fact Tables) - 保持 table
+      # 原因: 数据量大、查询频繁、需要快速响应
+      # ============================================
+      # ERP 系统事实表
+      fct_purchase_orders:
+        +materialized: table
+      fct_material_receipts:
+        +materialized: table
+      fct_material_returns:
+        +materialized: table
+      fct_material_consumption:
+        +materialized: table
+
+      # MES 系统事实表
+      fct_work_orders:
+        +materialized: table
+      fct_work_order_operations:
+        +materialized: table
+      fct_equipment_maintenance:
+        +materialized: table
+
+      # LIMS 系统事实表
+      fct_inspection_requests:
+        +materialized: table
+      fct_inspection_tasks:
+        +materialized: table
+      fct_inspection_results:
+        +materialized: table
+      fct_inspection_reports:
+        +materialized: table
+
+      # QMS 系统事实表
+      fct_change_controls:
+        +materialized: table
+      fct_change_impact_assessments:
+        +materialized: table
+      fct_deviations:
+        +materialized: table
+      fct_capas:
+        +materialized: table
+      fct_supplier_audits:
+        +materialized: table
+
+      # PV 系统事实表
+      fct_adverse_events:
+        +materialized: table
+      fct_complaints:
+        +materialized: table
+      fct_product_recalls:
+        +materialized: table
+
+      # SCADA 系统事实表
+      fct_equipment_monitoring:
+        +materialized: table
+      fct_environment_monitoring:
+        +materialized: table
+      fct_alarms:
+        +materialized: table
+      fct_batch_tracking:
+        +materialized: table
+      fct_energy_consumption:
+        +materialized: table
+
     # Reports层: 最终报告
+    # 策略: table - 复杂聚合计算,需要快速查询
     reports:
       +materialized: table
       +tags: ["reports"]
+
+# Configuring snapshots - 审计跟踪
+snapshots:
+  qrs:
+    +schema: snapshots
+    +tags: ['snapshot', 'audit']
+    +dbt_valid_to_current: '9999-12-31'
+    +hard_deletes: new_record
+
+# Configuring analyses - 审计分析
+analyses:
+  qrs:
+    audit:
+      +tags: ['audit', 'quality']
 
 # Configuring seeds
 seeds:

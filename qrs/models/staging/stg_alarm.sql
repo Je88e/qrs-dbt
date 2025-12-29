@@ -25,14 +25,14 @@ final as (
         alarm_level,
         alarm_message,
         alarm_time,
-        ack_time,
-        ack_by,
+        ack_time as acknowledge_time,
+        ack_by as acknowledged_by,
         resolve_time,
-        resolve_by,
+        resolve_by as resolved_by,
         alarm_status,
-        related_batch,
-        related_wo,
-        created_at
+        related_batch as batch_number,
+        related_wo as work_order_number,
+        create_date
     from source_data
 )
 

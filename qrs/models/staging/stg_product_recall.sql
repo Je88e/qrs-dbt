@@ -19,19 +19,22 @@ with source_data as (
 final as (
     select
         recall_id,
-        recall_number,
-        product_id,
-        batch_number,
-        recall_type,
+        recall_code,
         recall_level,
         recall_reason,
+        recall_scope,
+        product_id,
+        batch_numbers,
         recall_date,
         notification_date,
-        affected_quantity,
-        recovered_quantity,
-        recall_status,
-        created_at,
-        updated_at
+        recall_qty as recall_quantity,
+        recall_unit,
+        actual_return_qty as actual_return_quantity,
+        status as recall_status,
+        responsible,
+        regulatory_report_date,
+        close_date,
+        create_date
     from source_data
 )
 

@@ -36,7 +36,7 @@ select
     end as source_code,
     
     -- CAPA内容
-    c.description as capa_description,
+    c.capa_description,
     c.root_cause_analysis,
     c.corrective_action,
     c.preventive_action,
@@ -47,7 +47,7 @@ select
     c.actual_completion,
     
     -- CAPA状态
-    c.status as capa_status,
+    c.capa_status,
     
     -- 有效性检查
     c.effectiveness_check,

@@ -18,23 +18,20 @@ with source_data as (
 
 final as (
     select
-        work_order_number,
+        wo_number as work_order_number,
         product_id,
         batch_number,
-        planned_quantity,
-        actual_quantity,
+        planned_qty as planned_quantity,
+        actual_qty as actual_quantity,
         unit,
-        work_order_status,
-        priority,
-        planned_start_date,
-        planned_end_date,
+        wo_status as work_order_status,
+        plan_start_date as planned_start_date,
+        plan_end_date as planned_end_date,
         actual_start_date,
         actual_end_date,
-        production_line_id,
         workshop_id,
         create_by,
-        created_at,
-        updated_at
+        create_date
     from source_data
 )
 

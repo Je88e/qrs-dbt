@@ -32,7 +32,7 @@ select
     
     -- 关联接收记录
     mr.receipt_id,
-    rec.po_number as purchase_order_number,
+    rec.purchase_order_number,
     
     -- 物料信息
     mr.material_id,
@@ -41,7 +41,7 @@ select
     mr.batch_number,
     
     -- 退货信息
-    mr.return_qty as return_quantity,
+    mr.return_quantity,
     mr.unit,
     mr.return_reason,
     mr.return_type,

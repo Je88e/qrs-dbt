@@ -41,8 +41,8 @@ final as (
         approval_date,
 
         -- 审计字段
-        create_date as created_at,
-        update_date as updated_at
+        create_date,
+        update_date
 
     from source_data
 )

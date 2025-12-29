@@ -20,7 +20,7 @@ change_control as (
 
 select
     -- 实施主键
-    ci.impl_id as implementation_id,
+    ci.implementation_id,
     
     -- 关联变更
     ci.change_id,
@@ -39,7 +39,7 @@ select
     ci.actual_end,
     
     -- 任务状态
-    ci.status as task_status,
+    ci.task_status,
     
     -- 完成证据
     ci.completion_evidence,

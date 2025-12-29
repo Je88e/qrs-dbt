@@ -19,17 +19,24 @@ with source_data as (
 final as (
     select
         audit_id,
+        audit_code,
         supplier_id,
         audit_type,
         audit_date,
+        audit_scope,
         auditor,
         audit_result,
-        audit_score,
-        findings,
-        corrective_actions,
+        score as audit_score,
+        findings_count,
+        critical_findings,
+        major_findings,
+        minor_findings,
+        observations,
+        follow_up_required,
         follow_up_date,
-        created_at,
-        updated_at
+        status as audit_status,
+        report_date,
+        create_date
     from source_data
 )
 

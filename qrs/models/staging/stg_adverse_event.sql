@@ -36,8 +36,7 @@ final as (
         status as event_status,
         investigator,
         close_date,
-        created_at,
-        updated_at
+        create_date
     from source_data
 )
 

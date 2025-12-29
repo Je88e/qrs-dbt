@@ -32,10 +32,10 @@ personnel as (
 
 select
     -- 工序执行主键
-    woo.woo_id as work_order_operation_id,
+    woo.work_order_operation_id,
     
     -- 关联工单
-    woo.wo_number as work_order_number,
+    woo.work_order_number,
     wo.batch_number,
     wo.product_id,
     
@@ -44,7 +44,7 @@ select
     op.operation_code,
     op.operation_name,
     op.operation_type,
-    woo.sequence as operation_sequence,
+    woo.operation_sequence,
     
     -- 标准工时
     op.standard_duration,
@@ -59,7 +59,7 @@ select
     woo.actual_end,
     
     -- 工序状态
-    woo.status as operation_status,
+    woo.operation_status,
     
     -- 设备信息
     woo.equipment_id,
@@ -71,12 +71,12 @@ select
     per.personnel_name as operator_name,
     
     -- 产量信息
-    woo.yield_qty as yield_quantity,
-    woo.defect_qty as defect_quantity,
+    woo.yield_quantity,
+    woo.defect_quantity,
     
     -- 良品率计算
     case 
-        when woo.yield_qty > 0 then round((cast(woo.yield_qty as decimal) - woo.defect_qty) / woo.yield_qty * 100, 2)
+        when woo.yield_quantity > 0 then round((cast(woo.yield_quantity as decimal) - woo.defect_quantity) / woo.yield_quantity * 100, 2)
         else 0
     end as yield_rate_percent,
     
@@ -85,7 +85,7 @@ select
 
 from work_order_operation woo
 left join operation op on woo.operation_id = op.operation_id
-left join work_order wo on woo.wo_number = wo.wo_number
+left join work_order wo on woo.work_order_number = wo.work_order_number
 left join equipment eq on woo.equipment_id = eq.equipment_id
 left join personnel per on woo.operator_id = per.personnel_id
 

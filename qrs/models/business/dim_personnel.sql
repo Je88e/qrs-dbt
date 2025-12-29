@@ -41,7 +41,7 @@ select
     pl.line_name,
     
     -- 人员状态
-    per.status as personnel_status,
+    per.personnel_status,
     per.entry_date,
     
     -- 审计字段

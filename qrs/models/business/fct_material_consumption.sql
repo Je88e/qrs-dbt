@@ -35,9 +35,9 @@ select
     mc.consumption_id,
     
     -- 关联工单
-    mc.wo_number as work_order_number,
+    mc.work_order_number,
     wo.product_id,
-    wo.batch_number as wo_batch_number,
+    wo.batch_number as work_order_batch_number,
     
     -- 工序信息
     mc.operation_id,
@@ -50,14 +50,14 @@ select
     mc.batch_number as material_batch_number,
     
     -- 消耗数量
-    mc.planned_qty as planned_quantity,
-    mc.actual_qty as actual_quantity,
+    mc.planned_quantity,
+    mc.actual_quantity,
     mc.unit,
     
     -- 差异分析
-    mc.actual_qty - mc.planned_qty as variance_quantity,
+    mc.actual_quantity - mc.planned_quantity as variance_quantity,
     case 
-        when mc.planned_qty > 0 then round((cast(mc.actual_qty as decimal) - mc.planned_qty) / mc.planned_qty * 100, 2)
+        when mc.planned_quantity > 0 then round((cast(mc.actual_quantity as decimal) - mc.planned_quantity) / mc.planned_quantity * 100, 2)
         else 0
     end as variance_percent,
     mc.variance_reason,
@@ -73,7 +73,7 @@ select
     mc.create_date
 
 from material_consumption mc
-left join work_order wo on mc.wo_number = wo.wo_number
+left join work_order wo on mc.work_order_number = wo.work_order_number
 left join operation op on mc.operation_id = op.operation_id
 left join material m on mc.material_id = m.material_id
 left join personnel per on mc.operator_id = per.personnel_id

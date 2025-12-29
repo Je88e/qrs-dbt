@@ -33,18 +33,18 @@ select
     notification_date,
     
     -- 召回数量
-    recall_qty as recall_quantity,
+    recall_quantity,
     recall_unit,
-    actual_return_qty as actual_return_quantity,
+    actual_return_quantity,
     
     -- 召回率计算
     case 
-        when recall_qty > 0 then round(cast(actual_return_qty as decimal) / recall_qty * 100, 2)
+        when recall_quantity > 0 then round(cast(actual_return_quantity as decimal) / recall_quantity * 100, 2)
         else 0
     end as return_rate_percent,
     
     -- 状态
-    status as recall_status,
+    recall_status,
     
     -- 责任人
     responsible,
