@@ -6,7 +6,7 @@ sources:
   # ============================================
   - name: erp_raw
     description: ERP系统原始数据 - 包含采购、物料、配方、库存等核心业务数据
-    schema: public
+    schema: raw
     tables:
       # 采购订单表
       - name: erp_purchase_order
@@ -199,7 +199,7 @@ sources:
   # ============================================
   - name: mes_raw
     description: MES系统原始数据 - 包含生产执行、设备、工艺等制造过程数据
-    schema: public
+    schema: raw
     tables:
       - name: mes_work_order
         description: 生产工单主表
@@ -287,7 +287,7 @@ sources:
   # ============================================
   - name: lims_raw
     description: LIMS系统原始数据 - 包含检验、样品、质量标准等实验室数据
-    schema: public
+    schema: raw
     tables:
       - name: lims_inspection_request
         description: 检验申请单表
@@ -344,7 +344,7 @@ sources:
   # ============================================
   - name: qms_raw
     description: QMS系统原始数据 - 包含变更、偏差、CAPA等质量管理数据
-    schema: public
+    schema: raw
     tables:
       - name: qms_change_control
         description: 变更控制主表
@@ -438,7 +438,7 @@ sources:
   # ============================================
   - name: scada_raw
     description: SCADA系统原始数据 - 包含设备运行、环境监控、报警等过程控制数据
-    schema: public
+    schema: raw
     tables:
       - name: scada_equipment_data
         description: 设备运行数据采集表
@@ -487,7 +487,7 @@ sources:
   # ============================================
   - name: pv_raw
     description: 药物警戒系统原始数据 - 包含不良反应、投诉、召回等药物警戒数据
-    schema: public
+    schema: raw
     tables:
       - name: pv_adverse_event
         description: 不良反应报告表

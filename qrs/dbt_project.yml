@@ -47,10 +47,6 @@ models:
       # 维度表 (Dimension Tables) - 使用 view
       # 原因: 数据量小、更新频率低、保证实时性
       # ============================================
-      dim_suppliers:
-        +materialized: view
-      dim_materials:
-        +materialized: view
       dim_warehouses:
         +materialized: view
       dim_quality_standards:
@@ -87,8 +83,6 @@ models:
       # MES 系统事实表
       fct_work_orders:
         +materialized: table
-      fct_work_order_operations:
-        +materialized: table
       fct_equipment_maintenance:
         +materialized: table
 
@@ -104,8 +98,6 @@ models:
 
       # QMS 系统事实表
       fct_change_controls:
-        +materialized: table
-      fct_change_impact_assessments:
         +materialized: table
       fct_deviations:
         +materialized: table
