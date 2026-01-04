@@ -5,4 +5,7 @@ packages:
   - name: audit_helper
     package: dbt-labs/audit_helper
     version: 0.12.2
-sha1_hash: 1f58f88ac6b5bc1429cc3bd136be97469ad5f8a4
+  - git: https://github.com/sfu-db/dbt-lineagex.git
+    name: lineagex
+    revision: b2d2d9f4f73464c722a1419d6faa15a8f8a312e7
+sha1_hash: 105be0a19f4ae405ecfd2fc91d9ec498e6887366

@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python:*)",
+      "Bash(uv pip show:*)",
+      "Bash(uv add:*)",
+      "Bash(dbt parse:*)",
+      "Bash(python3:*)"
+    ]
+  }
+}

@@ -5,335 +5,1337 @@ models:
   # ERP系统 Staging 模型 (12个)
   # ============================================
   - name: stg_purchase_order
-    description: ERP采购订单Staging层 - 1:1映射源表
+    description: ERP采购订单Staging层 - 每行代表一个采购订单
     columns:
       - name: purchase_order_number
         description: 采购订单号 (主键)
         data_tests:
           - unique
           - not_null
+      - name: supplier_id
+        description: 供应商ID (外键)
+      - name: order_type
+        description: 订单类型
+      - name: order_status
+        description: 订单状态
+      - name: order_date
+        description: 订单日期
+        data_tests:
+          - not_null
+      - name: expected_delivery_date
+        description: 预计交货日期
+      - name: actual_delivery_date
+        description: 实际交货日期
+      - name: total_amount
+        description: 订单总金额
+      - name: currency
+        description: 币种
+      - name: buyer
+        description: 采购员
+      - name: approver
+        description: 审批人
+      - name: approval_date
+        description: 审批日期
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
+      - name: update_date
+        description: 更新日期
 
   - name: stg_purchase_order_detail
-    description: ERP采购订单明细Staging层
+    description: ERP采购订单明细Staging层 - 每行代表一个采购订单明细项
     columns:
       - name: purchase_order_detail_id
         description: 订单明细ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: purchase_order_number
+        description: 采购订单号 (外键)
+      - name: material_id
+        description: 物料ID (外键)
+      - name: quantity
+        description: 订购数量
+        data_tests:
+          - not_null
+      - name: unit
+        description: 单位
+      - name: unit_price
+        description: 单价
+      - name: amount
+        description: 金额
+      - name: delivered_quantity
+        description: 已交货数量
+      - name: inspection_status
+        description: 检验状态
 
   - name: stg_material_receipt
-    description: ERP物料接收记录Staging层
+    description: ERP物料接收记录Staging层 - 每行代表一条物料接收记录
     columns:
       - name: receipt_id
         description: 接收记录ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: purchase_order_number
+        description: 采购订单号 (外键)
+      - name: material_id
+        description: 物料ID (外键)
+      - name: warehouse_id
+        description: 仓库ID (外键)
+      - name: location_id
+        description: 库位ID (外键)
+      - name: batch_number
+        description: 批次号
+        data_tests:
+          - not_null
+      - name: receipt_quantity
+        description: 接收数量
+        data_tests:
+          - not_null
+      - name: unit
+        description: 单位
+      - name: receipt_date
+        description: 接收日期
+        data_tests:
+          - not_null
+      - name: receiver
+        description: 接收人
+      - name: inspection_status
+        description: 检验状态
+      - name: inspection_result
+        description: 检验结果
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
 
   - name: stg_material_return
-    description: ERP物料退货记录Staging层
+    description: ERP物料退货记录Staging层 - 每行代表一条物料退货记录
     columns:
       - name: return_id
         description: 退货记录ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: receipt_id
+        description: 接收记录ID (外键)
+      - name: material_id
+        description: 物料ID (外键)
+      - name: batch_number
+        description: 批次号
+        data_tests:
+          - not_null
+      - name: return_quantity
+        description: 退货数量
+        data_tests:
+          - not_null
+      - name: unit
+        description: 单位
+      - name: return_reason
+        description: 退货原因
+      - name: return_type
+        description: 退货类型
+      - name: return_date
+        description: 退货日期
+        data_tests:
+          - not_null
+      - name: return_status
+        description: 退货状态
+      - name: supplier_id
+        description: 供应商ID (外键)
+      - name: processor
+        description: 处理人
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
 
   - name: stg_material_master
-    description: ERP物料主数据Staging层
+    description: ERP物料主数据Staging层 - 每行代表一个物料
     columns:
       - name: material_id
         description: 物料编码 (主键)
         data_tests:
           - unique
           - not_null
+      - name: material_name
+        description: 物料名称
+        data_tests:
+          - not_null
+      - name: material_type
+        description: 物料类型
+        data_tests:
+          - not_null
+      - name: material_specification
+        description: 规格型号
+      - name: unit
+        description: 单位
+      - name: supplier_id
+        description: 供应商ID (外键)
+      - name: approval_status
+        description: 审批状态
+      - name: is_deleted
+        description: 删除标记
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
+      - name: update_date
+        description: 更新日期
 
   - name: stg_supplier_master
-    description: ERP供应商主数据Staging层
+    description: ERP供应商主数据Staging层 - 每行代表一个供应商
     columns:
       - name: supplier_id
         description: 供应商编码 (主键)
         data_tests:
           - unique
           - not_null
+      - name: supplier_name
+        description: 供应商名称
+        data_tests:
+          - not_null
+      - name: supplier_type
+        description: 供应商类型
+      - name: contact_person
+        description: 联系人
+      - name: contact_phone
+        description: 联系电话
+      - name: address
+        description: 地址
+      - name: qualification_status
+        description: 资质状态
+      - name: audit_date
+        description: 审计日期
+      - name: audit_score
+        description: 审计得分
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
 
   - name: stg_formula_master
-    description: ERP配方主数据Staging层
+    description: ERP配方主数据Staging层 - 每行代表一个配方
     columns:
       - name: formula_id
         description: 配方ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: formula_name
+        description: 配方名称
+        data_tests:
+          - not_null
+      - name: product_id
+        description: 产品ID (外键)
+      - name: product_name
+        description: 产品名称
+      - name: formula_version
+        description: 配方版本号
+      - name: formula_status
+        description: 配方状态
+      - name: effective_date
+        description: 生效日期
+      - name: expiry_date
+        description: 失效日期
+      - name: batch_size
+        description: 批次量
+      - name: batch_unit
+        description: 批次单位
+      - name: creator
+        description: 创建人
+      - name: approver
+        description: 批准人
+      - name: approval_date
+        description: 批准日期
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
 
   - name: stg_formula_detail
-    description: ERP配方明细Staging层
+    description: ERP配方明细Staging层 - 每行代表一个配方明细项
     columns:
       - name: formula_detail_id
         description: 配方明细ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: formula_id
+        description: 配方ID (外键)
+        data_tests:
+          - not_null:
+              config:
+                  error_if: ">100"
+      - name: material_id
+        description: 物料ID (外键)
+      - name: material_name
+        description: 物料名称
+      - name: material_quantity
+        description: 物料数量
+        data_tests:
+          - not_null
+      - name: material_unit
+        description: 物料单位
+      - name: material_sequence
+        description: 投料顺序
+      - name: is_critical
+        description: 是否关键物料
+      - name: usage_notes
+        description: 使用说明
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
 
   - name: stg_inventory
-    description: ERP库存主数据Staging层
+    description: ERP库存主数据Staging层 - 每行代表一个库存记录
     columns:
       - name: inventory_id
         description: 库存ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: material_id
+        description: 物料ID (外键)
+        data_tests:
+          - not_null:
+              config:
+                  error_if: ">100"
+      - name: batch_number
+        description: 批次号
+        data_tests:
+          - not_null
+      - name: warehouse_id
+        description: 仓库ID (外键)
+      - name: location_id
+        description: 库位ID (外键)
+      - name: current_quantity
+        description: 当前数量
+        data_tests:
+          - not_null
+      - name: unit
+        description: 单位
+      - name: inventory_status
+        description: 库存状态
+      - name: expiry_date
+        description: 过期日期
+      - name: last_count_date
+        description: 上次盘点日期
+      - name: last_count_quantity
+        description: 上次盘点数量
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
+      - name: update_date
+        description: 更新日期
 
   - name: stg_inventory_transaction
-    description: ERP库存事务记录Staging层
+    description: ERP库存事务记录Staging层 - 每行代表一条库存事务记录
     columns:
       - name: transaction_id
         description: 事务ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: inventory_id
+        description: 库存ID (外键)
+      - name: material_id
+        description: 物料ID (外键)
+        data_tests:
+          - not_null:
+              config:
+                  error_if: ">100"
+      - name: batch_number
+        description: 批次号
+      - name: transaction_type
+        description: 事务类型
+        data_tests:
+          - not_null
+      - name: transaction_quantity
+        description: 事务数量
+        data_tests:
+          - not_null
+      - name: transaction_unit
+        description: 事务单位
+      - name: transaction_date
+        description: 事务日期
+        data_tests:
+          - not_null
+      - name: reference_doc
+        description: 参考单据
+      - name: reference_type
+        description: 参考类型
+      - name: operator
+        description: 操作员
+      - name: remark
+        description: 备注
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
 
   - name: stg_warehouse
-    description: ERP仓库主数据Staging层
+    description: ERP仓库主数据Staging层 - 每行代表一个仓库
     columns:
       - name: warehouse_id
         description: 仓库ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: warehouse_name
+        description: 仓库名称
+        data_tests:
+          - not_null
+      - name: warehouse_type
+        description: 仓库类型
+      - name: address
+        description: 地址
+      - name: warehouse_area
+        description: 仓库面积
+      - name: manager
+        description: 管理员
+      - name: contact_phone
+        description: 联系电话
+      - name: warehouse_status
+        description: 仓库状态
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
 
   - name: stg_storage_location
-    description: ERP库位主数据Staging层
+    description: ERP库位主数据Staging层 - 每行代表一个库位
     columns:
       - name: location_id
         description: 库位ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: warehouse_id
+        description: 仓库ID (外键)
+        data_tests:
+          - not_null:
+              config:
+                  error_if: ">100"
+      - name: location_code
+        description: 库位编码
+        data_tests:
+          - not_null
+      - name: location_name
+        description: 库位名称
+      - name: location_type
+        description: 库位类型
+      - name: capacity
+        description: 容量
+      - name: capacity_unit
+        description: 容量单位
+      - name: current_usage
+        description: 当前使用量
+      - name: location_status
+        description: 库位状态
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
 
   # ============================================
   # MES系统 Staging 模型 (10个)
   # ============================================
   - name: stg_work_order
-    description: MES生产工单Staging层
+    description: MES生产工单Staging层 - 每行代表一个生产工单
     columns:
       - name: work_order_number
         description: 工单号 (主键)
         data_tests:
           - unique
           - not_null
+      - name: product_id
+        description: 产品ID (外键)
+      - name: batch_number
+        description: 批次号
+        data_tests:
+          - not_null
+      - name: planned_quantity
+        description: 计划数量
+        data_tests:
+          - not_null
+      - name: actual_quantity
+        description: 实际数量
+      - name: unit
+        description: 单位
+      - name: work_order_status
+        description: 工单状态
+        data_tests:
+          - not_null
+      - name: planned_start_date
+        description: 计划开始日期
+        data_tests:
+          - not_null
+      - name: planned_end_date
+        description: 计划结束日期
+        data_tests:
+          - not_null
+      - name: actual_start_date
+        description: 实际开始日期
+      - name: actual_end_date
+        description: 实际结束日期
+      - name: workshop_id
+        description: 车间ID (外键)
+      - name: create_by
+        description: 创建人
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
 
   - name: stg_operation
-    description: MES工序定义Staging层
+    description: MES工序定义Staging层 - 每行代表一个工序
     columns:
       - name: operation_id
         description: 工序ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: operation_code
+        description: 工序编码
+        data_tests:
+          - not_null
+      - name: operation_name
+        description: 工序名称
+        data_tests:
+          - not_null
+      - name: operation_type
+        description: 工序类型
+      - name: standard_duration
+        description: 标准时长
+      - name: duration_unit
+        description: 时长单位
+      - name: equipment_type
+        description: 设备类型
+      - name: skill_requirement
+        description: 技能要求
+      - name: sop_document
+        description: SOP文档
+      - name: operation_status
+        description: 工序状态
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
 
   - name: stg_work_order_operation
-    description: MES工单工序执行Staging层
+    description: MES工单工序执行Staging层 - 每行代表一个工单工序执行记录
     columns:
       - name: work_order_operation_id
         description: 工单工序ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: work_order_number
+        description: 工单号 (外键)
+        data_tests:
+          - not_null:
+              config:
+                  error_if: ">100"
+      - name: operation_id
+        description: 工序ID (外键)
+        data_tests:
+          - not_null:
+              config:
+                  error_if: ">100"
+      - name: operation_sequence
+        description: 工序顺序
+      - name: planned_start
+        description: 计划开始时间
+      - name: planned_end
+        description: 计划结束时间
+      - name: actual_start
+        description: 实际开始时间
+      - name: actual_end
+        description: 实际结束时间
+      - name: operation_status
+        description: 工序状态
+      - name: equipment_id
+        description: 设备ID (外键)
+      - name: operator_id
+        description: 操作员ID (外键)
+      - name: yield_quantity
+        description: 合格数量
+      - name: defect_quantity
+        description: 缺陷数量
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
 
   - name: stg_production_report
-    description: MES生产报工记录Staging层
+    description: MES生产报工记录Staging层 - 每行代表一条生产报工记录
     columns:
       - name: report_id
         description: 报工ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: work_order_number
+        description: 工单号 (外键)
+        data_tests:
+          - not_null:
+              config:
+                  error_if: ">100"
+      - name: operation_id
+        description: 工序ID (外键)
+      - name: batch_number
+        description: 批次号
+        data_tests:
+          - not_null
+      - name: report_date
+        description: 报工日期
+        data_tests:
+          - not_null
+      - name: shift
+        description: 班次
+      - name: output_quantity
+        description: 产出数量
+        data_tests:
+          - not_null
+      - name: defect_quantity
+        description: 缺陷数量
+      - name: defect_reason
+        description: 缺陷原因
+      - name: scrap_quantity
+        description: 报废数量
+      - name: scrap_reason
+        description: 报废原因
+      - name: operator_id
+        description: 操作员ID (外键)
+      - name: reviewer_id
+        description: 审核员ID (外键)
+      - name: review_status
+        description: 审核状态
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
 
   - name: stg_equipment
-    description: MES设备主数据Staging层
+    description: MES设备主数据Staging层 - 每行代表一台设备
     columns:
       - name: equipment_id
         description: 设备ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: equipment_code
+        description: 设备编码
+        data_tests:
+          - not_null
+      - name: equipment_name
+        description: 设备名称
+        data_tests:
+          - not_null
+      - name: equipment_type
+        description: 设备类型
+      - name: manufacturer
+        description: 制造商
+      - name: model
+        description: 型号
+      - name: serial_number
+        description: 序列号
+      - name: installation_date
+        description: 安装日期
+      - name: workshop_id
+        description: 车间ID (外键)
+      - name: line_id
+        description: 产线ID (外键)
+      - name: equipment_status
+        description: 设备状态
+      - name: last_maintenance_date
+        description: 上次维护日期
+      - name: next_maintenance_date
+        description: 下次维护日期
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
 
   - name: stg_equipment_maintenance
-    description: MES设备维护记录Staging层
+    description: MES设备维护记录Staging层 - 每行代表一条设备维护记录
     columns:
       - name: maintenance_id
         description: 维护记录ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: equipment_id
+        description: 设备ID (外键)
+        data_tests:
+          - not_null:
+              config:
+                  error_if: ">100"
+      - name: maintenance_type
+        description: 维护类型
+        data_tests:
+          - not_null
+      - name: maintenance_date
+        description: 维护日期
+        data_tests:
+          - not_null
+      - name: maintenance_content
+        description: 维护内容
+      - name: maintenance_result
+        description: 维护结果
+      - name: downtime_hours
+        description: 停机时长(小时)
+      - name: technician
+        description: 技术员
+      - name: reviewer
+        description: 审核员
+      - name: review_status
+        description: 审核状态
+      - name: next_maintenance_date
+        description: 下次维护日期
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
 
   - name: stg_production_line
-    description: MES产线主数据Staging层
+    description: MES产线主数据Staging层 - 每行代表一条产线
     columns:
-      - name: production_line_id
+      - name: line_id
         description: 产线ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: line_code
+        description: 产线编码
+        data_tests:
+          - not_null
+      - name: line_name
+        description: 产线名称
+        data_tests:
+          - not_null
+      - name: workshop_id
+        description: 车间ID (外键)
+        data_tests:
+          - not_null:
+              config:
+                  error_if: ">100"
+      - name: product_type
+        description: 产品类型
+      - name: capacity
+        description: 产能
+      - name: capacity_unit
+        description: 产能单位
+      - name: line_status
+        description: 产线状态
+      - name: line_manager
+        description: 产线经理
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
 
   - name: stg_workshop
-    description: MES车间主数据Staging层
+    description: MES车间主数据Staging层 - 每行代表一个车间
     columns:
       - name: workshop_id
         description: 车间ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: workshop_code
+        description: 车间编码
+        data_tests:
+          - not_null
+      - name: workshop_name
+        description: 车间名称
+        data_tests:
+          - not_null
+      - name: workshop_type
+        description: 车间类型
+      - name: workshop_area
+        description: 车间面积
+      - name: clean_level
+        description: 洁净等级
+      - name: workshop_manager
+        description: 车间主任
+      - name: contact_phone
+        description: 联系电话
+      - name: workshop_status
+        description: 车间状态
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
 
   - name: stg_material_consumption
-    description: MES物料消耗记录Staging层
+    description: MES物料消耗记录Staging层 - 每行代表一条物料消耗记录
     columns:
       - name: consumption_id
         description: 消耗记录ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: work_order_number
+        description: 工单号 (外键)
+        data_tests:
+          - not_null:
+              config:
+                  error_if: ">100"
+      - name: operation_id
+        description: 工序ID (外键)
+      - name: material_id
+        description: 物料ID (外键)
+        data_tests:
+          - not_null:
+              config:
+                  error_if: ">100"
+      - name: batch_number
+        description: 批次号
+        data_tests:
+          - not_null
+      - name: planned_quantity
+        description: 计划数量
+        data_tests:
+          - not_null
+      - name: actual_quantity
+        description: 实际数量
+        data_tests:
+          - not_null
+      - name: unit
+        description: 单位
+      - name: consumption_date
+        description: 消耗日期
+        data_tests:
+          - not_null
+      - name: operator_id
+        description: 操作员ID (外键)
+      - name: variance_reason
+        description: 差异原因
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
 
   - name: stg_personnel
-    description: MES生产人员主数据Staging层
+    description: MES生产人员主数据Staging层 - 每行代表一个生产人员
     columns:
       - name: personnel_id
         description: 人员ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: personnel_code
+        description: 人员编码
+        data_tests:
+          - not_null
+      - name: personnel_name
+        description: 姓名
+        data_tests:
+          - not_null
+      - name: department
+        description: 部门
+      - name: position
+        description: 岗位
+      - name: skill_level
+        description: 技能等级
+      - name: certification
+        description: 资质证书
+      - name: workshop_id
+        description: 车间ID (外键)
+      - name: line_id
+        description: 产线ID (外键)
+      - name: personnel_status
+        description: 人员状态
+      - name: entry_date
+        description: 入职日期
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
 
   # ============================================
   # LIMS系统 Staging 模型 (8个)
   # ============================================
   - name: stg_inspection_request
-    description: LIMS检验申请Staging层
+    description: LIMS检验申请Staging层 - 每行代表一个检验申请
     columns:
       - name: request_id
         description: 申请ID (主键)
         data_tests:
           - unique
           - not_null
-      - name: request_date
-        description: 申请日期
+      - name: material_id
+        description: 物料ID (外键)
+      - name: batch_number
+        description: 批次号
         data_tests:
           - not_null
-      - name: request_status
-        description: 申请状态
-        data_tests:
-          - not_null
-          - accepted_values:
-              values: ['待处理', '进行中', '已完成', '已取消']
-      - name: priority
-        description: 优先级
-        data_tests:
-          - not_null
-          - accepted_values:
-              values: ['低', '中', '高']
       - name: sample_type
         description: 样品类型
         data_tests:
           - not_null
           - accepted_values:
               values: ['原料', '辅料', '包材', '成品', '中间体']
+      - name: request_date
+        description: 申请日期
+        data_tests:
+          - not_null
+      - name: requester
+        description: 申请人
+      - name: inspection_type
+        description: 检验类型
+      - name: priority
+        description: 优先级
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ['低', '中', '高']
+      - name: request_status
+        description: 申请状态
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ['待处理', '进行中', '已完成', '已取消']
+      - name: planned_completion_date
+        description: 计划完成日期
+      - name: actual_completion_date
+        description: 实际完成日期
+      - name: sample_quantity
+        description: 样品数量
+      - name: sample_unit
+        description: 样品单位
 
   - name: stg_inspection_task
-    description: LIMS检验任务Staging层
+    description: LIMS检验任务Staging层 - 每行代表一个检验任务
     columns:
       - name: task_id
         description: 任务ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: request_id
+        description: 申请ID (外键)
+        data_tests:
+          - not_null:
+              config:
+                  error_if: ">100"
+      - name: sample_id
+        description: 样品ID (外键)
+      - name: test_item_id
+        description: 检验项目ID (外键)
+        data_tests:
+          - not_null:
+              config:
+                  error_if: ">100"
+      - name: assigned_analyst
+        description: 指派分析员
+      - name: assigned_date
+        description: 指派日期
+      - name: planned_completion
+        description: 计划完成日期
+      - name: actual_completion
+        description: 实际完成日期
+      - name: task_status
+        description: 任务状态
+      - name: priority
+        description: 优先级
+      - name: equipment_id
+        description: 设备ID (外键)
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
 
   - name: stg_inspection_result
-    description: LIMS检验结果Staging层
+    description: LIMS检验结果Staging层 - 每行代表一条检验结果记录
     columns:
       - name: result_id
         description: 结果ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: task_id
+        description: 任务ID (外键)
+        data_tests:
+          - not_null:
+              config:
+                  error_if: ">100"
+      - name: test_item_id
+        description: 检验项目ID (外键)
+      - name: sample_id
+        description: 样品ID (外键)
+      - name: test_value
+        description: 检验值
+      - name: test_unit
+        description: 检验单位
+      - name: standard_min
+        description: 标准下限
+      - name: standard_max
+        description: 标准上限
+      - name: result_status
+        description: 结果状态
+      - name: test_date
+        description: 检验日期
+        data_tests:
+          - not_null
+      - name: analyst_id
+        description: 分析员ID (外键)
+      - name: reviewer_id
+        description: 审核员ID (外键)
+      - name: review_date
+        description: 审核日期
+      - name: review_status
+        description: 审核状态
+      - name: remark
+        description: 备注
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
 
   - name: stg_sample
-    description: LIMS样品主数据Staging层
+    description: LIMS样品主数据Staging层 - 每行代表一个样品
     columns:
       - name: sample_id
         description: 样品ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: sample_code
+        description: 样品编码
+        data_tests:
+          - not_null
+      - name: sample_type
+        description: 样品类型
+        data_tests:
+          - not_null
+      - name: sample_quantity
+        description: 样品数量
+      - name: sample_unit
+        description: 样品单位
+      - name: material_id
+        description: 物料ID (外键)
+      - name: batch_number
+        description: 批次号
+        data_tests:
+          - not_null
+      - name: sample_date
+        description: 采样日期
+        data_tests:
+          - not_null
+      - name: sampler
+        description: 采样员
+      - name: storage_condition
+        description: 储存条件
+      - name: location
+        description: 储存位置
+      - name: expiry_date
+        description: 过期日期
+      - name: sample_status
+        description: 样品状态
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
 
   - name: stg_quality_standard
-    description: LIMS质量标准主数据Staging层
+    description: LIMS质量标准主数据Staging层 - 每行代表一个质量标准
     columns:
       - name: standard_id
         description: 标准ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: standard_code
+        description: 标准编码
+        data_tests:
+          - not_null
+      - name: standard_name
+        description: 标准名称
+        data_tests:
+          - not_null
+      - name: material_type
+        description: 物料类型
+      - name: standard_version
+        description: 标准版本号
+      - name: effective_date
+        description: 生效日期
+      - name: expiry_date
+        description: 失效日期
+      - name: standard_status
+        description: 标准状态
+      - name: creator
+        description: 创建人
+      - name: approver
+        description: 批准人
+      - name: approval_date
+        description: 批准日期
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
 
   - name: stg_test_item
-    description: LIMS检验项目主数据Staging层
+    description: LIMS检验项目主数据Staging层 - 每行代表一个检验项目
     columns:
       - name: test_item_id
         description: 项目ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: item_code
+        description: 项目编码
+        data_tests:
+          - not_null
+      - name: item_name
+        description: 项目名称
+        data_tests:
+          - not_null
+      - name: test_method
+        description: 检验方法
+      - name: standard_id
+        description: 标准ID (外键)
+      - name: min_value
+        description: 最小值
+      - name: max_value
+        description: 最大值
+      - name: unit
+        description: 单位
+      - name: required_equipment
+        description: 所需设备
+      - name: test_duration
+        description: 检验时长
+      - name: test_duration_unit
+        description: 检验时长单位
+      - name: item_status
+        description: 项目状态
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
 
   - name: stg_analyst
-    description: LIMS分析员主数据Staging层
+    description: LIMS分析员主数据Staging层 - 每行代表一个分析员
     columns:
       - name: analyst_id
         description: 分析员ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: analyst_code
+        description: 分析员编码
+        data_tests:
+          - not_null
+      - name: analyst_name
+        description: 姓名
+        data_tests:
+          - not_null
+      - name: department
+        description: 部门
+      - name: qualification
+        description: 资质
+      - name: certification_date
+        description: 认证日期
+      - name: certification_expiry
+        description: 认证过期日期
+      - name: analyst_status
+        description: 状态
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
 
   - name: stg_inspection_report
-    description: LIMS检验报告Staging层
+    description: LIMS检验报告Staging层 - 每行代表一份检验报告
     columns:
       - name: report_id
         description: 报告ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: request_id
+        description: 申请ID (外键)
+        data_tests:
+          - not_null:
+              config:
+                  error_if: ">100"
+      - name: report_code
+        description: 报告编号
+        data_tests:
+          - not_null
+      - name: sample_id
+        description: 样品ID (外键)
+      - name: material_id
+        description: 物料ID (外键)
+      - name: batch_number
+        description: 批次号
+        data_tests:
+          - not_null
+      - name: conclusion
+        description: 检验结论
+      - name: report_date
+        description: 报告日期
+        data_tests:
+          - not_null
+      - name: reporter
+        description: 报告人
+      - name: reviewer
+        description: 审核人
+      - name: review_date
+        description: 审核日期
+      - name: approver
+        description: 批准人
+      - name: approval_date
+        description: 批准日期
+      - name: report_status
+        description: 报告状态
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
 
   # ============================================
   # QMS系统 Staging 模型 (6个)
   # ============================================
   - name: stg_change_control
-    description: QMS变更控制Staging层
+    description: QMS变更控制Staging层 - 每行代表一个变更控制记录
     columns:
       - name: change_id
         description: 变更ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: change_code
+        description: 变更编号
+        data_tests:
+          - not_null
+      - name: change_title
+        description: 变更标题
+        data_tests:
+          - not_null
+      - name: change_type
+        description: 变更类型
+      - name: change_category
+        description: 变更分类
+      - name: change_description
+        description: 变更描述
+      - name: initiator
+        description: 发起人
+        data_tests:
+          - not_null
+      - name: initiate_date
+        description: 发起日期
+        data_tests:
+          - not_null
+      - name: priority
+        description: 优先级
+      - name: change_status
+        description: 变更状态
+      - name: planned_completion
+        description: 计划完成日期
+      - name: actual_completion
+        description: 实际完成日期
+      - name: reviewer
+        description: 审核人
+      - name: approver
+        description: 批准人
+      - name: approval_date
+        description: 批准日期
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
 
   - name: stg_change_impact
-    description: QMS变更影响评估Staging层
+    description: QMS变更影响评估Staging层 - 每行代表一条变更影响评估记录
     columns:
       - name: impact_id
         description: 影响评估ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: change_id
+        description: 变更ID (外键)
+        data_tests:
+          - not_null:
+              config:
+                  error_if: ">100"
+      - name: impact_area
+        description: 影响领域
+      - name: impact_description
+        description: 影响描述
+      - name: impact_level
+        description: 影响级别
+      - name: affected_documents
+        description: 受影响文档
+      - name: affected_processes
+        description: 受影响流程
+      - name: risk_assessment
+        description: 风险评估
+      - name: mitigation_measures
+        description: 缓解措施
+      - name: assessor
+        description: 评估人
+      - name: assessment_date
+        description: 评估日期
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
 
   - name: stg_change_implementation
-    description: QMS变更实施记录Staging层
+    description: QMS变更实施记录Staging层 - 每行代表一条变更实施任务记录
     columns:
       - name: implementation_id
         description: 实施任务ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: change_id
+        description: 变更ID (外键)
+        data_tests:
+          - not_null:
+              config:
+                  error_if: ">100"
+      - name: task_name
+        description: 任务名称
+        data_tests:
+          - not_null
+      - name: task_description
+        description: 任务描述
+      - name: responsible
+        description: 负责人
+        data_tests:
+          - not_null
+      - name: planned_start
+        description: 计划开始日期
+      - name: planned_end
+        description: 计划结束日期
+      - name: actual_start
+        description: 实际开始日期
+      - name: actual_end
+        description: 实际结束日期
+      - name: task_status
+        description: 任务状态
+      - name: completion_evidence
+        description: 完成证据
+      - name: reviewer
+        description: 审核人
+      - name: review_date
+        description: 审核日期
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
 
   - name: stg_deviation
-    description: QMS偏差记录Staging层
+    description: QMS偏差记录Staging层 - 每行代表一条偏差记录
     columns:
       - name: deviation_id
         description: 偏差ID (主键)
@@ -345,18 +1347,24 @@ models:
         data_tests:
           - unique
           - not_null
+      - name: deviation_title
+        description: 偏差标题
+        data_tests:
+          - not_null
       - name: deviation_type
         description: 偏差类型
         data_tests:
           - not_null
           - accepted_values:
               values: ['工艺偏差', '物料偏差', '环境偏差', '设备偏差']
-      - name: status
-        description: 状态
+      - name: deviation_category
+        description: 偏差分类
+      - name: product_id
+        description: 产品ID (外键)
+      - name: batch_number
+        description: 批次号
         data_tests:
           - not_null
-          - accepted_values:
-              values: ['待审核', '进行中', '已关闭', '已取消']
       - name: occurrence_date
         description: 发生日期
         data_tests:
@@ -365,56 +1373,238 @@ models:
         description: 发现日期
         data_tests:
           - not_null
+      - name: deviation_description
+        description: 偏差描述
+      - name: immediate_action
+        description: 即时行动
+      - name: root_cause
+        description: 根本原因
+      - name: corrective_action
+        description: 纠正措施
+      - name: preventive_action
+        description: 预防措施
+      - name: deviation_status
+        description: 状态
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ['待审核', '进行中', '已关闭', '已取消']
+      - name: investigator
+        description: 调查员
+      - name: reviewer
+        description: 审核员
+      - name: approver
+        description: 批准人
+      - name: close_date
+        description: 关闭日期
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
 
   - name: stg_capa
-    description: QMS CAPA主数据Staging层
+    description: QMS CAPA主数据Staging层 - 每行代表一条CAPA记录
     columns:
       - name: capa_id
         description: CAPA ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: capa_code
+        description: CAPA编号
+        data_tests:
+          - not_null
+      - name: capa_title
+        description: CAPA标题
+        data_tests:
+          - not_null
+      - name: capa_type
+        description: CAPA类型
+      - name: source_type
+        description: 来源类型
+      - name: source_id
+        description: 来源ID
+      - name: capa_description
+        description: 描述
+      - name: root_cause_analysis
+        description: 根本原因分析
+      - name: corrective_action
+        description: 纠正措施
+      - name: preventive_action
+        description: 预防措施
+      - name: responsible
+        description: 负责人
+        data_tests:
+          - not_null
+      - name: planned_completion
+        description: 计划完成日期
+      - name: actual_completion
+        description: 实际完成日期
+      - name: capa_status
+        description: 状态
+      - name: effectiveness_check
+        description: 有效性检查
+      - name: effectiveness_date
+        description: 有效性检查日期
+      - name: creator
+        description: 创建人
+      - name: approver
+        description: 批准人
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
 
   - name: stg_supplier_audit
-    description: QMS供应商审计记录Staging层
+    description: QMS供应商审计记录Staging层 - 每行代表一条供应商审计记录
     columns:
       - name: audit_id
         description: 审计ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: audit_code
+        description: 审计编号
+        data_tests:
+          - not_null
+      - name: supplier_id
+        description: 供应商ID (外键)
+        data_tests:
+          - not_null:
+              config:
+                  error_if: ">100"
+      - name: audit_type
+        description: 审计类型
+      - name: audit_date
+        description: 审计日期
+        data_tests:
+          - not_null
+      - name: audit_scope
+        description: 审计范围
+      - name: auditor
+        description: 审计员
+        data_tests:
+          - not_null
+      - name: audit_result
+        description: 审计结果
+      - name: audit_score
+        description: 审计得分
+      - name: findings_count
+        description: 发现数量
+      - name: critical_findings
+        description: 严重缺陷数
+      - name: major_findings
+        description: 主要缺陷数
+      - name: minor_findings
+        description: 次要缺陷数
+      - name: observations
+        description: 观察项
+      - name: follow_up_required
+        description: 是否需要跟进
+      - name: follow_up_date
+        description: 跟进日期
+      - name: audit_status
+        description: 审计状态
+      - name: report_date
+        description: 报告日期
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
 
   # ============================================
   # SCADA系统 Staging 模型 (5个)
   # ============================================
   - name: stg_equipment_data
-    description: SCADA设备运行数据Staging层
+    description: SCADA设备运行数据Staging层 - 每行代表一条设备运行数据记录
     columns:
       - name: data_id
         description: 数据ID (主键)
         data_tests:
           - unique
+          - not_null
+      - name: equipment_id
+        description: 设备ID (外键)
+        data_tests:
+          - not_null:
+              config:
+                  error_if: ">100"
+      - name: parameter_name
+        description: 参数名称
+        data_tests:
+          - not_null
+      - name: parameter_value
+        description: 参数值
+        data_tests:
+          - not_null
+      - name: unit
+        description: 单位
+      - name: collection_time
+        description: 采集时间
+        data_tests:
+          - not_null
+      - name: quality_code
+        description: 质量码
+      - name: batch_number
+        description: 批次号
+      - name: work_order_number
+        description: 工单号 (外键)
+      - name: operation_id
+        description: 工序ID (外键)
+      - name: create_date
+        description: 创建日期
+        data_tests:
           - not_null
 
   - name: stg_environment_data
-    description: SCADA环境监控数据Staging层
+    description: SCADA环境监控数据Staging层 - 每行代表一条环境监控数据记录
     columns:
       - name: data_id
         description: 数据ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: location_code
+        description: 位置代码
+        data_tests:
+          - not_null
+      - name: location_name
+        description: 位置名称
+      - name: temperature
+        description: 温度
+      - name: humidity
+        description: 湿度
+      - name: pressure_difference
+        description: 压差
+      - name: particle_count
+        description: 粒子数
+      - name: collection_time
+        description: 采集时间
+        data_tests:
+          - not_null
+      - name: monitoring_status
+        description: 监控状态
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
 
   - name: stg_alarm
-    description: SCADA报警记录Staging层
+    description: SCADA报警记录Staging层 - 每行代表一条报警记录
     columns:
       - name: alarm_id
         description: 报警ID (主键)
         data_tests:
           - unique
           - not_null
-      - name: alarm_time
-        description: 报警时间
+      - name: equipment_id
+        description: 设备ID (外键)
+        data_tests:
+          - not_null:
+              config:
+                  error_if: ">100"
+      - name: location_code
+        description: 位置代码
         data_tests:
           - not_null
       - name: alarm_type
@@ -429,41 +1619,151 @@ models:
           - not_null
           - accepted_values:
               values: ['低', '中', '高']
+      - name: alarm_message
+        description: 报警信息
+        data_tests:
+          - not_null
+      - name: alarm_time
+        description: 报警时间
+        data_tests:
+          - not_null
+      - name: acknowledge_time
+        description: 确认时间
+      - name: acknowledged_by
+        description: 确认人
+      - name: resolve_time
+        description: 解决时间
+      - name: resolved_by
+        description: 解决人
       - name: alarm_status
         description: 报警状态
         data_tests:
           - not_null
           - accepted_values:
               values: ['未解决', '已解决', '已取消']
+      - name: batch_number
+        description: 批次号
+      - name: work_order_number
+        description: 工单号 (外键)
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
 
   - name: stg_batch_tracking
-    description: SCADA批次追踪记录Staging层
+    description: SCADA批次追踪记录Staging层 - 每行代表一条批次追踪记录
     columns:
       - name: tracking_id
         description: 追踪ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: batch_number
+        description: 批次号
+        data_tests:
+          - not_null
+      - name: work_order_number
+        description: 工单号 (外键)
+        data_tests:
+          - not_null:
+              config:
+                  error_if: ">100"
+      - name: product_id
+        description: 产品ID (外键)
+      - name: operation_id
+        description: 工序ID (外键)
+      - name: equipment_id
+        description: 设备ID (外键)
+        data_tests:
+          - not_null:
+              config:
+                  error_if: ">100"
+      - name: start_time
+        description: 开始时间
+        data_tests:
+          - not_null
+      - name: end_time
+        description: 结束时间
+      - name: tracking_status
+        description: 追踪状态
+      - name: operator_id
+        description: 操作员ID (外键)
+      - name: yield_quantity
+        description: 合格数量
+      - name: unit
+        description: 单位
+      - name: quality_status
+        description: 质量状态
+      - name: remark
+        description: 备注
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
 
   - name: stg_energy_consumption
-    description: SCADA能耗监控数据Staging层
+    description: SCADA能耗监控数据Staging层 - 每行代表一条能耗监控数据记录
     columns:
-      - name: consumption_id
+      - name: energy_id
         description: 消耗记录ID (主键)
         data_tests:
           - unique
+          - not_null
+      - name: equipment_id
+        description: 设备ID (外键)
+        data_tests:
+          - not_null:
+              config:
+                  error_if: ">100"
+      - name: workshop_id
+        description: 车间ID (外键)
+      - name: energy_type
+        description: 能源类型
+        data_tests:
+          - not_null
+      - name: consumption_value
+        description: 消耗值
+        data_tests:
+          - not_null
+      - name: unit
+        description: 单位
+      - name: collection_date
+        description: 采集日期
+        data_tests:
+          - not_null
+      - name: collection_hour
+        description: 采集小时
+        data_tests:
+          - not_null
+      - name: work_order_number
+        description: 工单号 (外键)
+      - name: batch_number
+        description: 批次号
+      - name: create_date
+        description: 创建日期
+        data_tests:
           - not_null
 
   # ============================================
   # PV系统 Staging 模型 (3个)
   # ============================================
   - name: stg_adverse_event
-    description: PV不良反应报告Staging层
+    description: PV不良反应报告Staging层 - 每行代表一条不良反应报告
     columns:
       - name: event_id
         description: 事件ID (主键)
         data_tests:
           - unique
+          - not_null
+      - name: event_code
+        description: 事件编号
+        data_tests:
+          - not_null
+      - name: product_id
+        description: 产品ID (外键)
+      - name: batch_number
+        description: 批次号
+        data_tests:
           - not_null
       - name: event_date
         description: 事件发生日期
@@ -485,28 +1785,148 @@ models:
           - not_null
           - accepted_values:
               values: ['轻度', '中度', '重度']
-      - name: status
+      - name: event_description
+        description: 事件描述
+      - name: patient_age
+        description: 患者年龄
+      - name: patient_gender
+        description: 患者性别
+      - name: outcome
+        description: 结果
+      - name: causality_assessment
+        description: 因果关系评估
+      - name: reporter_type
+        description: 报告者类型
+      - name: reporter_name
+        description: 报告者姓名
+      - name: event_status
         description: 状态
         data_tests:
           - not_null
           - accepted_values:
               values: ['调查中', '已关闭', '已取消']
+      - name: investigator
+        description: 调查员
+      - name: close_date
+        description: 关闭日期
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
 
   - name: stg_complaint
-    description: PV产品投诉记录Staging层
+    description: PV产品投诉记录Staging层 - 每行代表一条产品投诉记录
     columns:
       - name: complaint_id
         description: 投诉ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: complaint_code
+        description: 投诉编号
+        data_tests:
+          - not_null
+      - name: complaint_type
+        description: 投诉类型
+      - name: complaint_source
+        description: 投诉来源
+      - name: product_id
+        description: 产品ID (外键)
+      - name: batch_number
+        description: 批次号
+        data_tests:
+          - not_null
+      - name: complaint_date
+        description: 投诉日期
+        data_tests:
+          - not_null
+      - name: receive_date
+        description: 接收日期
+        data_tests:
+          - not_null
+      - name: complaint_description
+        description: 投诉描述
+      - name: contact_name
+        description: 联系人姓名
+      - name: contact_phone
+        description: 联系电话
+      - name: priority
+        description: 优先级
+      - name: complaint_status
+        description: 投诉状态
+      - name: investigator
+        description: 调查员
+      - name: investigation_result
+        description: 调查结果
+      - name: corrective_action
+        description: 纠正措施
+      - name: response_date
+        description: 响应日期
+      - name: close_date
+        description: 关闭日期
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
 
   - name: stg_product_recall
-    description: PV产品召回记录Staging层
+    description: PV产品召回记录Staging层 - 每行代表一条产品召回记录
     columns:
       - name: recall_id
         description: 召回ID (主键)
         data_tests:
           - unique
+          - not_null
+      - name: recall_code
+        description: 召回编号
+        data_tests:
+          - not_null
+      - name: recall_level
+        description: 召回级别
+        data_tests:
+          - not_null
+      - name: recall_reason
+        description: 召回原因
+        data_tests:
+          - not_null
+      - name: recall_scope
+        description: 召回范围
+      - name: product_id
+        description: 产品ID (外键)
+        data_tests:
+          - not_null:
+              config:
+                  error_if: ">100"
+      - name: batch_numbers
+        description: 批次号列表
+        data_tests:
+          - not_null
+      - name: recall_date
+        description: 召回日期
+        data_tests:
+          - not_null
+      - name: notification_date
+        description: 通知日期
+      - name: recall_quantity
+        description: 召回数量
+        data_tests:
+          - not_null
+      - name: recall_unit
+        description: 召团单位
+      - name: actual_return_quantity
+        description: 实际返回数量
+      - name: recall_status
+        description: 召回状态
+      - name: responsible
+        description: 负责人
+        data_tests:
+          - not_null
+      - name: regulatory_report_date
+        description: 监管报告日期
+      - name: close_date
+        description: 关闭日期
+      - name: create_date
+        description: 创建日期
+        data_tests:
           - not_null
 

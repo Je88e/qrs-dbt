@@ -149,6 +149,7 @@ analyses:
 # Configuring seeds
 seeds:
   qrs:
+    +schema: raw
     +quote_columns: false
     +column_types:
       create_date: timestamp

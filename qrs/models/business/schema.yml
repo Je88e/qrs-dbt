@@ -23,6 +23,10 @@ models:
           - relationships:
               to: ref('stg_supplier_master')
               field: supplier_id
+      - name: supplier_name
+        description: 供应商名称
+      - name: supplier_type
+        description: 供应商类型
       - name: material_id
         description: 物料ID (外键)
         data_tests:
@@ -30,11 +34,51 @@ models:
           - relationships:
               to: ref('stg_material_master')
               field: material_id
+      - name: material_name
+        description: 物料名称
+      - name: material_type
+        description: 物料类型
+      - name: material_specification
+        description: 物料规格
+      - name: order_type
+        description: 订单类型
       - name: order_status
         description: 订单状态
         data_tests:
           - accepted_values:
               values: ["待审批", "已审批", "进行中", "已完成", "已取消"]
+      - name: order_date
+        description: 订单日期
+      - name: expected_delivery_date
+        description: 预计交货日期
+      - name: actual_delivery_date
+        description: 实际交货日期
+      - name: order_quantity
+        description: 订单数量
+      - name: unit
+        description: 单位
+      - name: unit_price
+        description: 单价
+      - name: line_amount
+        description: 行金额
+      - name: total_amount
+        description: 总金额
+      - name: currency
+        description: 币种
+      - name: delivered_quantity
+        description: 已交付数量
+      - name: inspection_status
+        description: 检验状态
+      - name: buyer
+        description: 采购员
+      - name: approver
+        description: 审批人
+      - name: approval_date
+        description: 审批日期
+      - name: create_date
+        description: 创建日期
+      - name: update_date
+        description: 更新日期
 
   - name: fct_material_receipts
     description: 物料接收事实表 - 记录物料入库信息，关联采购订单和仓库
@@ -65,23 +109,47 @@ models:
           - relationships:
               to: ref('stg_material_master')
               field: material_id
+      - name: material_name
+        description: 物料名称
+      - name: material_type
+        description: 物料类型
+      - name: material_specification
+        description: 物料规格
+      - name: batch_number
+        description: 批次号
+      - name: receipt_quantity
+        description: 接收数量
+      - name: unit
+        description: 单位
+      - name: receipt_date
+        description: 接收日期
+      - name: receiver
+        description: 接收人
       - name: warehouse_id
         description: 仓库ID (外键)
         data_tests:
           - relationships:
               to: ref('stg_warehouse')
               field: warehouse_id
+      - name: warehouse_name
+        description: 仓库名称
+      - name: warehouse_type
+        description: 仓库类型
       - name: location_id
         description: 库位ID (外键)
         data_tests:
           - relationships:
               to: ref('stg_storage_location')
               field: location_id
+      - name: location_name
+        description: 库位名称
       - name: inspection_status
         description: 检验状态
         data_tests:
           - accepted_values:
               values: ["待检验", "已检验"]
+      - name: create_date
+        description: 创建日期
 
   - name: fct_material_returns
     description: 物料退货业务模型 - 记录物料退货信息
@@ -89,15 +157,55 @@ models:
       tags: ["erp", "procurement", "quality", "pqr"]
     columns:
       - name: return_id
-        description: 退货记录ID
+        description: 退货记录ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: receipt_id
+        description: 关联的接收记录ID
+      - name: purchase_order_number
+        description: 采购订单号
+      - name: material_id
+        description: 物料ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_material_master')
+              field: material_id
+      - name: material_name
+        description: 物料名称
+      - name: material_type
+        description: 物料类型
+      - name: batch_number
+        description: 批次号
+      - name: return_quantity
+        description: 退货数量
+      - name: unit
+        description: 单位
+      - name: return_reason
+        description: 退货原因
+      - name: return_type
+        description: 退货类型
+      - name: return_date
+        description: 退货日期
       - name: return_status
         description: 退货状态
         data_tests:
           - accepted_values:
               values: ["处理中", "已完成", "已取消"]
+      - name: supplier_id
+        description: 供应商ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_supplier_master')
+              field: supplier_id
+      - name: supplier_name
+        description: 供应商名称
+      - name: supplier_type
+        description: 供应商类型
+      - name: processor
+        description: 处理人
+      - name: create_date
+        description: 创建日期
 
   - name: fct_formulas
     description: 配方管理业务模型 - 整合配方主表和明细表
@@ -108,11 +216,57 @@ models:
         description: 配方ID
         data_tests:
           - not_null
+      - name: formula_detail_id
+        description: 配方明细ID
+      - name: formula_name
+        description: 配方名称
+      - name: product_id
+        description: 产品ID
+      - name: product_name
+        description: 产品名称
+      - name: formula_version
+        description: 配方版本
       - name: formula_status
         description: 配方状态
         data_tests:
           - accepted_values:
               values: ["有效", "无效", "草稿"]
+      - name: effective_date
+        description: 生效日期
+      - name: expiry_date
+        description: 失效日期
+      - name: batch_size
+        description: 批量大小
+      - name: batch_unit
+        description: 批量单位
+      - name: material_id
+        description: 物料ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_material_master')
+              field: material_id
+      - name: material_name
+        description: 物料名称
+      - name: material_type
+        description: 物料类型
+      - name: material_quantity
+        description: 物料数量
+      - name: material_unit
+        description: 物料单位
+      - name: material_sequence
+        description: 物料序号
+      - name: is_critical
+        description: 是否关键物料
+      - name: usage_notes
+        description: 使用说明
+      - name: creator
+        description: 创建人
+      - name: approver
+        description: 审批人
+      - name: approval_date
+        description: 审批日期
+      - name: create_date
+        description: 创建日期
 
   - name: fct_inventory
     description: 库存管理业务模型 - 提供库存信息视图
@@ -120,15 +274,63 @@ models:
       tags: ["erp", "inventory", "pqr"]
     columns:
       - name: inventory_id
-        description: 库存ID
+        description: 库存ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: material_id
+        description: 物料ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_material_master')
+              field: material_id
+      - name: material_name
+        description: 物料名称
+      - name: material_type
+        description: 物料类型
+      - name: material_specification
+        description: 物料规格
+      - name: batch_number
+        description: 批次号
+      - name: warehouse_id
+        description: 仓库ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_warehouse')
+              field: warehouse_id
+      - name: warehouse_name
+        description: 仓库名称
+      - name: warehouse_type
+        description: 仓库类型
+      - name: location_id
+        description: 库位ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_storage_location')
+              field: location_id
+      - name: location_name
+        description: 库位名称
+      - name: location_code
+        description: 库位编码
+      - name: current_quantity
+        description: 当前数量
+      - name: unit
+        description: 单位
       - name: inventory_status
         description: 库存状态
         data_tests:
           - accepted_values:
               values: ["正常", "待检", "冻结", "不合格"]
+      - name: expiry_date
+        description: 有效期
+      - name: last_count_date
+        description: 最后盘点日期
+      - name: last_count_quantity
+        description: 最后盘点数量
+      - name: create_date
+        description: 创建日期
+      - name: update_date
+        description: 更新日期
 
   - name: fct_inventory_transactions
     description: 库存事务业务模型 - 记录库存变动事务
@@ -136,15 +338,49 @@ models:
       tags: ["erp", "inventory", "pqr"]
     columns:
       - name: transaction_id
-        description: 事务ID
+        description: 事务ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: inventory_id
+        description: 库存ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_inventory')
+              field: inventory_id
+      - name: material_id
+        description: 物料ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_material_master')
+              field: material_id
+      - name: material_name
+        description: 物料名称
+      - name: material_type
+        description: 物料类型
+      - name: batch_number
+        description: 批次号
       - name: transaction_type
         description: 事务类型
         data_tests:
           - accepted_values:
               values: ["入库", "出库", "调拨", "盘点"]
+      - name: transaction_quantity
+        description: 事务数量
+      - name: transaction_unit
+        description: 事务单位
+      - name: transaction_date
+        description: 事务日期
+      - name: reference_doc
+        description: 参考单据
+      - name: reference_type
+        description: 参考类型
+      - name: operator
+        description: 操作员
+      - name: remark
+        description: 备注
+      - name: create_date
+        description: 创建日期
 
   - name: dim_warehouses
     description: 仓库信息业务模型 - 整合仓库和库位信息
@@ -155,11 +391,45 @@ models:
         description: 仓库ID
         data_tests:
           - not_null
+      - name: warehouse_name
+        description: 仓库名称
+      - name: warehouse_type
+        description: 仓库类型
+      - name: address
+        description: 仓库地址
+      - name: warehouse_area
+        description: 仓库面积
+      - name: manager
+        description: 仓库经理
+      - name: contact_phone
+        description: 联系电话
       - name: warehouse_status
         description: 仓库状态
         data_tests:
           - accepted_values:
               values: ["启用", "停用"]
+      - name: location_id
+        description: 库位ID
+      - name: location_code
+        description: 库位编码
+      - name: location_name
+        description: 库位名称
+      - name: location_type
+        description: 库位类型
+      - name: capacity
+        description: 容量
+      - name: capacity_unit
+        description: 容量单位
+      - name: current_usage
+        description: 当前使用量
+      - name: location_status
+        description: 库位状态
+      - name: usage_rate_percent
+        description: 使用率百分比
+      - name: warehouse_create_date
+        description: 仓库创建日期
+      - name: location_create_date
+        description: 库位创建日期
 
   - name: fct_inspection_requests
     description: 检验申请业务模型 - 检验申请信息
@@ -167,15 +437,47 @@ models:
       tags: ["lims", "quality", "inspection", "pqr"]
     columns:
       - name: request_id
-        description: 申请ID
+        description: 申请ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: material_id
+        description: 物料ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_material_master')
+              field: material_id
+      - name: material_name
+        description: 物料名称
+      - name: material_type
+        description: 物料类型
+      - name: batch_number
+        description: 批次号
+      - name: sample_type
+        description: 样品类型
+      - name: sample_quantity
+        description: 样品数量
+      - name: sample_unit
+        description: 样品单位
+      - name: request_date
+        description: 申请日期
+      - name: requester
+        description: 申请人
+      - name: inspection_type
+        description: 检验类型
+      - name: priority
+        description: 优先级
       - name: request_status
         description: 申请状态
         data_tests:
           - accepted_values:
               values: ["待分配", "进行中", "已完成", "已取消"]
+      - name: planned_completion_date
+        description: 计划完成日期
+      - name: actual_completion_date
+        description: 实际完成日期
+      - name: days_overdue
+        description: 超期天数
 
   - name: fct_inspection_tasks
     description: 检验任务业务模型 - 检验任务执行信息
@@ -183,15 +485,73 @@ models:
       tags: ["lims", "quality", "inspection", "pqr"]
     columns:
       - name: task_id
-        description: 任务ID
+        description: 任务ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: request_id
+        description: 申请ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_inspection_request')
+              field: request_id
+      - name: inspection_type
+        description: 检验类型
+      - name: sample_id
+        description: 样品ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_sample')
+              field: sample_id
+      - name: sample_code
+        description: 样品编码
+      - name: sample_type
+        description: 样品类型
+      - name: batch_number
+        description: 批次号
+      - name: test_item_id
+        description: 检验项目ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_test_item')
+              field: test_item_id
+      - name: item_code
+        description: 项目编码
+      - name: item_name
+        description: 项目名称
+      - name: test_method
+        description: 检验方法
+      - name: assigned_analyst
+        description: 分配的分析员ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_analyst')
+              field: analyst_id
+      - name: analyst_name
+        description: 分析员姓名
+      - name: qualification
+        description: 分析员资质
+      - name: assigned_date
+        description: 分配日期
+      - name: planned_completion
+        description: 计划完成日期
+      - name: actual_completion
+        description: 实际完成日期
       - name: task_status
         description: 任务状态
         data_tests:
           - accepted_values:
               values: ["待执行", "进行中", "已完成", "已取消"]
+      - name: priority
+        description: 优先级
+      - name: equipment_id
+        description: 设备ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_equipment')
+              field: equipment_id
+      - name: create_date
+        description: 创建日期
 
   - name: fct_inspection_results
     description: 检验结果业务模型 - 检验结果详细信息
@@ -199,15 +559,69 @@ models:
       tags: ["lims", "quality", "inspection", "pqr"]
     columns:
       - name: result_id
-        description: 结果ID
+        description: 结果ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: task_id
+        description: 任务ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_inspection_task')
+              field: task_id
+      - name: test_item_id
+        description: 检验项目ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_test_item')
+              field: test_item_id
+      - name: item_code
+        description: 项目编码
+      - name: item_name
+        description: 项目名称
+      - name: test_method
+        description: 检验方法
+      - name: sample_id
+        description: 样品ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_sample')
+              field: sample_id
+      - name: sample_code
+        description: 样品编码
+      - name: batch_number
+        description: 批次号
+      - name: test_value
+        description: 检验值
+      - name: test_unit
+        description: 检验单位
+      - name: standard_min
+        description: 标准下限
+      - name: standard_max
+        description: 标准上限
       - name: result_status
         description: 结果状态
         data_tests:
           - accepted_values:
               values: ["合格", "不合格", "待判定"]
+      - name: test_date
+        description: 检验日期
+      - name: analyst_id
+        description: 分析员ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_analyst')
+              field: analyst_id
+      - name: reviewer_id
+        description: 审核人ID
+      - name: review_date
+        description: 审核日期
+      - name: review_status
+        description: 审核状态
+      - name: remark
+        description: 备注
+      - name: create_date
+        description: 创建日期
 
   - name: dim_samples
     description: 样品管理业务模型 - 样品主数据
@@ -215,15 +629,49 @@ models:
       tags: ["lims", "quality", "sample", "pqr"]
     columns:
       - name: sample_id
-        description: 样品ID
+        description: 样品ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: sample_code
+        description: 样品编码
+      - name: sample_type
+        description: 样品类型
+      - name: sample_quantity
+        description: 样品数量
+      - name: sample_unit
+        description: 样品单位
+      - name: material_id
+        description: 物料ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_material_master')
+              field: material_id
+      - name: material_name
+        description: 物料名称
+      - name: material_type
+        description: 物料类型
+      - name: batch_number
+        description: 批次号
+      - name: sample_date
+        description: 取样日期
+      - name: sampler
+        description: 取样人
+      - name: storage_condition
+        description: 存储条件
+      - name: location
+        description: 存储位置
+      - name: expiry_date
+        description: 有效期
       - name: sample_status
         description: 样品状态
         data_tests:
           - accepted_values:
               values: ["待检测", "检测中", "已完成", "已过期", "已销毁"]
+      - name: days_until_expiry
+        description: 距离过期天数
+      - name: create_date
+        description: 创建日期
 
   - name: dim_quality_standards
     description: 质量标准业务模型 - 质量标准主数据
@@ -231,15 +679,37 @@ models:
       tags: ["lims", "quality", "standard", "pqr"]
     columns:
       - name: standard_id
-        description: 标准ID
+        description: 标准ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: standard_code
+        description: 标准编码
+      - name: standard_name
+        description: 标准名称
+      - name: material_type
+        description: 物料类型
+      - name: standard_version
+        description: 标准版本
+      - name: effective_date
+        description: 生效日期
+      - name: expiry_date
+        description: 失效日期
       - name: standard_status
         description: 标准状态
         data_tests:
           - accepted_values:
               values: ["有效", "无效", "草稿"]
+      - name: creator
+        description: 创建人
+      - name: approver
+        description: 审批人
+      - name: approval_date
+        description: 审批日期
+      - name: days_until_expiry
+        description: 距离过期天数
+      - name: create_date
+        description: 创建日期
 
   - name: dim_test_items
     description: 检验项目业务模型 - 检验项目主数据
@@ -247,10 +717,42 @@ models:
       tags: ["lims", "quality", "standard", "pqr"]
     columns:
       - name: test_item_id
-        description: 项目ID
+        description: 项目ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: item_code
+        description: 项目编码
+      - name: item_name
+        description: 项目名称
+      - name: test_method
+        description: 检验方法
+      - name: standard_id
+        description: 关联标准ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_quality_standard')
+              field: standard_id
+      - name: standard_code
+        description: 标准编码
+      - name: standard_name
+        description: 标准名称
+      - name: min_value
+        description: 最小值
+      - name: max_value
+        description: 最大值
+      - name: unit
+        description: 单位
+      - name: required_equipment
+        description: 所需设备
+      - name: test_duration
+        description: 检验时长
+      - name: test_duration_unit
+        description: 检验时长单位
+      - name: item_status
+        description: 项目状态
+      - name: create_date
+        description: 创建日期
 
   - name: dim_analysts
     description: 分析员信息业务模型 - 分析员主数据
@@ -258,10 +760,28 @@ models:
       tags: ["lims", "quality", "master_data", "pqr"]
     columns:
       - name: analyst_id
-        description: 分析员ID
+        description: 分析员ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: analyst_code
+        description: 分析员编码
+      - name: analyst_name
+        description: 分析员姓名
+      - name: department
+        description: 部门
+      - name: qualification
+        description: 资质
+      - name: certification_date
+        description: 认证日期
+      - name: certification_expiry
+        description: 认证到期日期
+      - name: analyst_status
+        description: 分析员状态
+      - name: days_until_cert_expiry
+        description: 距离认证过期天数
+      - name: create_date
+        description: 创建日期
 
   - name: fct_inspection_reports
     description: 检验报告业务模型 - 检验报告信息
@@ -269,15 +789,61 @@ models:
       tags: ["lims", "quality", "inspection", "pqr"]
     columns:
       - name: report_id
-        description: 报告ID
+        description: 报告ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: report_code
+        description: 报告编码
+      - name: request_id
+        description: 申请ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_inspection_request')
+              field: request_id
+      - name: inspection_type
+        description: 检验类型
+      - name: sample_id
+        description: 样品ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_sample')
+              field: sample_id
+      - name: sample_code
+        description: 样品编码
+      - name: material_id
+        description: 物料ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_material_master')
+              field: material_id
+      - name: material_name
+        description: 物料名称
+      - name: material_type
+        description: 物料类型
+      - name: batch_number
+        description: 批次号
       - name: conclusion
         description: 检验结论
         data_tests:
           - accepted_values:
               values: ["合格", "不合格", "待判定"]
+      - name: report_date
+        description: 报告日期
+      - name: reporter
+        description: 报告人
+      - name: reviewer
+        description: 审核人
+      - name: review_date
+        description: 审核日期
+      - name: approver
+        description: 批准人
+      - name: approval_date
+        description: 批准日期
+      - name: report_status
+        description: 报告状态
+      - name: create_date
+        description: 创建日期
 
   - name: fct_work_orders
     description: 生产工单业务模型 - 提供工单完整信息
@@ -285,15 +851,53 @@ models:
       tags: ["mes", "production", "pqr"]
     columns:
       - name: work_order_number
-        description: 工单号
+        description: 工单号 (主键)
         data_tests:
           - unique
           - not_null
+      - name: product_id
+        description: 产品ID
+      - name: batch_number
+        description: 批次号
+      - name: planned_quantity
+        description: 计划数量
+      - name: actual_quantity
+        description: 实际数量
+      - name: unit
+        description: 单位
       - name: work_order_status
         description: 工单状态
         data_tests:
           - accepted_values:
               values: ["计划中", "进行中", "已完成", "已取消"]
+      - name: planned_start_date
+        description: 计划开始日期
+      - name: planned_end_date
+        description: 计划结束日期
+      - name: actual_start_date
+        description: 实际开始日期
+      - name: actual_end_date
+        description: 实际结束日期
+      - name: workshop_id
+        description: 车间ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_workshop')
+              field: workshop_id
+      - name: workshop_name
+        description: 车间名称
+      - name: workshop_type
+        description: 车间类型
+      - name: workshop_manager
+        description: 车间经理
+      - name: workshop_status
+        description: 车间状态
+      - name: completion_rate_percent
+        description: 完成率百分比
+      - name: create_by
+        description: 创建人
+      - name: create_date
+        description: 创建日期
 
   - name: fct_operations
     description: 工序管理业务模型 - 工单工序执行信息
@@ -301,10 +905,74 @@ models:
       tags: ["mes", "production", "pqr"]
     columns:
       - name: work_order_operation_id
-        description: 工单工序ID
+        description: 工单工序ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: work_order_number
+        description: 工单号 (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_work_order')
+              field: work_order_number
+      - name: batch_number
+        description: 批次号
+      - name: product_id
+        description: 产品ID
+      - name: operation_id
+        description: 工序ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_operation')
+              field: operation_id
+      - name: operation_code
+        description: 工序编码
+      - name: operation_name
+        description: 工序名称
+      - name: operation_type
+        description: 工序类型
+      - name: operation_sequence
+        description: 工序序号
+      - name: standard_duration
+        description: 标准工时
+      - name: duration_unit
+        description: 工时单位
+      - name: planned_start
+        description: 计划开始时间
+      - name: planned_end
+        description: 计划结束时间
+      - name: actual_start
+        description: 实际开始时间
+      - name: actual_end
+        description: 实际结束时间
+      - name: operation_status
+        description: 工序状态
+      - name: equipment_id
+        description: 设备ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_equipment')
+              field: equipment_id
+      - name: equipment_name
+        description: 设备名称
+      - name: equipment_type
+        description: 设备类型
+      - name: operator_id
+        description: 操作员ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_personnel')
+              field: personnel_id
+      - name: operator_name
+        description: 操作员姓名
+      - name: yield_quantity
+        description: 产量
+      - name: defect_quantity
+        description: 缺陷数量
+      - name: yield_rate_percent
+        description: 良品率百分比
+      - name: create_date
+        description: 创建日期
 
   - name: fct_production_reports
     description: 生产报工业务模型 - 产量和质量统计
@@ -312,15 +980,69 @@ models:
       tags: ["mes", "production", "quality", "pqr"]
     columns:
       - name: report_id
-        description: 报工ID
+        description: 报工ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: work_order_number
+        description: 工单号 (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_work_order')
+              field: work_order_number
+      - name: product_id
+        description: 产品ID
+      - name: batch_number
+        description: 批次号
+      - name: operation_id
+        description: 工序ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_operation')
+              field: operation_id
+      - name: operation_name
+        description: 工序名称
+      - name: operation_type
+        description: 工序类型
+      - name: report_date
+        description: 报工日期
+      - name: shift
+        description: 班次
+      - name: output_quantity
+        description: 产出数量
+      - name: defect_quantity
+        description: 缺陷数量
+      - name: defect_reason
+        description: 缺陷原因
+      - name: scrap_quantity
+        description: 报废数量
+      - name: scrap_reason
+        description: 报废原因
+      - name: yield_rate_percent
+        description: 良品率百分比
+      - name: operator_id
+        description: 操作员ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_personnel')
+              field: personnel_id
+      - name: operator_name
+        description: 操作员姓名
+      - name: reviewer_id
+        description: 审核人ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_personnel')
+              field: personnel_id
+      - name: reviewer_name
+        description: 审核人姓名
       - name: review_status
         description: 审核状态
         data_tests:
           - accepted_values:
               values: ["待审核", "已审核", "已驳回"]
+      - name: create_date
+        description: 创建日期
 
   - name: dim_equipment
     description: 设备信息业务模型 - 设备主数据
@@ -328,15 +1050,57 @@ models:
       tags: ["mes", "equipment", "master_data", "pqr"]
     columns:
       - name: equipment_id
-        description: 设备ID
+        description: 设备ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: equipment_code
+        description: 设备编码
+      - name: equipment_name
+        description: 设备名称
+      - name: equipment_type
+        description: 设备类型
+      - name: manufacturer
+        description: 制造商
+      - name: model
+        description: 型号
+      - name: serial_number
+        description: 序列号
+      - name: installation_date
+        description: 安装日期
+      - name: workshop_id
+        description: 车间ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_workshop')
+              field: workshop_id
+      - name: workshop_name
+        description: 车间名称
+      - name: workshop_type
+        description: 车间类型
+      - name: line_id
+        description: 产线ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_production_line')
+              field: line_id
+      - name: line_name
+        description: 产线名称
+      - name: product_type
+        description: 产品类型
       - name: equipment_status
         description: 设备状态
         data_tests:
           - accepted_values:
               values: ["运行中", "停机", "维护中", "报废"]
+      - name: last_maintenance_date
+        description: 上次维护日期
+      - name: next_maintenance_date
+        description: 下次维护日期
+      - name: days_until_maintenance
+        description: 距离维护天数
+      - name: create_date
+        description: 创建日期
 
   - name: fct_equipment_maintenance
     description: 设备维护业务模型 - 维护记录
@@ -344,15 +1108,49 @@ models:
       tags: ["mes", "equipment", "maintenance", "pqr"]
     columns:
       - name: maintenance_id
-        description: 维护ID
+        description: 维护ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: equipment_id
+        description: 设备ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_equipment')
+              field: equipment_id
+      - name: equipment_code
+        description: 设备编码
+      - name: equipment_name
+        description: 设备名称
+      - name: equipment_type
+        description: 设备类型
+      - name: workshop_id
+        description: 车间ID
+      - name: line_id
+        description: 产线ID
       - name: maintenance_type
         description: 维护类型
         data_tests:
           - accepted_values:
               values: ["预防性维护", "故障维修", "计划维护"]
+      - name: maintenance_date
+        description: 维护日期
+      - name: maintenance_content
+        description: 维护内容
+      - name: maintenance_result
+        description: 维护结果
+      - name: downtime_hours
+        description: 停机时长（小时）
+      - name: technician
+        description: 维护人员
+      - name: reviewer
+        description: 审核人
+      - name: review_status
+        description: 审核状态
+      - name: next_maintenance_date
+        description: 下次维护日期
+      - name: create_date
+        description: 创建日期
 
   - name: dim_production_lines
     description: 产线信息业务模型 - 产线主数据
@@ -360,10 +1158,38 @@ models:
       tags: ["mes", "production", "master_data", "pqr"]
     columns:
       - name: line_id
-        description: 产线ID
+        description: 产线ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: line_code
+        description: 产线编码
+      - name: line_name
+        description: 产线名称
+      - name: product_type
+        description: 产品类型
+      - name: capacity
+        description: 产能
+      - name: capacity_unit
+        description: 产能单位
+      - name: line_status
+        description: 产线状态
+      - name: line_manager
+        description: 产线经理
+      - name: workshop_id
+        description: 车间ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_workshop')
+              field: workshop_id
+      - name: workshop_name
+        description: 车间名称
+      - name: workshop_type
+        description: 车间类型
+      - name: clean_level
+        description: 洁净级别
+      - name: create_date
+        description: 创建日期
 
   - name: dim_workshops
     description: 车间信息业务模型 - 车间主数据
@@ -371,10 +1197,28 @@ models:
       tags: ["mes", "production", "master_data", "pqr"]
     columns:
       - name: workshop_id
-        description: 车间ID
+        description: 车间ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: workshop_code
+        description: 车间编码
+      - name: workshop_name
+        description: 车间名称
+      - name: workshop_type
+        description: 车间类型
+      - name: workshop_area
+        description: 车间面积
+      - name: clean_level
+        description: 洁净级别
+      - name: workshop_manager
+        description: 车间经理
+      - name: contact_phone
+        description: 联系电话
+      - name: workshop_status
+        description: 车间状态
+      - name: create_date
+        description: 创建日期
 
   - name: fct_material_consumption
     description: 物料消耗业务模型 - 生产物料消耗记录
@@ -382,10 +1226,64 @@ models:
       tags: ["mes", "production", "material", "pqr"]
     columns:
       - name: consumption_id
-        description: 消耗ID
+        description: 消耗ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: work_order_number
+        description: 工单号 (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_work_order')
+              field: work_order_number
+      - name: product_id
+        description: 产品ID
+      - name: work_order_batch_number
+        description: 工单批次号
+      - name: operation_id
+        description: 工序ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_operation')
+              field: operation_id
+      - name: operation_name
+        description: 工序名称
+      - name: material_id
+        description: 物料ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_material_master')
+              field: material_id
+      - name: material_name
+        description: 物料名称
+      - name: material_type
+        description: 物料类型
+      - name: material_batch_number
+        description: 物料批次号
+      - name: planned_quantity
+        description: 计划数量
+      - name: actual_quantity
+        description: 实际数量
+      - name: unit
+        description: 单位
+      - name: variance_quantity
+        description: 差异数量
+      - name: variance_percent
+        description: 差异百分比
+      - name: variance_reason
+        description: 差异原因
+      - name: consumption_date
+        description: 消耗日期
+      - name: operator_id
+        description: 操作员ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_personnel')
+              field: personnel_id
+      - name: operator_name
+        description: 操作员姓名
+      - name: create_date
+        description: 创建日期
 
   - name: dim_personnel
     description: 人员信息业务模型 - 生产人员主数据
@@ -393,15 +1291,47 @@ models:
       tags: ["mes", "production", "master_data", "pqr"]
     columns:
       - name: personnel_id
-        description: 人员ID
+        description: 人员ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: personnel_code
+        description: 人员编码
+      - name: personnel_name
+        description: 人员姓名
+      - name: department
+        description: 部门
+      - name: position
+        description: 岗位
+      - name: skill_level
+        description: 技能等级
+      - name: certification
+        description: 认证
+      - name: workshop_id
+        description: 车间ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_workshop')
+              field: workshop_id
+      - name: workshop_name
+        description: 车间名称
+      - name: line_id
+        description: 产线ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_production_line')
+              field: line_id
+      - name: line_name
+        description: 产线名称
       - name: personnel_status
         description: 人员状态
         data_tests:
           - accepted_values:
               values: ["在岗", "离职", "休假"]
+      - name: entry_date
+        description: 入职日期
+      - name: create_date
+        description: 创建日期
 
   - name: fct_adverse_events
     description: 不良反应业务模型 - 药物不良反应报告
@@ -409,26 +1339,58 @@ models:
       tags: ["pv", "pharmacovigilance", "safety", "pqr"]
     columns:
       - name: event_id
-        description: 事件ID
+        description: 事件ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: event_code
+        description: 事件编码
+      - name: event_type
+        description: 事件类型
       - name: severity
         description: 严重程度
         data_tests:
           - accepted_values:
               values: ["轻度", "中度", "重度", "危及生命", "死亡"]
-      - name: event_status
-        description: 事件状态
-        data_tests:
-          - accepted_values:
-              values: ["待评估", "调查中", "已关闭"]
+      - name: product_id
+        description: 产品ID
+      - name: batch_number
+        description: 批次号
+      - name: event_date
+        description: 事件发生日期
+      - name: report_date
+        description: 报告日期
+      - name: event_description
+        description: 事件描述
+      - name: patient_age
+        description: 患者年龄
+      - name: patient_gender
+        description: 患者性别
+      - name: outcome
+        description: 结局
       - name: causality_assessment
         description: 因果关系评估
         data_tests:
           - accepted_values:
               values:
                 ["肯定相关", "很可能相关", "可能相关", "可能无关", "待评估"]
+      - name: reporter_type
+        description: 报告人类型
+      - name: reporter_name
+        description: 报告人姓名
+      - name: event_status
+        description: 事件状态
+        data_tests:
+          - accepted_values:
+              values: ["待评估", "调查中", "已关闭"]
+      - name: investigator
+        description: 调查人
+      - name: close_date
+        description: 关闭日期
+      - name: processing_days
+        description: 处理周期（天）
+      - name: create_date
+        description: 创建日期
 
   - name: fct_complaints
     description: 投诉处理业务模型 - 产品投诉记录
@@ -436,15 +1398,33 @@ models:
       tags: ["pv", "pharmacovigilance", "quality", "pqr"]
     columns:
       - name: complaint_id
-        description: 投诉ID
+        description: 投诉ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: complaint_code
+        description: 投诉编码
       - name: complaint_type
         description: 投诉类型
         data_tests:
           - accepted_values:
               values: ["产品质量", "包装问题", "疗效问题", "不良反应", "其他"]
+      - name: complaint_source
+        description: 投诉来源
+      - name: product_id
+        description: 产品ID
+      - name: batch_number
+        description: 批次号
+      - name: complaint_date
+        description: 投诉日期
+      - name: receive_date
+        description: 接收日期
+      - name: complaint_description
+        description: 投诉描述
+      - name: contact_name
+        description: 联系人姓名
+      - name: contact_phone
+        description: 联系电话
       - name: priority
         description: 优先级
         data_tests:
@@ -455,6 +1435,22 @@ models:
         data_tests:
           - accepted_values:
               values: ["待处理", "调查中", "已关闭"]
+      - name: investigator
+        description: 调查人
+      - name: investigation_result
+        description: 调查结果
+      - name: corrective_action
+        description: 纠正措施
+      - name: response_date
+        description: 响应日期
+      - name: close_date
+        description: 关闭日期
+      - name: response_days
+        description: 响应时间（天）
+      - name: processing_days
+        description: 处理周期（天）
+      - name: create_date
+        description: 创建日期
 
   - name: fct_product_recalls
     description: 产品召回业务模型 - 产品召回记录
@@ -462,20 +1458,52 @@ models:
       tags: ["pv", "pharmacovigilance", "safety", "pqr"]
     columns:
       - name: recall_id
-        description: 召回ID
+        description: 召回ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: recall_code
+        description: 召回编码
       - name: recall_level
         description: 召回级别
         data_tests:
           - accepted_values:
               values: ["一级召回", "二级召回", "三级召回"]
+      - name: recall_reason
+        description: 召回原因
+      - name: recall_scope
+        description: 召回范围
+      - name: product_id
+        description: 产品ID
+      - name: batch_numbers
+        description: 批次号列表
+      - name: recall_date
+        description: 召回日期
+      - name: notification_date
+        description: 通知日期
+      - name: recall_quantity
+        description: 召回数量
+      - name: recall_unit
+        description: 召回单位
+      - name: actual_return_quantity
+        description: 实际退回数量
+      - name: return_rate_percent
+        description: 召回率百分比
       - name: recall_status
         description: 召回状态
         data_tests:
           - accepted_values:
               values: ["进行中", "已完成", "已取消"]
+      - name: responsible
+        description: 负责人
+      - name: regulatory_report_date
+        description: 监管报告日期
+      - name: close_date
+        description: 关闭日期
+      - name: recall_duration_days
+        description: 召回周期（天）
+      - name: create_date
+        description: 创建日期
 
   - name: fct_change_controls
     description: 变更控制业务模型 - 变更控制信息
@@ -483,16 +1511,46 @@ models:
       tags: ["qms", "quality", "change", "pqr"]
     columns:
       - name: change_id
-        description: 变更ID
+        description: 变更ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: change_code
+        description: 变更编码
+      - name: change_title
+        description: 变更标题
+      - name: change_type
+        description: 变更类型
+      - name: change_category
+        description: 变更分类
+      - name: change_description
+        description: 变更描述
+      - name: initiator
+        description: 发起人
+      - name: initiate_date
+        description: 发起日期
+      - name: priority
+        description: 优先级
       - name: change_status
         description: 变更状态
         data_tests:
           - accepted_values:
               values:
                 ["待审批", "已批准", "进行中", "已完成", "已关闭", "已取消"]
+      - name: planned_completion
+        description: 计划完成日期
+      - name: actual_completion
+        description: 实际完成日期
+      - name: reviewer
+        description: 审核人
+      - name: approver
+        description: 批准人
+      - name: approval_date
+        description: 批准日期
+      - name: days_overdue
+        description: 超期天数
+      - name: create_date
+        description: 创建日期
 
   - name: fct_change_impacts
     description: 变更影响评估业务模型 - 变更影响评估详情
@@ -500,15 +1558,45 @@ models:
       tags: ["qms", "quality", "change", "pqr"]
     columns:
       - name: impact_id
-        description: 影响评估ID
+        description: 影响评估ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: change_id
+        description: 变更ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_change_control')
+              field: change_id
+      - name: change_code
+        description: 变更编码
+      - name: change_title
+        description: 变更标题
+      - name: change_type
+        description: 变更类型
+      - name: impact_area
+        description: 影响领域
+      - name: impact_description
+        description: 影响描述
       - name: impact_level
         description: 影响程度
         data_tests:
           - accepted_values:
               values: ["高", "中", "低"]
+      - name: affected_documents
+        description: 受影响文档
+      - name: affected_processes
+        description: 受影响流程
+      - name: risk_assessment
+        description: 风险评估
+      - name: mitigation_measures
+        description: 缓解措施
+      - name: assessor
+        description: 评估人
+      - name: assessment_date
+        description: 评估日期
+      - name: create_date
+        description: 创建日期
 
   - name: fct_change_implementations
     description: 变更实施业务模型 - 变更实施任务信息
@@ -516,15 +1604,49 @@ models:
       tags: ["qms", "quality", "change", "pqr"]
     columns:
       - name: implementation_id
-        description: 实施任务ID
+        description: 实施任务ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: change_id
+        description: 变更ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_change_control')
+              field: change_id
+      - name: change_code
+        description: 变更编码
+      - name: change_title
+        description: 变更标题
+      - name: task_name
+        description: 任务名称
+      - name: task_description
+        description: 任务描述
+      - name: responsible
+        description: 负责人
+      - name: planned_start
+        description: 计划开始日期
+      - name: planned_end
+        description: 计划结束日期
+      - name: actual_start
+        description: 实际开始日期
+      - name: actual_end
+        description: 实际结束日期
       - name: task_status
         description: 任务状态
         data_tests:
           - accepted_values:
               values: ["待执行", "进行中", "已完成", "已取消"]
+      - name: completion_evidence
+        description: 完成证据
+      - name: reviewer
+        description: 审核人
+      - name: review_date
+        description: 审核日期
+      - name: days_overdue
+        description: 超期天数
+      - name: create_date
+        description: 创建日期
 
   - name: fct_deviations
     description: 偏差管理业务模型 - 偏差记录信息
@@ -532,16 +1654,54 @@ models:
       tags: ["qms", "quality", "deviation", "pqr"]
     columns:
       - name: deviation_id
-        description: 偏差ID
+        description: 偏差ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: deviation_code
+        description: 偏差编码
+      - name: deviation_title
+        description: 偏差标题
+      - name: deviation_type
+        description: 偏差类型
+      - name: deviation_category
+        description: 偏差分类
+      - name: product_id
+        description: 产品ID
+      - name: batch_number
+        description: 批次号
+      - name: occurrence_date
+        description: 发生日期
+      - name: discovery_date
+        description: 发现日期
+      - name: deviation_description
+        description: 偏差描述
+      - name: immediate_action
+        description: 立即措施
+      - name: root_cause
+        description: 根本原因
+      - name: corrective_action
+        description: 纠正措施
+      - name: preventive_action
+        description: 预防措施
       - name: deviation_status
         description: 偏差状态
         data_tests:
           - accepted_values:
               values:
                 ["待调查", "调查中", "进行中", "待审核", "已关闭", "已取消"]
+      - name: investigator
+        description: 调查人
+      - name: reviewer
+        description: 审核人
+      - name: approver
+        description: 批准人
+      - name: close_date
+        description: 关闭日期
+      - name: closure_days
+        description: 关闭周期（天）
+      - name: create_date
+        description: 创建日期
 
   - name: fct_capas
     description: CAPA管理业务模型 - 纠正预防措施信息
@@ -549,10 +1709,36 @@ models:
       tags: ["qms", "quality", "capa", "pqr"]
     columns:
       - name: capa_id
-        description: CAPA ID
+        description: CAPA ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: capa_code
+        description: CAPA编码
+      - name: capa_title
+        description: CAPA标题
+      - name: capa_type
+        description: CAPA类型
+      - name: source_type
+        description: 来源类型
+      - name: source_id
+        description: 来源ID
+      - name: source_code
+        description: 来源编码
+      - name: capa_description
+        description: CAPA描述
+      - name: root_cause_analysis
+        description: 根本原因分析
+      - name: corrective_action
+        description: 纠正措施
+      - name: preventive_action
+        description: 预防措施
+      - name: responsible
+        description: 负责人
+      - name: planned_completion
+        description: 计划完成日期
+      - name: actual_completion
+        description: 实际完成日期
       - name: capa_status
         description: CAPA状态
         data_tests:
@@ -563,6 +1749,16 @@ models:
         data_tests:
           - accepted_values:
               values: ["有效", "无效", "待验证"]
+      - name: effectiveness_date
+        description: 有效性检查日期
+      - name: creator
+        description: 创建人
+      - name: approver
+        description: 批准人
+      - name: completion_days
+        description: 完成周期（天）
+      - name: create_date
+        description: 创建日期
 
   - name: fct_supplier_audits
     description: 供应商审计业务模型 - 供应商审计记录
@@ -570,15 +1766,57 @@ models:
       tags: ["qms", "quality", "supplier", "pqr"]
     columns:
       - name: audit_id
-        description: 审计ID
+        description: 审计ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: audit_code
+        description: 审计编码
+      - name: audit_type
+        description: 审计类型
+      - name: audit_date
+        description: 审计日期
+      - name: audit_scope
+        description: 审计范围
+      - name: auditor
+        description: 审计员
+      - name: supplier_id
+        description: 供应商ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_supplier_master')
+              field: supplier_id
+      - name: supplier_name
+        description: 供应商名称
+      - name: supplier_type
+        description: 供应商类型
       - name: audit_result
         description: 审计结果
         data_tests:
           - accepted_values:
               values: ["合格", "待整改", "不合格"]
+      - name: audit_score
+        description: 审计评分
+      - name: findings_count
+        description: 发现问题总数
+      - name: critical_findings
+        description: 严重问题数
+      - name: major_findings
+        description: 主要问题数
+      - name: minor_findings
+        description: 次要问题数
+      - name: observations
+        description: 观察项
+      - name: follow_up_required
+        description: 是否需要后续跟踪
+      - name: follow_up_date
+        description: 后续跟踪日期
+      - name: audit_status
+        description: 审计状态
+      - name: report_date
+        description: 报告日期
+      - name: create_date
+        description: 创建日期
 
   - name: fct_equipment_monitoring
     description: 设备运行监控业务模型 - 设备运行参数数据
@@ -586,15 +1824,55 @@ models:
       tags: ["scada", "equipment", "monitoring", "pqr"]
     columns:
       - name: data_id
-        description: 数据ID
+        description: 数据ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: equipment_id
+        description: 设备ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_equipment')
+              field: equipment_id
+      - name: equipment_code
+        description: 设备编码
+      - name: equipment_name
+        description: 设备名称
+      - name: equipment_type
+        description: 设备类型
+      - name: parameter_name
+        description: 参数名称
+      - name: parameter_value
+        description: 参数值
+      - name: unit
+        description: 单位
       - name: quality_code
         description: 数据质量代码
         data_tests:
           - accepted_values:
               values: ["good", "bad", "uncertain"]
+      - name: collection_time
+        description: 采集时间
+      - name: batch_number
+        description: 批次号
+      - name: work_order_number
+        description: 工单号 (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_work_order')
+              field: work_order_number
+      - name: product_id
+        description: 产品ID
+      - name: operation_id
+        description: 工序ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_operation')
+              field: operation_id
+      - name: operation_name
+        description: 工序名称
+      - name: create_date
+        description: 创建日期
 
   - name: fct_environment_monitoring
     description: 环境监控业务模型 - 环境参数监控数据
@@ -602,15 +1880,35 @@ models:
       tags: ["scada", "environment", "monitoring", "pqr"]
     columns:
       - name: data_id
-        description: 数据ID
+        description: 数据ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: location_code
+        description: 位置编码
+      - name: location_name
+        description: 位置名称
+      - name: temperature
+        description: 温度
+      - name: humidity
+        description: 湿度
+      - name: pressure_difference
+        description: 压差
+      - name: particle_count
+        description: 粒子计数
+      - name: collection_time
+        description: 采集时间
       - name: monitoring_status
         description: 监控状态
         data_tests:
           - accepted_values:
               values: ["正常", "异常", "离线"]
+      - name: temperature_out_of_range
+        description: 温度是否超标
+      - name: humidity_out_of_range
+        description: 湿度是否超标
+      - name: create_date
+        description: 创建日期
 
   - name: fct_alarms
     description: 报警管理业务模型 - 报警记录信息
@@ -618,20 +1916,62 @@ models:
       tags: ["scada", "alarm", "monitoring", "pqr"]
     columns:
       - name: alarm_id
-        description: 报警ID
+        description: 报警ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: equipment_id
+        description: 设备ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_equipment')
+              field: equipment_id
+      - name: equipment_code
+        description: 设备编码
+      - name: equipment_name
+        description: 设备名称
+      - name: location_code
+        description: 位置编码
+      - name: alarm_type
+        description: 报警类型
       - name: alarm_level
         description: 报警级别
         data_tests:
           - accepted_values:
               values: ["高", "中", "低"]
+      - name: alarm_message
+        description: 报警消息
+      - name: alarm_time
+        description: 报警时间
+      - name: acknowledge_time
+        description: 确认时间
+      - name: acknowledged_by
+        description: 确认人
+      - name: resolve_time
+        description: 解决时间
+      - name: resolved_by
+        description: 解决人
       - name: alarm_status
         description: 报警状态
         data_tests:
           - accepted_values:
               values: ["未确认", "已确认", "已解决", "未解决"]
+      - name: batch_number
+        description: 批次号
+      - name: work_order_number
+        description: 工单号 (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_work_order')
+              field: work_order_number
+      - name: product_id
+        description: 产品ID
+      - name: response_time_minutes
+        description: 响应时间（分钟）
+      - name: resolution_time_minutes
+        description: 解决时间（分钟）
+      - name: create_date
+        description: 创建日期
 
   - name: fct_batch_tracking
     description: 批次追踪业务模型 - 批次追踪记录
@@ -639,15 +1979,69 @@ models:
       tags: ["scada", "production", "tracking", "pqr"]
     columns:
       - name: tracking_id
-        description: 追踪ID
+        description: 追踪ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: batch_number
+        description: 批次号
+      - name: work_order_number
+        description: 工单号 (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_work_order')
+              field: work_order_number
+      - name: product_id
+        description: 产品ID
+      - name: operation_id
+        description: 工序ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_operation')
+              field: operation_id
+      - name: operation_name
+        description: 工序名称
+      - name: operation_type
+        description: 工序类型
+      - name: equipment_id
+        description: 设备ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_equipment')
+              field: equipment_id
+      - name: equipment_code
+        description: 设备编码
+      - name: equipment_name
+        description: 设备名称
+      - name: start_time
+        description: 开始时间
+      - name: end_time
+        description: 结束时间
+      - name: duration_minutes
+        description: 执行时长（分钟）
       - name: tracking_status
         description: 追踪状态
         data_tests:
           - accepted_values:
               values: ["进行中", "已完成", "已暂停", "已取消"]
+      - name: operator_id
+        description: 操作员ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_personnel')
+              field: personnel_id
+      - name: operator_name
+        description: 操作员姓名
+      - name: yield_quantity
+        description: 产量
+      - name: unit
+        description: 单位
+      - name: quality_status
+        description: 质量状态
+      - name: remark
+        description: 备注
+      - name: create_date
+        description: 创建日期
 
   - name: fct_energy_consumption
     description: 能耗监控业务模型 - 能耗数据
@@ -655,12 +2049,52 @@ models:
       tags: ["scada", "energy", "monitoring", "pqr"]
     columns:
       - name: energy_id
-        description: 能耗ID
+        description: 能耗ID (主键)
         data_tests:
           - unique
           - not_null
+      - name: equipment_id
+        description: 设备ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_equipment')
+              field: equipment_id
+      - name: equipment_code
+        description: 设备编码
+      - name: equipment_name
+        description: 设备名称
+      - name: equipment_type
+        description: 设备类型
+      - name: workshop_id
+        description: 车间ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_workshop')
+              field: workshop_id
+      - name: workshop_name
+        description: 车间名称
       - name: energy_type
         description: 能源类型
         data_tests:
           - accepted_values:
               values: ["电", "蒸汽", "压缩空气", "水", "天然气"]
+      - name: consumption_value
+        description: 消耗值
+      - name: unit
+        description: 单位
+      - name: collection_date
+        description: 采集日期
+      - name: collection_hour
+        description: 采集小时
+      - name: work_order_number
+        description: 工单号 (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_work_order')
+              field: work_order_number
+      - name: product_id
+        description: 产品ID
+      - name: batch_number
+        description: 批次号
+      - name: create_date
+        description: 创建日期

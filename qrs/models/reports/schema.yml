@@ -2,46 +2,125 @@ version: 2
 
 models:
   - name: pqr_summary_report
-    description: PQR汇总报告 - 整合各业务模块的关键指标
+    description: PQR汇总报告 - 整合各业务模块的关键指标，为产品质量回顾提供全面数据支持
+    config:
+      tags: ["report", "pqr", "summary"]
     columns:
+      # 物料统计
       - name: total_materials
         description: 物料总数
+        data_tests:
+          - not_null
+      - name: approved_materials
+        description: 已审批物料数
       - name: material_approval_rate
-        description: 物料审批通过率(%)
+        description: 物料审批通过率 (%)
         data_tests:
           - dbt_utils.accepted_range:
               min_value: 0
               max_value: 100
+
+      # 供应商统计
+      - name: total_suppliers
+        description: 供应商总数
+        data_tests:
+          - not_null
+      - name: qualified_suppliers
+        description: 合格供应商数
       - name: supplier_qualification_rate
-        description: 供应商合格率(%)
+        description: 供应商合格率 (%)
         data_tests:
           - dbt_utils.accepted_range:
               min_value: 0
               max_value: 100
+      - name: avg_supplier_audit_score
+        description: 供应商平均审计评分
+
+      # 生产统计
+      - name: total_work_orders
+        description: 总工单数
+        data_tests:
+          - not_null
+      - name: completed_orders
+        description: 已完成工单数
       - name: production_completion_rate
-        description: 生产完成率(%)
+        description: 生产完成率 (%)
         data_tests:
           - dbt_utils.accepted_range:
               min_value: 0
               max_value: 100
       - name: production_on_time_rate
-        description: 生产按时完成率(%)
+        description: 生产按时完成率 (%)
         data_tests:
           - dbt_utils.accepted_range:
               min_value: 0
               max_value: 100
+      - name: avg_production_yield_rate
+        description: 平均生产收率 (%)
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 100
+
+      # 质量检验统计
+      - name: total_inspection_requests
+        description: 总检验申请数
+        data_tests:
+          - not_null
+      - name: completed_inspections
+        description: 已完成检验数
       - name: inspection_completion_rate
-        description: 检验完成率(%)
+        description: 检验完成率 (%)
         data_tests:
           - dbt_utils.accepted_range:
               min_value: 0
               max_value: 100
       - name: inspection_on_time_rate
-        description: 检验按时完成率(%)
+        description: 检验按时完成率 (%)
         data_tests:
           - dbt_utils.accepted_range:
               min_value: 0
               max_value: 100
+      - name: avg_inspection_processing_days
+        description: 平均检验处理时长 (天)
+
+      # 偏差统计
+      - name: total_deviations
+        description: 总偏差数
+        data_tests:
+          - not_null
+      - name: closed_deviations
+        description: 已关闭偏差数
+      - name: deviation_closure_rate
+        description: 偏差关闭率 (%)
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 100
+      - name: avg_deviation_closure_days
+        description: 平均偏差关闭周期 (天)
+
+      # CAPA统计
+      - name: total_capas
+        description: 总CAPA数
+        data_tests:
+          - not_null
+      - name: completed_capas
+        description: 已完成CAPA数
+      - name: capa_completion_rate
+        description: CAPA完成率 (%)
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 100
+      - name: capa_effectiveness_rate
+        description: CAPA有效性率 (%)
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 100
+
+      # 报告元数据
       - name: report_generated_at
         description: 报告生成时间
         data_tests:
