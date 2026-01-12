@@ -6,4 +6,4 @@ packages:
   - package: dbt-labs/audit_helper
     version: 0.12.2
   
-  - git: "  "
+  - git: ""
