@@ -1,5 +1,5 @@
+import os
 import re
-import ast
 import json
 from typing import Tuple, List, Any
 
@@ -105,6 +105,13 @@ def dbt_find_column(table_name: str = "", engine: Any = None) -> List:
 
 
 def dbt_produce_json(output_dict: dict = None, engine: Any = None) -> dict:
+    """
+    生成血缘 JSON 输出（支持增强格式）
+
+    :param output_dict: 血缘分析结果
+    :param engine: 数据库连接
+    :return: 血缘字典
+    """
     table_to_model_dict = {}
     for key, val in output_dict.items():
         table_to_model_dict[val["table_name"]] = key
@@ -153,15 +160,113 @@ def dbt_produce_json(output_dict: dict = None, engine: Any = None) -> dict:
             base_table_dict[key]["upstream_tables"] = val.get("upstream_tables", [])
             base_table_dict[key]["downstream_tables"] = val.get("downstream_tables", [])
             base_table_dict[key]["is_model"] = val.get("is_model", False)
-    with open("output.json", "w") as outfile:
-        json.dump(base_table_dict, outfile)
-    _produce_html(output_json=str(base_table_dict).replace("'", '"'))
-    return base_table_dict
+
+    # 生成增强的输出
+    enhanced_output = _enhance_output(base_table_dict, engine)
+
+    # 确保输出目录存在
+    os.makedirs("output", exist_ok=True)
+
+    with open("output/output.json", "w", encoding="utf-8") as outfile:
+        json.dump(enhanced_output, outfile, indent=2, ensure_ascii=False)
+
+    print(f"\n✓ 血缘信息已保存到 output/output.json")
+
+    # 生成统计报告
+    _generate_summary_report(enhanced_output)
+
+    # 生成 HTML
+    _produce_html(output_json=str(enhanced_output).replace("'", '"'))
+
+    return enhanced_output
+
+
+def _enhance_output(output_dict: dict, engine: Any = None) -> dict:
+    """
+    增强输出字典，将新格式转换为兼容格式
+
+    为了保持向后兼容，需要将增强的列血缘信息转换为旧的列表格式
+    """
+    enhanced = {}
+
+    for key, val in output_dict.items():
+        enhanced[key] = {
+            "tables": val.get("tables", []),
+            "table_name": val.get("table_name", ""),
+            "upstream_tables": val.get("upstream_tables", []),
+            "downstream_tables": val.get("downstream_tables", []),
+            "is_model": val.get("is_model", False)
+        }
+
+        # 处理列血缘：如果列信息是增强格式（字典），需要转换为列表格式
+        columns = val.get("columns", {})
+        if columns:
+            # 检查是否是增强格式
+            first_col = next(iter(columns.values()), None)
+            if isinstance(first_col, dict):
+                # 是增强格式，需要转换
+                enhanced[key]["columns"] = {}
+                for col_name, col_info in columns.items():
+                    if isinstance(col_info, dict):
+                        # 从增强格式提取 sources
+                        enhanced[key]["columns"][col_name] = col_info.get("sources", [""])
+                        # 保存增强信息到元数据字段（供支持新格式的解析器使用）
+                        if "enhanced_columns_metadata" not in enhanced[key]:
+                            enhanced[key]["enhanced_columns_metadata"] = {}
+                        enhanced[key]["enhanced_columns_metadata"][col_name] = col_info
+                    else:
+                        # 已经是列表格式
+                        enhanced[key]["columns"][col_name] = col_info
+            else:
+                # 已经是旧格式
+                enhanced[key]["columns"] = columns
+
+        # 添加增强字段（如果存在）
+        if "table_metadata" in val:
+            enhanced[key]["table_metadata"] = val["table_metadata"]
+
+        if "column_metadata" in val:
+            enhanced[key]["column_metadata"] = val["column_metadata"]
+
+        if "dependency_analysis" in val:
+            enhanced[key]["dependency_analysis"] = val["dependency_analysis"]
+
+        if "query_analysis" in val:
+            enhanced[key]["query_analysis"] = val["query_analysis"]
+
+    return enhanced
+
+
+def _generate_summary_report(output_dict: dict):
+    """生成统计报告"""
+    total_nodes = len(output_dict)
+    model_nodes = sum(1 for v in output_dict.values() if v.get("is_model", False))
+    base_nodes = total_nodes - model_nodes
+
+    total_conflicts = sum(
+        len(v.get("dependency_analysis", {}).get("conflicts", []))
+        for v in output_dict.values()
+    )
+
+    total_columns = sum(
+        len(v.get("columns", {}))
+        for v in output_dict.values()
+    )
+
+    print(f"\n{'='*60}")
+    print(f"血缘分析统计报告")
+    print(f"{'='*60}")
+    print(f"总节点数: {total_nodes}")
+    print(f"  - 模型节点: {model_nodes}")
+    print(f"  - 基础表: {base_nodes}")
+    print(f"总列数: {total_columns}")
+    print(f"冲突数: {total_conflicts}")
+    print(f"{'='*60}")
 
 
 def _produce_html(output_json: str = ""):
     # Creating the HTML file
-    file_html = open("index.html", "w", encoding="utf-8")
+    file_html = open("output/index.html", "w", encoding="utf-8")
     # Adding the input data to the HTML file
     file_html.write('''<!DOCTYPE html>
     <html lang="en">
