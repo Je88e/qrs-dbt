@@ -153,7 +153,7 @@ def dbt_produce_json(output_dict: dict = None, engine: Any = None) -> dict:
             base_table_dict[key]["upstream_tables"] = val.get("upstream_tables", [])
             base_table_dict[key]["downstream_tables"] = val.get("downstream_tables", [])
             base_table_dict[key]["is_model"] = val.get("is_model", False)
-    with open("output/output.json", "w") as outfile:
+    with open("output.json", "w") as outfile:
         json.dump(base_table_dict, outfile)
     _produce_html(output_json=str(base_table_dict).replace("'", '"'))
     return base_table_dict

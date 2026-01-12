@@ -50,7 +50,7 @@ class Lineage:
         for key, value in self.manifest["nodes"].items():
             # 跳过 seed、test 和 analysis 节点（它们不适合血缘分析）
             node_type = key.split('.')[0]
-            if node_type in ['seed', 'test', 'analysis', 'snapshot']:
+            if node_type in ['seed', 'test', 'analysis']:
                 print(key, " skipped (node type: {})".format(node_type))
                 continue
 
