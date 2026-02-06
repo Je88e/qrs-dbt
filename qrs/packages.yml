@@ -5,5 +5,3 @@ packages:
   # 审计跟踪包 - 支持行级和列级数据对比
   - package: dbt-labs/audit_helper
     version: 0.12.2
-  
-  - git: ""

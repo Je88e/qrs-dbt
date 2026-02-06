@@ -31,7 +31,7 @@ select
     eq.equipment_name,
     eq.equipment_type,
     eq.manufacturer,
-    eq.model,
+    eq.equipment_model,
     eq.serial_number,
     eq.installation_date,
     

@@ -57,12 +57,12 @@ snapshots:
       - name: is_deleted
         description: |
           记录删除标记
-          - False: 正常记录
-          - True: 已删除记录
+          - 0: 正常记录
+          - 1: 已删除记录
         data_tests:
           - not_null
           - accepted_values:
-              values: ['True', 'False']
+              values: [1, 0]
 
   - name: snap_material_receipts
     description: |

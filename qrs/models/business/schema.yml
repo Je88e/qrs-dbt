@@ -375,7 +375,7 @@ models:
         description: 参考单据
       - name: reference_type
         description: 参考类型
-      - name: operator
+      - name: operator_name
         description: 操作员
       - name: remark
         description: 备注
@@ -659,7 +659,7 @@ models:
         description: 取样人
       - name: storage_condition
         description: 存储条件
-      - name: location
+      - name: storage_location
         description: 存储位置
       - name: expiry_date
         description: 有效期
@@ -1062,7 +1062,7 @@ models:
         description: 设备类型
       - name: manufacturer
         description: 制造商
-      - name: model
+      - name: equipment_model
         description: 型号
       - name: serial_number
         description: 序列号
@@ -1301,7 +1301,7 @@ models:
         description: 人员姓名
       - name: department
         description: 部门
-      - name: position
+      - name: job_position
         description: 岗位
       - name: skill_level
         description: 技能等级
@@ -1840,9 +1840,9 @@ models:
         description: 设备名称
       - name: equipment_type
         description: 设备类型
-      - name: parameter_name
+      - name: param_name
         description: 参数名称
-      - name: parameter_value
+      - name: param_value
         description: 参数值
       - name: unit
         description: 单位

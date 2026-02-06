@@ -110,17 +110,58 @@ class Lineage:
 
             # 步骤 5: 构建输出
             self.output_dict[key]["tables"] = fused_result["tables"]
-            self.output_dict[key]["columns"] = fused_result["columns"]
             self.output_dict[key]["table_name"] = table_name
             self.output_dict[key]["table_metadata"] = fused_result["metadata"]["table_metadata"]
-            self.output_dict[key]["column_metadata"] = fused_result["metadata"]["column_metadata"]
-            self.output_dict[key]["dependency_analysis"] = fused_result["dependency_analysis"]
-            self.output_dict[key]["query_analysis"] = fused_result["query_analysis"]
+            
+            # 获取基础的 column_metadata（从 catalog.json）
+            column_metadata = fused_result["metadata"]["column_metadata"].copy()
+            
+            # 从 manifest.json 添加 tags 和 description
+            self.output_dict[key]["tags"] = value.get("tags", [])
+            self.output_dict[key]["description"] = value.get("description", "")
+
+            # 获取列级别的描述 (从 manifest.json)
+            manifest_columns = value.get("columns", {})
+            column_descriptions = {}
+            if manifest_columns:
+                for col_name, col_info in manifest_columns.items():
+                    column_descriptions[col_name] = col_info.get("description", "")
+            
+            # 获取增强的列元数据（从 fused_result["columns"]）
+            enhanced_columns_metadata = fused_result.get("columns", {})
+            
+            # 步骤 6: 合并所有列元数据到 column_metadata
+            for col_name in column_metadata.keys():
+                # 1. 添加 description (从 manifest.json)
+                if col_name in column_descriptions:
+                    column_metadata[col_name]["description"] = column_descriptions[col_name]
+                else:
+                    column_metadata[col_name]["description"] = ""
+                
+                # 2. 合并 enhanced_columns_metadata 的字段
+                if col_name in enhanced_columns_metadata:
+                    enhanced_meta = enhanced_columns_metadata[col_name]
+                    for field_name, field_value in enhanced_meta.items():
+                        # 检查字段名是否冲突
+                        if field_name in column_metadata[col_name]:
+                            # 字段名冲突，重命名为 explain_${原字段}
+                            new_field_name = f"explain_{field_name}"
+                            column_metadata[col_name][new_field_name] = field_value
+                        else:
+                            # 无冲突，直接添加
+                            column_metadata[col_name][field_name] = field_value
+            
+            # 设置最终的 column_metadata
+            self.output_dict[key]["column_metadata"] = column_metadata
+            
+            # 保持向后兼容：保留 columns 字段（仅包含血缘列表）
+            self.output_dict[key]["columns"] = {}
+            for col_name, col_info in enhanced_columns_metadata.items():
+                self.output_dict[key]["columns"][col_name] = col_info.get("sources", [""])
 
             print(f"\n✓ {key} 处理完成")
             print(f"  - 表依赖: {len(self.output_dict[key]['tables'])} 个")
             print(f"  - 列血缘: {len(self.output_dict[key]['columns'])} 个")
-            print(f"  - 冲突: {len(self.output_dict[key]['dependency_analysis']['conflicts'])} 个")
 
         # 生成最终输出
         print(f"\n{'='*60}")

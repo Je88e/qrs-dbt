@@ -28,7 +28,7 @@
         {% else %}
         valid_to = '9999-12-31'
         {% endif %}
-        and is_deleted = 'False'
+        and is_deleted = 0
 )
 
 {% endmacro %}

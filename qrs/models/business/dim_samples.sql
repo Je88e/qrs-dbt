@@ -40,7 +40,7 @@ select
     
     -- 存储信息
     s.storage_condition,
-    s.location,
+    s.storage_location,
     s.expiry_date,
     
     -- 样品状态

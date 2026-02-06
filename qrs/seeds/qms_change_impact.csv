@@ -1,4 +1,4 @@
-impact_id,change_id,impact_area,impact_description,impact_level,affected_documents,affected_processes,risk_assessment,mitigation_measures,assessor,assess_date,create_date
-IMP001,CHG001,产品质量,可能影响产品溶解度和稳定性,中,配方文件/工艺规程,配料/制粒,需要进行稳定性考察,开展3批验证和稳定性试验,评估员A,2024-01-09,2024-01-09
-IMP002,CHG001,生产工艺,配料工艺需要调整,低,批生产记录/工艺规程,配料,操作参数需要更新,培训操作人员,评估员A,2024-01-09,2024-01-09
-IMP003,CHG002,生产能力,产能可能临时下降,中,设备操作规程,混合,设备调试期间产能受限,提前安排生产计划,评估员B,2024-01-13,2024-01-13
+impact_id,change_id,impact_area,impact_description,impact_level,affected_documents,affected_processes,risk_assessment,mitigation_measures,assessor,assess_date,create_date,update_date,_airbyte_extracted_at
+IMP001,CHG001,产品质量,可能影响产品溶解度和稳定性,中,配方文件/工艺规程,配料/制粒,需要进行稳定性考察,开展3批验证和稳定性试验,评估员A,2024-01-09,2024-01-09,2026-01-23 10:08:20.993 +0800,2026-01-23 10:08:20.993 +0800
+IMP002,CHG001,生产工艺,配料工艺需要调整,低,批生产记录/工艺规程,配料,操作参数需要更新,培训操作人员,评估员A,2024-01-09,2024-01-09,2026-01-23 10:08:20.993 +0800,2026-01-23 10:08:20.993 +0800
+IMP003,CHG002,生产能力,产能可能临时下降,中,设备操作规程,混合,设备调试期间产能受限,提前安排生产计划,评估员B,2024-01-13,2024-01-13,2026-01-23 10:08:20.993 +0800,2026-01-23 10:08:20.993 +0800

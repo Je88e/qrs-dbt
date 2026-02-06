@@ -1,7 +1,7 @@
-formula_detail_id,formula_id,material_id,material_name,quantity,unit,sequence,is_critical,usage_notes,create_date
-FRD001,FRM001,MAT001,阿司匹林原料药,500,g,1,true,主药成分,2023-12-20
-FRD002,FRM001,MAT005,淀粉,200,g,2,false,填充剂,2023-12-20
-FRD003,FRM002,MAT002,对乙酰氨基酚,300,g,1,true,主药成分,2023-12-22
-FRD004,FRM002,MAT003,胶囊壳,5000,粒,2,false,包装材料,2023-12-22
-FRD005,FRM003,MAT001,阿司匹林原料药,100,g,1,true,主药成分1,2023-12-25
-FRD006,FRM003,MAT002,对乙酰氨基酚,100,g,2,true,主药成分2,2023-12-25
+formula_detail_id,formula_id,material_id,material_name,quantity,unit,sequence,is_critical,usage_notes,create_date,update_date,_airbyte_extracted_at
+FRD001,FRM001,MAT001,阿司匹林原料药,500,g,1,1,主药成分,2023-12-20,2023-12-21,2026-01-23 10:08:20.993 +0800
+FRD002,FRM001,MAT005,淀粉,200,g,2,0,填充剂,2023-12-20,2023-12-21,2026-01-23 10:08:20.993 +0800
+FRD003,FRM002,MAT002,对乙酰氨基酚,300,g,1,1,主药成分,2023-12-22,2023-12-21,2026-01-23 10:08:20.993 +0800
+FRD004,FRM002,MAT003,胶囊壳,5000,粒,2,0,包装材料,2023-12-22,2023-12-21,2026-01-23 10:08:20.993 +0800
+FRD005,FRM003,MAT001,阿司匹林原料药,100,g,1,1,主药成分1,2023-12-25,2023-12-21,2026-01-23 10:08:20.993 +0800
+FRD006,FRM003,MAT002,对乙酰氨基酚,100,g,2,1,主药成分2,2023-12-25,2023-12-21,2026-01-23 10:08:20.993 +0800

@@ -30,7 +30,7 @@ select
     per.personnel_code,
     per.personnel_name,
     per.department,
-    per.position,
+    per.job_position,
     per.skill_level,
     per.certification,
     

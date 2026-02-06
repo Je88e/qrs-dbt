@@ -37,8 +37,8 @@ select
     eq.equipment_type,
     
     -- 参数信息
-    ed.parameter_name,
-    ed.parameter_value,
+    ed.param_name,
+    ed.param_value,
     ed.unit,
     ed.quality_code,
     

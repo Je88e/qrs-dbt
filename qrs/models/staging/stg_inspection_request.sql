@@ -1,6 +1,8 @@
 {{
     config(
-        materialized='view',
+        materialized='incremental',
+        incremental_strategy='merge',
+        on_schema_change='append_new_columns',
         tags=['staging', 'lims', 'quality']
     )
 }}
@@ -18,6 +20,8 @@ with source_data as (
 
 final as (
     select
+        -- 新增雪花ID
+        {{ generate_snowflake_id() }}::text as snowflake_id,
         request_id,
         material_id,
         batch_number,
@@ -30,8 +34,16 @@ final as (
         planned_completion_date,
         actual_completion_date,
         sample_qty as sample_quantity,
-        sample_unit
+        sample_unit,
+        _airbyte_extracted_at as loaded_at
     from source_data
 )
 
 select * from final
+{% if is_incremental() %}
+where _loaded_at > (
+    select coalesce(max(_loaded_at), '1900-01-01'::timestamp)
+           - interval '{{ var("incremental_lookback_minutes", 5) }} minutes'
+    from {{ this }}
+)
+{% endif %}

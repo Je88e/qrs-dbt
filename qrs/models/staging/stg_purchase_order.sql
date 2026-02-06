@@ -1,6 +1,9 @@
 {{
     config(
-        materialized='view',
+        materialized='incremental',
+        unique_key='purchase_order_number',
+        incremental_strategy='merge',
+        on_schema_change='append_new_columns',
         tags=['staging', 'erp', 'procurement']
     )
 }}
@@ -10,6 +13,11 @@
     Description: ERP采购订单原始数据清洗层 - Staging层
     Source: ERP系统采购订单主表
     Grain: 每行代表一个采购订单
+
+    升级说明:
+    - 新增 snowflake_id: 分布式唯一标识符
+    - 新增 _loaded_at: dbt处理时间戳，用于增量控制
+    - 物化策略: incremental (merge)
 */
 
 with source_data as (
@@ -18,6 +26,9 @@ with source_data as (
 
 final as (
     select
+        -- 新增雪花ID
+        {{ generate_snowflake_id() }}::text as snowflake_id,
+
         -- 主键
         po_number as purchase_order_number,
 
@@ -40,12 +51,28 @@ final as (
         approver,
         approval_date,
 
-        -- 审计字段
+        -- 审计字段（源系统时间，用于业务分析）
         create_date,
-        update_date
+        update_date,
+
+        -- 新增：dbt处理时间戳（用于增量控制）
+        _airbyte_extracted_at as loaded_at
 
     from source_data
 )
 
 select * from final
-
+{% if is_incremental() %}
+where _loaded_at > (
+    select coalesce(max(_loaded_at), '1900-01-01'::timestamp)
+           - interval '{{ var("incremental_lookback_minutes", 5) }} minutes'
+    from {{ this }}
+)
+{% endif %}
+{% if is_incremental() %}
+where _loaded_at > (
+    select coalesce(max(_loaded_at), '1900-01-01'::timestamp)
+           - interval '{{ var("incremental_lookback_minutes", 5) }} minutes'
+    from {{ this }}
+)
+{% endif %}

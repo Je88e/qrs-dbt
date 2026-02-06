@@ -40,6 +40,8 @@ sources:
             description: 创建日期
           - name: update_date
             description: 更新日期
+          - name: _airbyte_extracted_at
+            description: Airbyte抽取时间
 
       # 采购订单明细表
       - name: erp_purchase_order_detail
@@ -63,6 +65,12 @@ sources:
             description: 已交货数量
           - name: inspection_status
             description: 检验状态
+          - name: create_date
+            description: 创建日期
+          - name: update_date
+            description: 更新日期
+          - name: _airbyte_extracted_at
+            description: Airbyte抽取时间
 
       # 物料接收表
       - name: erp_material_receipt
@@ -92,6 +100,10 @@ sources:
             description: 接收人
           - name: create_date
             description: 创建日期
+          - name: update_date
+            description: 更新日期
+          - name: _airbyte_extracted_at
+            description: Airbyte抽取时间
 
       # 物料退货表
       - name: erp_material_return
@@ -119,6 +131,10 @@ sources:
             description: 处理人
           - name: create_date
             description: 创建日期
+          - name: update_date
+            description: 更新日期
+          - name: _airbyte_extracted_at
+            description: Airbyte抽取时间
 
       # 物料主数据表
       - name: erp_material_master
@@ -144,6 +160,8 @@ sources:
             description: 更新日期
           - name: is_deleted
             description: 删除标记
+          - name: _airbyte_extracted_at
+            description: Airbyte抽取时间
 
       # 供应商主数据表
       - name: erp_supplier_master
@@ -169,6 +187,10 @@ sources:
             description: 审计得分
           - name: create_date
             description: 创建日期
+          - name: update_date
+            description: 更新日期
+          - name: _airbyte_extracted_at
+            description: Airbyte抽取时间
 
       # 配方主表
       - name: erp_formula_master
@@ -240,6 +262,11 @@ sources:
             description: 审核状态
           - name: create_date
             description: 创建日期
+          - name: update_date
+            description: 更新日期
+          - name: _airbyte_extracted_at
+            description: Airbyte抽取时间
+
       - name: mes_equipment
         description: 设备主数据表
         columns:
@@ -271,6 +298,11 @@ sources:
             description: 下次维护日期
           - name: create_date
             description: 创建日期
+          - name: update_date
+            description: 更新日期
+          - name: _airbyte_extracted_at
+            description: Airbyte抽取时间
+
       - name: mes_equipment_maintenance
         description: 设备维护记录表
       - name: mes_production_line
@@ -281,6 +313,47 @@ sources:
         description: 物料消耗记录表
       - name: mes_personnel
         description: 生产人员主数据表
+      - name: mes_equipment_calibration
+        description: 设备校准记录表
+        columns:
+          - name: calibration_id
+            description: 校准记录ID (主键)
+          - name: equipment_id
+            description: 设备ID (外键)
+          - name: calibration_code
+            description: 校准编号
+          - name: calibration_type
+            description: 校准类型 (内部校准/外部校准/自校准)
+          - name: calibration_date
+            description: 校准日期
+          - name: next_calibration_date
+            description: 下次校准日期
+          - name: calibration_cycle
+            description: 校准周期(月)
+          - name: standard_equipment
+            description: 标准器
+          - name: standard_certificate
+            description: 标准器证书号
+          - name: calibration_result
+            description: 校准结果 (合格/不合格/限制使用)
+          - name: deviation_value
+            description: 偏差值
+          - name: tolerance
+            description: 允许偏差
+          - name: is_within_tolerance
+            description: 是否在允差内
+          - name: calibrator
+            description: 校准人员
+          - name: reviewer
+            description: 审核人
+          - name: certificate_no
+            description: 校准证书号
+          - name: calibration_status
+            description: 校准状态 (有效/过期/待校准)
+          - name: create_date
+            description: 创建日期
+          - name: _airbyte_extracted_at
+            description: 抽取时间
 
   # ============================================
   # LIMS系统源表 (8个表)
@@ -328,6 +401,11 @@ sources:
             description: 备注
           - name: create_date
             description: 创建日期
+          - name: update_date
+            description: 更新日期
+          - name: _airbyte_extracted_at
+            description: Airbyte抽取时间
+
       - name: lims_sample
         description: 样品主数据表
       - name: lims_quality_standard
@@ -338,6 +416,84 @@ sources:
         description: 分析员主数据表
       - name: lims_inspection_report
         description: 检验报告表
+      - name: lims_water_quality
+        description: 工艺用水质量检测记录表
+        columns:
+          - name: test_id
+            description: 检测记录ID (主键)
+          - name: monitoring_point_id
+            description: 监测点ID
+          - name: monitoring_point_name
+            description: 监测点名称
+          - name: water_type
+            description: 水类型 (纯化水/注射用水/饮用水)
+          - name: parameter_name
+            description: 检测参数 (TOC/电导率/微生物/pH等)
+          - name: test_value
+            description: 检测值
+          - name: test_unit
+            description: 单位
+          - name: limit_min
+            description: 标准下限
+          - name: limit_max
+            description: 标准上限
+          - name: result_status
+            description: 结果状态 (合格/不合格)
+          - name: test_date
+            description: 检测日期
+          - name: analyst_id
+            description: 分析员ID
+          - name: equipment_id
+            description: 检测设备ID
+          - name: batch_number
+            description: 批次号
+          - name: create_date
+            description: 创建日期
+          - name: _airbyte_extracted_at
+            description: 抽取时间
+      - name: lims_stability_study
+        description: 稳定性研究记录表
+        columns:
+          - name: study_id
+            description: 研究ID (主键)
+          - name: study_code
+            description: 研究编号
+          - name: product_id
+            description: 产品ID
+          - name: batch_number
+            description: 批次号
+          - name: study_type
+            description: 研究类型 (长期/加速/中间条件)
+          - name: storage_condition
+            description: 储存条件
+          - name: timepoint
+            description: 检测时间点
+          - name: timepoint_months
+            description: 时间点(月)
+          - name: sample_id
+            description: 样品ID
+          - name: test_item_id
+            description: 检验项目ID
+          - name: test_item_name
+            description: 检验项目名称
+          - name: test_value
+            description: 检测值
+          - name: test_unit
+            description: 单位
+          - name: specification
+            description: 规格要求
+          - name: result_status
+            description: 结果状态
+          - name: test_date
+            description: 检测日期
+          - name: analyst_id
+            description: 分析员ID
+          - name: study_status
+            description: 研究状态
+          - name: create_date
+            description: 创建日期
+          - name: _airbyte_extracted_at
+            description: 抽取时间
 
   # ============================================
   # QMS系统源表 (6个表)
@@ -381,6 +537,11 @@ sources:
             description: 批准日期
           - name: create_date
             description: 创建日期
+          - name: update_date
+            description: 更新日期
+          - name: _airbyte_extracted_at
+            description: Airbyte抽取时间
+
       - name: qms_change_impact
         description: 变更影响评估表
       - name: qms_change_implementation
@@ -428,10 +589,93 @@ sources:
             description: 关闭日期
           - name: create_date
             description: 创建日期
+          - name: update_date
+            description: 更新日期
+          - name: _airbyte_extracted_at
+            description: Airbyte抽取时间
+
       - name: qms_capa
         description: CAPA主表
       - name: qms_supplier_audit
         description: 供应商审计记录表
+      - name: qms_training_record
+        description: 人员培训记录表
+        columns:
+          - name: training_id
+            description: 培训记录ID (主键)
+          - name: personnel_id
+            description: 人员ID (外键)
+          - name: course_code
+            description: 课程编码
+          - name: course_name
+            description: 课程名称
+          - name: course_type
+            description: 课程类型 (GMP基础/岗位技能/SOP培训/安全培训)
+          - name: training_date
+            description: 培训日期
+          - name: training_duration
+            description: 培训时长(小时)
+          - name: trainer
+            description: 培训师
+          - name: assessment_score
+            description: 考核得分
+          - name: assessment_result
+            description: 考核结果 (通过/未通过/免考)
+          - name: certificate_no
+            description: 证书编号
+          - name: valid_from
+            description: 有效期开始
+          - name: valid_to
+            description: 有效期结束
+          - name: training_status
+            description: 培训状态 (已完成/进行中/已取消)
+          - name: create_date
+            description: 创建日期
+          - name: _airbyte_extracted_at
+            description: 抽取时间
+      - name: qms_validation_record
+        description: 验证确认记录表
+        columns:
+          - name: validation_id
+            description: 验证记录ID (主键)
+          - name: validation_code
+            description: 验证编号
+          - name: validation_type
+            description: 验证类型 (工艺验证/清洁验证/设备验证/方法验证)
+          - name: validation_title
+            description: 验证标题
+          - name: protocol_no
+            description: 方案编号
+          - name: product_id
+            description: 产品ID
+          - name: equipment_id
+            description: 设备ID
+          - name: batch_numbers
+            description: 验证批次号(逗号分隔)
+          - name: start_date
+            description: 开始日期
+          - name: end_date
+            description: 结束日期
+          - name: validation_result
+            description: 验证结论 (通过/有条件通过/未通过)
+          - name: deviation_count
+            description: 偏差数量
+          - name: responsible
+            description: 负责人
+          - name: reviewer
+            description: 审核人
+          - name: approver
+            description: 批准人
+          - name: approval_date
+            description: 批准日期
+          - name: next_revalidation_date
+            description: 下次再验证日期
+          - name: validation_status
+            description: 验证状态 (草稿/进行中/待审核/已批准/已过期)
+          - name: create_date
+            description: 创建日期
+          - name: _airbyte_extracted_at
+            description: 抽取时间
 
   # ============================================
   # SCADA系统源表 (5个表)
@@ -477,6 +721,11 @@ sources:
             description: 相关工单
           - name: create_date
             description: 创建日期
+          - name: update_date
+            description: 更新日期
+          - name: _airbyte_extracted_at
+            description: Airbyte抽取时间
+
       - name: scada_batch_tracking
         description: 批次追踪记录表
       - name: scada_energy_consumption
@@ -530,6 +779,11 @@ sources:
             description: 关闭日期
           - name: create_date
             description: 创建日期
+          - name: update_date
+            description: 更新日期
+          - name: _airbyte_extracted_at
+            description: Airbyte抽取时间
+            
       - name: pv_complaint
         description: 产品投诉记录表
       - name: pv_product_recall

@@ -1,4 +1,4 @@
-deviation_id,deviation_code,deviation_title,deviation_type,deviation_category,product_id,batch_number,occurrence_date,discovery_date,description,immediate_action,root_cause,corrective_action,preventive_action,status,investigator,reviewer,approver,close_date,create_date
-DEV001,DEV202401001,混合时间超标,工艺偏差,时间偏差,PROD001,BATCH001,2024-01-10,2024-01-10,混合工序时间超出规定时间5分钟,暂停生产进行评估,设备故障导致启动延迟,维修设备并重新校准,增加设备点检频次,已关闭,调查员A,审核员X,审批员Y,2024-01-15,2024-01-10
-DEV002,DEV202401002,原料外观异常,物料偏差,外观偏差,,,2024-01-14,2024-01-14,MAT001批次BATCH003外观发黄,隔离物料待检验,供应商生产工艺波动,要求供应商调查并提供报告,加强来料检验,进行中,调查员B,,,2024-01-14
-DEV003,DEV202401003,环境温度超标,环境偏差,温湿度偏差,PROD002,BATCH002,2024-01-16,2024-01-16,生产车间温度超过25℃,启动应急降温措施,空调系统故障,维修空调系统,定期检查空调系统,待审核,调查员A,审核员Y,,2024-01-16
+deviation_id,deviation_code,deviation_title,deviation_type,deviation_category,product_id,batch_number,occurrence_date,discovery_date,description,immediate_action,root_cause,corrective_action,preventive_action,status,investigator,reviewer,approver,close_date,create_date,update_date,_airbyte_extracted_at
+DEV001,DEV202401001,混合时间超标,工艺偏差,时间偏差,PROD001,BATCH001,2024-01-10,2024-01-10,混合工序时间超出规定时间5分钟,暂停生产进行评估,设备故障导致启动延迟,维修设备并重新校准,增加设备点检频次,已关闭,调查员A,审核员X,审批员Y,2024-01-15,2024-01-10,2026-01-23 10:08:20.993 +0800,2026-01-23 10:08:20.993 +0800
+DEV002,DEV202401002,原料外观异常,物料偏差,外观偏差,,,2024-01-14,2024-01-14,MAT001批次BATCH003外观发黄,隔离物料待检验,供应商生产工艺波动,要求供应商调查并提供报告,加强来料检验,进行中,调查员B,,,2024-01-14,2026-01-23 10:08:20.993 +0800,2026-01-23 10:08:20.993 +0800,2026-01-23 10:08:20.993 +0800
+DEV003,DEV202401003,环境温度超标,环境偏差,温湿度偏差,PROD002,BATCH002,2024-01-16,2024-01-16,生产车间温度超过25℃,启动应急降温措施,空调系统故障,维修空调系统,定期检查空调系统,待审核,调查员A,审核员Y,,2024-01-16,2026-01-23 10:08:20.993 +0800,2026-01-23 10:08:20.993 +0800,2026-01-23 10:08:20.993 +0800

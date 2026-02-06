@@ -1,6 +1,8 @@
 {{
     config(
-        materialized='view',
+        materialized='incremental',
+        incremental_strategy='merge',
+        on_schema_change='append_new_columns',
         tags=['staging', 'erp', 'procurement', 'quality']
     )
 }}
@@ -18,6 +20,8 @@ with source_data as (
 
 final as (
     select
+        -- 新增雪花ID
+        {{ generate_snowflake_id() }}::text as snowflake_id,
         -- 主键
         receipt_id,
 
@@ -43,10 +47,18 @@ final as (
         inspection_result,
 
         -- 审计字段
-        create_date
-
+        create_date,
+        update_date,
+        _airbyte_extracted_at as loaded_at
     from source_data
 )
 
 select * from final
+{% if is_incremental() %}
+where loaded_at > (
+    select coalesce(max(loaded_at), '1900-01-01'::timestamp)
+           - interval '{{ var("incremental_lookback_minutes", 5) }} minutes'
+    from {{ this }}
+)
+{% endif %}
 

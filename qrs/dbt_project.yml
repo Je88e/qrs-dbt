@@ -20,6 +20,20 @@ clean-targets: # directories to be removed by `dbt clean`
   - "target"
   - "dbt_packages"
 
+# ===== 全局变量 =====
+vars:
+  # 雪花ID相关
+  snowflake_machine_id: 1  # 机器/节点标识符 (0-1023)
+  snowflake_epoch: 1704067200000  # 2024-01-01 00:00:00 UTC
+
+  # 增量控制相关
+  incremental_lookback_minutes: 5  # 通用增量回溯窗口（分钟）
+  high_frequency_lookback_minutes: 2  # SCADA系统专用回溯窗口（分钟）
+
+# ===== 运行钩子 =====
+on-run-start:
+  - "{{ create_snowflake_function() }}"
+
 # Configuring models
 models:
   qrs:
@@ -28,7 +42,7 @@ models:
     # Staging层: 1:1映射源表,仅做基础清洗
     # 策略: view - 保持数据实时性,减少存储开销
     staging:
-      +materialized: view
+      +materialized: table
       +tags: ["staging"]
 
     # Intermediate层: 复杂Join和中间计算
@@ -149,7 +163,7 @@ analyses:
 # Configuring seeds
 seeds:
   qrs:
-    +schema: raw
+    # +schema: raw
     +quote_columns: false
     +column_types:
       create_date: timestamp

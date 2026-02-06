@@ -46,7 +46,7 @@ select
     it.reference_type,
     
     -- 操作信息
-    it.operator,
+    it.operator_name,
     it.remark,
     
     -- 审计字段

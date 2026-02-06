@@ -221,18 +221,22 @@ def _enhance_output(output_dict: dict, engine: Any = None) -> dict:
                 # 已经是旧格式
                 enhanced[key]["columns"] = columns
 
-        # 添加增强字段（如果存在）
+        # 添加表元数据字段（如果存在）
         if "table_metadata" in val:
             enhanced[key]["table_metadata"] = val["table_metadata"]
 
         if "column_metadata" in val:
             enhanced[key]["column_metadata"] = val["column_metadata"]
 
-        if "dependency_analysis" in val:
-            enhanced[key]["dependency_analysis"] = val["dependency_analysis"]
+        # 添加 manifest.json 元数据字段
+        if "tags" in val:
+            enhanced[key]["tags"] = val["tags"]
 
-        if "query_analysis" in val:
-            enhanced[key]["query_analysis"] = val["query_analysis"]
+        if "description" in val:
+            enhanced[key]["description"] = val["description"]
+
+        if "column_descriptions" in val:
+            enhanced[key]["column_descriptions"] = val["column_descriptions"]
 
     return enhanced
 
@@ -243,9 +247,14 @@ def _generate_summary_report(output_dict: dict):
     model_nodes = sum(1 for v in output_dict.values() if v.get("is_model", False))
     base_nodes = total_nodes - model_nodes
 
-    total_conflicts = sum(
-        len(v.get("dependency_analysis", {}).get("conflicts", []))
-        for v in output_dict.values()
+    # 统计有描述信息的节点数
+    nodes_with_description = sum(
+        1 for v in output_dict.values() if v.get("description")
+    )
+
+    # 统计有 tags 的节点数
+    nodes_with_tags = sum(
+        1 for v in output_dict.values() if v.get("tags")
     )
 
     total_columns = sum(
@@ -260,7 +269,8 @@ def _generate_summary_report(output_dict: dict):
     print(f"  - 模型节点: {model_nodes}")
     print(f"  - 基础表: {base_nodes}")
     print(f"总列数: {total_columns}")
-    print(f"冲突数: {total_conflicts}")
+    print(f"有描述的节点: {nodes_with_description}")
+    print(f"有标签的节点: {nodes_with_tags}")
     print(f"{'='*60}")
 
 

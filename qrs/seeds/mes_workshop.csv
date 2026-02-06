@@ -1,5 +1,5 @@
-workshop_id,workshop_code,workshop_name,workshop_type,area,clean_level,manager,contact_phone,status,create_date
-WS001,WS-SD,固体制剂车间,生产车间,5000,D级,车间主任A,13900139001,启用,2023-01-01
-WS002,WS-LQ,液体制剂车间,生产车间,3000,C级,车间主任B,13900139002,启用,2023-01-01
-WS003,WS-PK,包装车间,包装车间,4000,D级,车间主任C,13900139003,启用,2023-01-01
-WS004,WS-QC,质检车间,检验车间,1000,B级,车间主任D,13900139004,启用,2023-01-01
+workshop_id,workshop_code,workshop_name,workshop_type,area,clean_level,manager,contact_phone,status,create_date,update_date,_airbyte_extracted_at
+WS001,WS-SD,固体制剂车间,生产车间,5000,D级,车间主任A,13900139001,启用,2023-01-01,2023-01-01,2026-01-23 10:08:20.993 +0800
+WS002,WS-LQ,液体制剂车间,生产车间,3000,C级,车间主任B,13900139002,启用,2023-01-01,2023-01-01,2026-01-23 10:08:20.993 +0800
+WS003,WS-PK,包装车间,包装车间,4000,D级,车间主任C,13900139003,启用,2023-01-01,2023-01-01,2026-01-23 10:08:20.993 +0800
+WS004,WS-QC,质检车间,检验车间,1000,B级,车间主任D,13900139004,启用,2023-01-01,2023-01-01,2026-01-23 10:08:20.993 +0800

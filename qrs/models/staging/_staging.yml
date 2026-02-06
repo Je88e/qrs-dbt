@@ -7,6 +7,15 @@ models:
   - name: stg_purchase_order
     description: ERP采购订单Staging层 - 每行代表一个采购订单
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: purchase_order_number
         description: 采购订单号 (主键)
         data_tests:
@@ -42,10 +51,23 @@ models:
           - not_null
       - name: update_date
         description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
 
   - name: stg_purchase_order_detail
     description: ERP采购订单明细Staging层 - 每行代表一个采购订单明细项
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: purchase_order_detail_id
         description: 订单明细ID (主键)
         data_tests:
@@ -69,10 +91,29 @@ models:
         description: 已交货数量
       - name: inspection_status
         description: 检验状态
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
+      - name: update_date
+        description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
 
   - name: stg_material_receipt
     description: ERP物料接收记录Staging层 - 每行代表一条物料接收记录
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: receipt_id
         description: 接收记录ID (主键)
         data_tests:
@@ -110,10 +151,25 @@ models:
         description: 创建日期
         data_tests:
           - not_null
+      - name: update_date
+        description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
 
   - name: stg_material_return
     description: ERP物料退货记录Staging层 - 每行代表一条物料退货记录
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: return_id
         description: 退货记录ID (主键)
         data_tests:
@@ -151,10 +207,25 @@ models:
         description: 创建日期
         data_tests:
           - not_null
+      - name: update_date
+        description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
 
   - name: stg_material_master
     description: ERP物料主数据Staging层 - 每行代表一个物料
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: material_id
         description: 物料编码 (主键)
         data_tests:
@@ -184,10 +255,23 @@ models:
           - not_null
       - name: update_date
         description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
 
   - name: stg_supplier_master
     description: ERP供应商主数据Staging层 - 每行代表一个供应商
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: supplier_id
         description: 供应商编码 (主键)
         data_tests:
@@ -215,10 +299,25 @@ models:
         description: 创建日期
         data_tests:
           - not_null
+      - name: update_date
+        description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
 
   - name: stg_formula_master
     description: ERP配方主数据Staging层 - 每行代表一个配方
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: formula_id
         description: 配方ID (主键)
         data_tests:
@@ -254,10 +353,25 @@ models:
         description: 创建日期
         data_tests:
           - not_null
+      - name: update_date
+        description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
 
   - name: stg_formula_detail
     description: ERP配方明细Staging层 - 每行代表一个配方明细项
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: formula_detail_id
         description: 配方明细ID (主键)
         data_tests:
@@ -268,7 +382,7 @@ models:
         data_tests:
           - not_null:
               config:
-                  error_if: ">100"
+                error_if: ">100"
       - name: material_id
         description: 物料ID (外键)
       - name: material_name
@@ -289,10 +403,26 @@ models:
         description: 创建日期
         data_tests:
           - not_null
+      - name: update_date
+        description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
+
 
   - name: stg_inventory
     description: ERP库存主数据Staging层 - 每行代表一个库存记录
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: inventory_id
         description: 库存ID (主键)
         data_tests:
@@ -303,7 +433,7 @@ models:
         data_tests:
           - not_null:
               config:
-                  error_if: ">100"
+                error_if: ">100"
       - name: batch_number
         description: 批次号
         data_tests:
@@ -332,10 +462,23 @@ models:
           - not_null
       - name: update_date
         description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
 
   - name: stg_inventory_transaction
     description: ERP库存事务记录Staging层 - 每行代表一条库存事务记录
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: transaction_id
         description: 事务ID (主键)
         data_tests:
@@ -348,7 +491,7 @@ models:
         data_tests:
           - not_null:
               config:
-                  error_if: ">100"
+                error_if: ">100"
       - name: batch_number
         description: 批次号
       - name: transaction_type
@@ -369,7 +512,7 @@ models:
         description: 参考单据
       - name: reference_type
         description: 参考类型
-      - name: operator
+      - name: operator_name
         description: 操作员
       - name: remark
         description: 备注
@@ -377,10 +520,26 @@ models:
         description: 创建日期
         data_tests:
           - not_null
+      - name: update_date
+        description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
+
 
   - name: stg_warehouse
     description: ERP仓库主数据Staging层 - 每行代表一个仓库
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: warehouse_id
         description: 仓库ID (主键)
         data_tests:
@@ -406,10 +565,26 @@ models:
         description: 创建日期
         data_tests:
           - not_null
+      - name: update_date
+        description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
+
 
   - name: stg_storage_location
     description: ERP库位主数据Staging层 - 每行代表一个库位
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: location_id
         description: 库位ID (主键)
         data_tests:
@@ -420,7 +595,7 @@ models:
         data_tests:
           - not_null:
               config:
-                  error_if: ">100"
+                error_if: ">100"
       - name: location_code
         description: 库位编码
         data_tests:
@@ -441,6 +616,13 @@ models:
         description: 创建日期
         data_tests:
           - not_null
+      - name: update_date
+        description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
+
 
   # ============================================
   # MES系统 Staging 模型 (10个)
@@ -448,6 +630,15 @@ models:
   - name: stg_work_order
     description: MES生产工单Staging层 - 每行代表一个生产工单
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: work_order_number
         description: 工单号 (主键)
         data_tests:
@@ -491,10 +682,26 @@ models:
         description: 创建日期
         data_tests:
           - not_null
+      - name: update_date
+        description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
+
 
   - name: stg_operation
     description: MES工序定义Staging层 - 每行代表一个工序
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: operation_id
         description: 工序ID (主键)
         data_tests:
@@ -526,10 +733,26 @@ models:
         description: 创建日期
         data_tests:
           - not_null
+      - name: update_date
+        description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
+
 
   - name: stg_work_order_operation
     description: MES工单工序执行Staging层 - 每行代表一个工单工序执行记录
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: work_order_operation_id
         description: 工单工序ID (主键)
         data_tests:
@@ -540,13 +763,13 @@ models:
         data_tests:
           - not_null:
               config:
-                  error_if: ">100"
+                error_if: ">100"
       - name: operation_id
         description: 工序ID (外键)
         data_tests:
           - not_null:
               config:
-                  error_if: ">100"
+                error_if: ">100"
       - name: operation_sequence
         description: 工序顺序
       - name: planned_start
@@ -571,10 +794,26 @@ models:
         description: 创建日期
         data_tests:
           - not_null
+      - name: update_date
+        description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
+
 
   - name: stg_production_report
     description: MES生产报工记录Staging层 - 每行代表一条生产报工记录
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: report_id
         description: 报工ID (主键)
         data_tests:
@@ -585,7 +824,7 @@ models:
         data_tests:
           - not_null:
               config:
-                  error_if: ">100"
+                error_if: ">100"
       - name: operation_id
         description: 工序ID (外键)
       - name: batch_number
@@ -620,10 +859,26 @@ models:
         description: 创建日期
         data_tests:
           - not_null
+      - name: update_date
+        description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
+
 
   - name: stg_equipment
     description: MES设备主数据Staging层 - 每行代表一台设备
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: equipment_id
         description: 设备ID (主键)
         data_tests:
@@ -641,7 +896,7 @@ models:
         description: 设备类型
       - name: manufacturer
         description: 制造商
-      - name: model
+      - name: equipment_model
         description: 型号
       - name: serial_number
         description: 序列号
@@ -661,10 +916,26 @@ models:
         description: 创建日期
         data_tests:
           - not_null
+      - name: update_date
+        description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
+
 
   - name: stg_equipment_maintenance
     description: MES设备维护记录Staging层 - 每行代表一条设备维护记录
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: maintenance_id
         description: 维护记录ID (主键)
         data_tests:
@@ -675,7 +946,7 @@ models:
         data_tests:
           - not_null:
               config:
-                  error_if: ">100"
+                error_if: ">100"
       - name: maintenance_type
         description: 维护类型
         data_tests:
@@ -702,10 +973,26 @@ models:
         description: 创建日期
         data_tests:
           - not_null
+      - name: update_date
+        description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
+
 
   - name: stg_production_line
     description: MES产线主数据Staging层 - 每行代表一条产线
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: line_id
         description: 产线ID (主键)
         data_tests:
@@ -724,7 +1011,7 @@ models:
         data_tests:
           - not_null:
               config:
-                  error_if: ">100"
+                error_if: ">100"
       - name: product_type
         description: 产品类型
       - name: capacity
@@ -739,10 +1026,26 @@ models:
         description: 创建日期
         data_tests:
           - not_null
+      - name: update_date
+        description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
+
 
   - name: stg_workshop
     description: MES车间主数据Staging层 - 每行代表一个车间
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: workshop_id
         description: 车间ID (主键)
         data_tests:
@@ -772,10 +1075,26 @@ models:
         description: 创建日期
         data_tests:
           - not_null
+      - name: update_date
+        description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
+
 
   - name: stg_material_consumption
     description: MES物料消耗记录Staging层 - 每行代表一条物料消耗记录
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: consumption_id
         description: 消耗记录ID (主键)
         data_tests:
@@ -786,7 +1105,7 @@ models:
         data_tests:
           - not_null:
               config:
-                  error_if: ">100"
+                error_if: ">100"
       - name: operation_id
         description: 工序ID (外键)
       - name: material_id
@@ -794,7 +1113,7 @@ models:
         data_tests:
           - not_null:
               config:
-                  error_if: ">100"
+                error_if: ">100"
       - name: batch_number
         description: 批次号
         data_tests:
@@ -821,10 +1140,26 @@ models:
         description: 创建日期
         data_tests:
           - not_null
+      - name: update_date
+        description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
+
 
   - name: stg_personnel
     description: MES生产人员主数据Staging层 - 每行代表一个生产人员
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: personnel_id
         description: 人员ID (主键)
         data_tests:
@@ -840,7 +1175,7 @@ models:
           - not_null
       - name: department
         description: 部门
-      - name: position
+      - name: job_position
         description: 岗位
       - name: skill_level
         description: 技能等级
@@ -858,6 +1193,13 @@ models:
         description: 创建日期
         data_tests:
           - not_null
+      - name: update_date
+        description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
+
 
   # ============================================
   # LIMS系统 Staging 模型 (8个)
@@ -865,6 +1207,15 @@ models:
   - name: stg_inspection_request
     description: LIMS检验申请Staging层 - 每行代表一个检验申请
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: request_id
         description: 申请ID (主键)
         data_tests:
@@ -881,7 +1232,7 @@ models:
         data_tests:
           - not_null
           - accepted_values:
-              values: ['原料', '辅料', '包材', '成品', '中间体']
+              values: ["原料", "辅料", "包材", "成品", "中间体"]
       - name: request_date
         description: 申请日期
         data_tests:
@@ -895,13 +1246,13 @@ models:
         data_tests:
           - not_null
           - accepted_values:
-              values: ['低', '中', '高']
+              values: ["低", "中", "高"]
       - name: request_status
         description: 申请状态
         data_tests:
           - not_null
           - accepted_values:
-              values: ['待处理', '进行中', '已完成', '已取消']
+              values: ["待处理", "进行中", "已完成", "已取消"]
       - name: planned_completion_date
         description: 计划完成日期
       - name: actual_completion_date
@@ -910,10 +1261,29 @@ models:
         description: 样品数量
       - name: sample_unit
         description: 样品单位
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
+      - name: update_date
+        description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
 
   - name: stg_inspection_task
     description: LIMS检验任务Staging层 - 每行代表一个检验任务
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: task_id
         description: 任务ID (主键)
         data_tests:
@@ -924,7 +1294,7 @@ models:
         data_tests:
           - not_null:
               config:
-                  error_if: ">100"
+                error_if: ">100"
       - name: sample_id
         description: 样品ID (外键)
       - name: test_item_id
@@ -932,7 +1302,7 @@ models:
         data_tests:
           - not_null:
               config:
-                  error_if: ">100"
+                error_if: ">100"
       - name: assigned_analyst
         description: 指派分析员
       - name: assigned_date
@@ -951,10 +1321,26 @@ models:
         description: 创建日期
         data_tests:
           - not_null
+      - name: update_date
+        description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
+
 
   - name: stg_inspection_result
     description: LIMS检验结果Staging层 - 每行代表一条检验结果记录
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: result_id
         description: 结果ID (主键)
         data_tests:
@@ -965,7 +1351,7 @@ models:
         data_tests:
           - not_null:
               config:
-                  error_if: ">100"
+                error_if: ">100"
       - name: test_item_id
         description: 检验项目ID (外键)
       - name: sample_id
@@ -998,10 +1384,26 @@ models:
         description: 创建日期
         data_tests:
           - not_null
+      - name: update_date
+        description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
+
 
   - name: stg_sample
     description: LIMS样品主数据Staging层 - 每行代表一个样品
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: sample_id
         description: 样品ID (主键)
         data_tests:
@@ -1033,7 +1435,7 @@ models:
         description: 采样员
       - name: storage_condition
         description: 储存条件
-      - name: location
+      - name: storage_location
         description: 储存位置
       - name: expiry_date
         description: 过期日期
@@ -1043,10 +1445,26 @@ models:
         description: 创建日期
         data_tests:
           - not_null
+      - name: update_date
+        description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
+
 
   - name: stg_quality_standard
     description: LIMS质量标准主数据Staging层 - 每行代表一个质量标准
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: standard_id
         description: 标准ID (主键)
         data_tests:
@@ -1080,10 +1498,26 @@ models:
         description: 创建日期
         data_tests:
           - not_null
+      - name: update_date
+        description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
+
 
   - name: stg_test_item
     description: LIMS检验项目主数据Staging层 - 每行代表一个检验项目
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: test_item_id
         description: 项目ID (主键)
         data_tests:
@@ -1119,10 +1553,26 @@ models:
         description: 创建日期
         data_tests:
           - not_null
+      - name: update_date
+        description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
+
 
   - name: stg_analyst
     description: LIMS分析员主数据Staging层 - 每行代表一个分析员
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: analyst_id
         description: 分析员ID (主键)
         data_tests:
@@ -1150,10 +1600,26 @@ models:
         description: 创建日期
         data_tests:
           - not_null
+      - name: update_date
+        description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
+
 
   - name: stg_inspection_report
     description: LIMS检验报告Staging层 - 每行代表一份检验报告
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: report_id
         description: 报告ID (主键)
         data_tests:
@@ -1164,7 +1630,7 @@ models:
         data_tests:
           - not_null:
               config:
-                  error_if: ">100"
+                error_if: ">100"
       - name: report_code
         description: 报告编号
         data_tests:
@@ -1199,6 +1665,13 @@ models:
         description: 创建日期
         data_tests:
           - not_null
+      - name: update_date
+        description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
+
 
   # ============================================
   # QMS系统 Staging 模型 (6个)
@@ -1206,6 +1679,15 @@ models:
   - name: stg_change_control
     description: QMS变更控制Staging层 - 每行代表一个变更控制记录
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: change_id
         description: 变更ID (主键)
         data_tests:
@@ -1251,10 +1733,26 @@ models:
         description: 创建日期
         data_tests:
           - not_null
+      - name: update_date
+        description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
+
 
   - name: stg_change_impact
     description: QMS变更影响评估Staging层 - 每行代表一条变更影响评估记录
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: impact_id
         description: 影响评估ID (主键)
         data_tests:
@@ -1265,7 +1763,7 @@ models:
         data_tests:
           - not_null:
               config:
-                  error_if: ">100"
+                error_if: ">100"
       - name: impact_area
         description: 影响领域
       - name: impact_description
@@ -1288,10 +1786,26 @@ models:
         description: 创建日期
         data_tests:
           - not_null
+      - name: update_date
+        description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
+
 
   - name: stg_change_implementation
     description: QMS变更实施记录Staging层 - 每行代表一条变更实施任务记录
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: implementation_id
         description: 实施任务ID (主键)
         data_tests:
@@ -1302,7 +1816,7 @@ models:
         data_tests:
           - not_null:
               config:
-                  error_if: ">100"
+                error_if: ">100"
       - name: task_name
         description: 任务名称
         data_tests:
@@ -1333,10 +1847,26 @@ models:
         description: 创建日期
         data_tests:
           - not_null
+      - name: update_date
+        description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
+
 
   - name: stg_deviation
     description: QMS偏差记录Staging层 - 每行代表一条偏差记录
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: deviation_id
         description: 偏差ID (主键)
         data_tests:
@@ -1356,7 +1886,7 @@ models:
         data_tests:
           - not_null
           - accepted_values:
-              values: ['工艺偏差', '物料偏差', '环境偏差', '设备偏差']
+              values: ["工艺偏差", "物料偏差", "环境偏差", "设备偏差"]
       - name: deviation_category
         description: 偏差分类
       - name: product_id
@@ -1388,7 +1918,7 @@ models:
         data_tests:
           - not_null
           - accepted_values:
-              values: ['待审核', '进行中', '已关闭', '已取消']
+              values: ["待审核", "进行中", "已关闭", "已取消"]
       - name: investigator
         description: 调查员
       - name: reviewer
@@ -1401,10 +1931,26 @@ models:
         description: 创建日期
         data_tests:
           - not_null
+      - name: update_date
+        description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
+
 
   - name: stg_capa
     description: QMS CAPA主数据Staging层 - 每行代表一条CAPA记录
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: capa_id
         description: CAPA ID (主键)
         data_tests:
@@ -1454,10 +2000,26 @@ models:
         description: 创建日期
         data_tests:
           - not_null
+      - name: update_date
+        description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
+
 
   - name: stg_supplier_audit
     description: QMS供应商审计记录Staging层 - 每行代表一条供应商审计记录
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: audit_id
         description: 审计ID (主键)
         data_tests:
@@ -1472,7 +2034,7 @@ models:
         data_tests:
           - not_null:
               config:
-                  error_if: ">100"
+                error_if: ">100"
       - name: audit_type
         description: 审计类型
       - name: audit_date
@@ -1511,6 +2073,13 @@ models:
         description: 创建日期
         data_tests:
           - not_null
+      - name: update_date
+        description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
+
 
   # ============================================
   # SCADA系统 Staging 模型 (5个)
@@ -1518,6 +2087,15 @@ models:
   - name: stg_equipment_data
     description: SCADA设备运行数据Staging层 - 每行代表一条设备运行数据记录
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: data_id
         description: 数据ID (主键)
         data_tests:
@@ -1528,12 +2106,12 @@ models:
         data_tests:
           - not_null:
               config:
-                  error_if: ">100"
-      - name: parameter_name
+                error_if: ">100"
+      - name: param_name
         description: 参数名称
         data_tests:
           - not_null
-      - name: parameter_value
+      - name: param_value
         description: 参数值
         data_tests:
           - not_null
@@ -1555,10 +2133,26 @@ models:
         description: 创建日期
         data_tests:
           - not_null
+      - name: update_date
+        description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
+
 
   - name: stg_environment_data
     description: SCADA环境监控数据Staging层 - 每行代表一条环境监控数据记录
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: data_id
         description: 数据ID (主键)
         data_tests:
@@ -1588,10 +2182,26 @@ models:
         description: 创建日期
         data_tests:
           - not_null
+      - name: update_date
+        description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
+
 
   - name: stg_alarm
     description: SCADA报警记录Staging层 - 每行代表一条报警记录
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: alarm_id
         description: 报警ID (主键)
         data_tests:
@@ -1602,7 +2212,7 @@ models:
         data_tests:
           - not_null:
               config:
-                  error_if: ">100"
+                error_if: ">100"
       - name: location_code
         description: 位置代码
         data_tests:
@@ -1612,13 +2222,13 @@ models:
         data_tests:
           - not_null
           - accepted_values:
-              values: ['设备故障', '参数超限', '环境异常', '安全报警']
+              values: ["设备故障", "参数超限", "环境异常", "安全报警"]
       - name: alarm_level
         description: 报警级别
         data_tests:
           - not_null
           - accepted_values:
-              values: ['低', '中', '高']
+              values: ["低", "中", "高"]
       - name: alarm_message
         description: 报警信息
         data_tests:
@@ -1640,7 +2250,7 @@ models:
         data_tests:
           - not_null
           - accepted_values:
-              values: ['未解决', '已解决', '已取消']
+              values: ["未解决", "已解决", "已取消"]
       - name: batch_number
         description: 批次号
       - name: work_order_number
@@ -1649,10 +2259,26 @@ models:
         description: 创建日期
         data_tests:
           - not_null
+      - name: update_date
+        description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
+
 
   - name: stg_batch_tracking
     description: SCADA批次追踪记录Staging层 - 每行代表一条批次追踪记录
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: tracking_id
         description: 追踪ID (主键)
         data_tests:
@@ -1667,7 +2293,7 @@ models:
         data_tests:
           - not_null:
               config:
-                  error_if: ">100"
+                error_if: ">100"
       - name: product_id
         description: 产品ID (外键)
       - name: operation_id
@@ -1677,7 +2303,7 @@ models:
         data_tests:
           - not_null:
               config:
-                  error_if: ">100"
+                error_if: ">100"
       - name: start_time
         description: 开始时间
         data_tests:
@@ -1700,10 +2326,26 @@ models:
         description: 创建日期
         data_tests:
           - not_null
+      - name: update_date
+        description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
+
 
   - name: stg_energy_consumption
     description: SCADA能耗监控数据Staging层 - 每行代表一条能耗监控数据记录
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: energy_id
         description: 消耗记录ID (主键)
         data_tests:
@@ -1714,7 +2356,7 @@ models:
         data_tests:
           - not_null:
               config:
-                  error_if: ">100"
+                error_if: ">100"
       - name: workshop_id
         description: 车间ID (外键)
       - name: energy_type
@@ -1743,6 +2385,13 @@ models:
         description: 创建日期
         data_tests:
           - not_null
+      - name: update_date
+        description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
+
 
   # ============================================
   # PV系统 Staging 模型 (3个)
@@ -1750,6 +2399,15 @@ models:
   - name: stg_adverse_event
     description: PV不良反应报告Staging层 - 每行代表一条不良反应报告
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: event_id
         description: 事件ID (主键)
         data_tests:
@@ -1778,13 +2436,13 @@ models:
         data_tests:
           - not_null
           - accepted_values:
-              values: ['已知不良反应', '未知不良反应', '严重不良反应']
+              values: ["已知不良反应", "未知不良反应", "严重不良反应"]
       - name: severity
         description: 严重程度
         data_tests:
           - not_null
           - accepted_values:
-              values: ['轻度', '中度', '重度']
+              values: ["轻度", "中度", "重度"]
       - name: event_description
         description: 事件描述
       - name: patient_age
@@ -1804,7 +2462,7 @@ models:
         data_tests:
           - not_null
           - accepted_values:
-              values: ['调查中', '已关闭', '已取消']
+              values: ["调查中", "已关闭", "已取消"]
       - name: investigator
         description: 调查员
       - name: close_date
@@ -1813,10 +2471,26 @@ models:
         description: 创建日期
         data_tests:
           - not_null
+      - name: update_date
+        description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
+
 
   - name: stg_complaint
     description: PV产品投诉记录Staging层 - 每行代表一条产品投诉记录
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: complaint_id
         description: 投诉ID (主键)
         data_tests:
@@ -1868,10 +2542,26 @@ models:
         description: 创建日期
         data_tests:
           - not_null
+      - name: update_date
+        description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
+
 
   - name: stg_product_recall
     description: PV产品召回记录Staging层 - 每行代表一条产品召回记录
     columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        constraints:
+          - type: primary_key
+          - type: unique 
+          - type: not_null
+        data_tests:
+          - unique
+          - not_null
       - name: recall_id
         description: 召回ID (主键)
         data_tests:
@@ -1896,7 +2586,7 @@ models:
         data_tests:
           - not_null:
               config:
-                  error_if: ">100"
+                error_if: ">100"
       - name: batch_numbers
         description: 批次号列表
         data_tests:
@@ -1929,4 +2619,382 @@ models:
         description: 创建日期
         data_tests:
           - not_null
+      - name: update_date
+        description: 更新日期
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
 
+
+  # ============================================
+  # LIMS系统新增 Staging 模型
+  # ============================================
+  - name: stg_water_quality
+    description: LIMS工艺用水质量检测记录Staging层 - 每行代表一条水质检测记录
+    columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        data_tests:
+          - unique
+          - not_null
+      - name: test_id
+        description: 检测记录ID (主键)
+        data_tests:
+          - unique
+          - not_null
+      - name: monitoring_point_id
+        description: 监测点ID
+        data_tests:
+          - not_null
+      - name: monitoring_point_name
+        description: 监测点名称
+      - name: water_type
+        description: 水类型
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ["纯化水", "注射用水", "饮用水"]
+      - name: parameter_name
+        description: 检测参数
+        data_tests:
+          - not_null
+      - name: test_value
+        description: 检测值
+        data_tests:
+          - not_null
+      - name: test_unit
+        description: 单位
+      - name: limit_min
+        description: 标准下限
+      - name: limit_max
+        description: 标准上限
+      - name: result_status
+        description: 结果状态
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ["合格", "不合格"]
+      - name: test_date
+        description: 检测日期
+        data_tests:
+          - not_null
+      - name: analyst_id
+        description: 分析员ID (外键)
+      - name: equipment_id
+        description: 检测设备ID (外键)
+      - name: batch_number
+        description: 批次号
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
+
+  - name: stg_stability_study
+    description: LIMS稳定性研究记录Staging层 - 每行代表一条稳定性检测记录
+    columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        data_tests:
+          - unique
+          - not_null
+      - name: study_id
+        description: 研究ID (主键)
+        data_tests:
+          - unique
+          - not_null
+      - name: study_code
+        description: 研究编号
+        data_tests:
+          - not_null
+      - name: product_id
+        description: 产品ID (外键)
+        data_tests:
+          - not_null
+      - name: batch_number
+        description: 批次号
+        data_tests:
+          - not_null
+      - name: study_type
+        description: 研究类型
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ["长期", "加速", "中间条件"]
+      - name: storage_condition
+        description: 储存条件
+        data_tests:
+          - not_null
+      - name: timepoint
+        description: 检测时间点
+        data_tests:
+          - not_null
+      - name: timepoint_months
+        description: 时间点(月)
+      - name: sample_id
+        description: 样品ID (外键)
+      - name: test_item_id
+        description: 检验项目ID (外键)
+      - name: test_item_name
+        description: 检验项目名称
+      - name: test_value
+        description: 检测值
+      - name: test_unit
+        description: 单位
+      - name: specification
+        description: 规格要求
+      - name: result_status
+        description: 结果状态
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ["符合", "不符合", "趋势异常"]
+      - name: test_date
+        description: 检测日期
+        data_tests:
+          - not_null
+      - name: analyst_id
+        description: 分析员ID (外键)
+      - name: study_status
+        description: 研究状态
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ["进行中", "已完成", "已终止"]
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
+
+  # ============================================
+  # QMS系统新增 Staging 模型
+  # ============================================
+  - name: stg_training_record
+    description: QMS人员培训记录Staging层 - 每行代表一条培训记录
+    columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        data_tests:
+          - unique
+          - not_null
+      - name: training_id
+        description: 培训记录ID (主键)
+        data_tests:
+          - unique
+          - not_null
+      - name: personnel_id
+        description: 人员ID (外键)
+        data_tests:
+          - not_null
+      - name: course_code
+        description: 课程编码
+        data_tests:
+          - not_null
+      - name: course_name
+        description: 课程名称
+        data_tests:
+          - not_null
+      - name: course_type
+        description: 课程类型
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ["GMP基础", "岗位技能", "SOP培训", "安全培训"]
+      - name: training_date
+        description: 培训日期
+        data_tests:
+          - not_null
+      - name: training_duration
+        description: 培训时长(小时)
+      - name: trainer
+        description: 培训师
+      - name: assessment_score
+        description: 考核得分
+      - name: assessment_result
+        description: 考核结果
+        data_tests:
+          - accepted_values:
+              values: ["通过", "未通过", "免考"]
+      - name: certificate_no
+        description: 证书编号
+      - name: valid_from
+        description: 有效期开始
+      - name: valid_to
+        description: 有效期结束
+      - name: training_status
+        description: 培训状态
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ["已完成", "进行中", "已取消"]
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
+
+  - name: stg_validation_record
+    description: QMS验证确认记录Staging层 - 每行代表一条验证记录
+    columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        data_tests:
+          - unique
+          - not_null
+      - name: validation_id
+        description: 验证记录ID (主键)
+        data_tests:
+          - unique
+          - not_null
+      - name: validation_code
+        description: 验证编号
+        data_tests:
+          - unique
+          - not_null
+      - name: validation_type
+        description: 验证类型
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ["工艺验证", "清洁验证", "设备验证", "方法验证"]
+      - name: validation_title
+        description: 验证标题
+        data_tests:
+          - not_null
+      - name: protocol_no
+        description: 方案编号
+      - name: product_id
+        description: 产品ID (外键)
+      - name: equipment_id
+        description: 设备ID (外键)
+      - name: batch_numbers
+        description: 验证批次号(逗号分隔)
+      - name: start_date
+        description: 开始日期
+        data_tests:
+          - not_null
+      - name: end_date
+        description: 结束日期
+      - name: validation_result
+        description: 验证结论
+        data_tests:
+          - accepted_values:
+              values: ["通过", "有条件通过", "未通过"]
+      - name: deviation_count
+        description: 偏差数量
+      - name: responsible
+        description: 负责人
+        data_tests:
+          - not_null
+      - name: reviewer
+        description: 审核人
+      - name: approver
+        description: 批准人
+      - name: approval_date
+        description: 批准日期
+      - name: next_revalidation_date
+        description: 下次再验证日期
+      - name: validation_status
+        description: 验证状态
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ["草稿", "进行中", "待审核", "已批准", "已过期"]
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null
+
+  # ============================================
+  # MES系统新增 Staging 模型
+  # ============================================
+  - name: stg_equipment_calibration
+    description: MES设备校准记录Staging层 - 每行代表一条校准记录
+    columns:
+      - name: snowflake_id
+        description: 雪花ID (主键)
+        data_tests:
+          - unique
+          - not_null
+      - name: calibration_id
+        description: 校准记录ID (主键)
+        data_tests:
+          - unique
+          - not_null
+      - name: calibration_code
+        description: 校准编号
+        data_tests:
+          - not_null
+      - name: equipment_id
+        description: 设备ID (外键)
+        data_tests:
+          - not_null
+      - name: calibration_type
+        description: 校准类型
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ["内部校准", "外部校准", "自校准"]
+      - name: calibration_date
+        description: 校准日期
+        data_tests:
+          - not_null
+      - name: next_calibration_date
+        description: 下次校准日期
+        data_tests:
+          - not_null
+      - name: calibration_cycle
+        description: 校准周期(月)
+      - name: standard_equipment
+        description: 标准器
+      - name: standard_certificate
+        description: 标准器证书号
+      - name: calibration_result
+        description: 校准结果
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ["合格", "不合格", "限制使用"]
+      - name: deviation_value
+        description: 偏差值
+      - name: tolerance
+        description: 允许偏差
+      - name: is_within_tolerance
+        description: 是否在允差内
+      - name: calibrator
+        description: 校准人员
+        data_tests:
+          - not_null
+      - name: reviewer
+        description: 审核人
+      - name: certificate_no
+        description: 校准证书号
+      - name: calibration_status
+        description: 校准状态
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ["有效", "过期", "待校准"]
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
+      - name: loaded_at
+        description: 数据加载时间戳
+        data_tests:
+          - not_null

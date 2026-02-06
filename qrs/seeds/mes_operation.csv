@@ -1,6 +1,6 @@
-operation_id,operation_code,operation_name,operation_type,standard_duration,duration_unit,equipment_type,skill_requirement,sop_document,status,create_date
-OP001,OP-MIX,混合,主工序,60,分钟,混合机,中级,SOP-MIX-001,启用,2023-01-01
-OP002,OP-GRAN,制粒,主工序,90,分钟,制粒机,高级,SOP-GRAN-001,启用,2023-01-01
-OP003,OP-DRY,干燥,主工序,120,分钟,干燥机,中级,SOP-DRY-001,启用,2023-01-01
-OP004,OP-COAT,包衣,主工序,180,分钟,包衣机,高级,SOP-COAT-001,启用,2023-01-01
-OP005,OP-PACK,包装,主工序,60,分钟,包装机,初级,SOP-PACK-001,启用,2023-01-01
+operation_id,operation_code,operation_name,operation_type,standard_duration,duration_unit,equipment_type,skill_requirement,sop_document,status,create_date,update_date,_airbyte_extracted_at
+OP001,OP-MIX,混合,主工序,60,分钟,混合机,中级,SOP-MIX-001,启用,2023-01-01,2023-01-01,2026-01-23 10:08:20.993 +0800
+OP002,OP-GRAN,制粒,主工序,90,分钟,制粒机,高级,SOP-GRAN-001,启用,2023-01-01,2023-01-01,2026-01-23 10:08:20.993 +0800
+OP003,OP-DRY,干燥,主工序,120,分钟,干燥机,中级,SOP-DRY-001,启用,2023-01-01,2023-01-01,2026-01-23 10:08:20.993 +0800
+OP004,OP-COAT,包衣,主工序,180,分钟,包衣机,高级,SOP-COAT-001,启用,2023-01-01,2023-01-01,2026-01-23 10:08:20.993 +0800
+OP005,OP-PACK,包装,主工序,60,分钟,包装机,初级,SOP-PACK-001,启用,2023-01-01,2023-01-01,2026-01-23 10:08:20.993 +0800

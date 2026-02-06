@@ -40,7 +40,7 @@
 {% set sql_1 %}
 CREATE INDEX IF NOT EXISTS idx_{{ table }}_current
 ON {{ schema }}.{{ table }} ({{ key }})
-WHERE valid_to = '9999-12-31' AND is_deleted = 'False';
+WHERE valid_to = '9999-12-31' AND is_deleted = 0;
 {% endset %}
 
 {% do run_query(sql_1) %}
@@ -68,7 +68,7 @@ ON {{ schema }}.{{ table }} ({{ key }}, valid_from DESC);
 {% set sql_4 %}
 CREATE INDEX IF NOT EXISTS idx_{{ table }}_deleted
 ON {{ schema }}.{{ table }} ({{ key }}, valid_from)
-WHERE is_deleted = 'True';
+WHERE is_deleted = 1;
 {% endset %}
 
 {% do run_query(sql_4) %}
