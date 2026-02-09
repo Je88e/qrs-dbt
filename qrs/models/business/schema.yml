@@ -2098,3 +2098,485 @@ models:
         description: 批次号
       - name: create_date
         description: 创建日期
+
+  - name: dim_personnel_qualifications
+    description: 人员资质维度 - 增强人员维度，整合人员信息、分析员认证、GMP培训状态和培训统计，提供人员资质的全面视图
+    config:
+      tags: ["mes", "personnel", "qualification", "pqr"]
+    columns:
+      - name: personnel_id
+        description: 人员ID (主键)
+        data_tests:
+          - unique
+          - not_null
+      - name: personnel_code
+        description: 人员编码
+      - name: personnel_name
+        description: 人员姓名
+      - name: department
+        description: 部门
+      - name: job_position
+        description: 岗位
+      - name: skill_level
+        description: 技能等级
+      - name: workshop_id
+        description: 车间ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_workshop')
+              field: workshop_id
+      - name: workshop_name
+        description: 车间名称
+      - name: line_id
+        description: 产线ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_production_line')
+              field: line_id
+      - name: line_name
+        description: 产线名称
+      - name: certification
+        description: 人员认证
+      - name: analyst_id
+        description: 分析员ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_analyst')
+              field: analyst_id
+      - name: analyst_qualification
+        description: 分析员资质
+      - name: certification_date
+        description: 认证日期
+      - name: certification_expiry
+        description: 认证到期日期
+      - name: is_analyst_cert_valid
+        description: 分析员认证是否有效
+      - name: days_until_analyst_cert_expiry
+        description: 距离分析员认证过期天数
+      - name: latest_gmp_training_date
+        description: 最近GMP培训日期
+      - name: gmp_cert_expiry
+        description: GMP证书到期日期
+      - name: is_gmp_cert_valid
+        description: GMP证书是否有效
+      - name: days_until_gmp_expiry
+        description: 距离GMP证书过期天数
+      - name: total_trainings
+        description: 总培训次数
+      - name: passed_trainings
+        description: 通过培训次数
+      - name: training_pass_rate
+        description: 培训通过率百分比
+      - name: qualification_status
+        description: 综合资质状态
+        data_tests:
+          - accepted_values:
+              values: ["合格", "待更新", "待评估"]
+      - name: personnel_status
+        description: 人员状态
+        data_tests:
+          - accepted_values:
+              values: ["在岗", "离职", "休假"]
+      - name: entry_date
+        description: 入职日期
+      - name: create_date
+        description: 创建日期
+
+  - name: fct_equipment_calibration
+    description: 设备校验事实 - 提供设备校准状态和合规性视图，包含校准结果、偏差分析和下次校准日期跟踪
+    config:
+      tags: ["mes", "equipment", "calibration", "pqr"]
+    columns:
+      - name: calibration_id
+        description: 校准ID (主键)
+        data_tests:
+          - unique
+          - not_null
+      - name: calibration_code
+        description: 校准编码
+      - name: equipment_id
+        description: 设备ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_equipment')
+              field: equipment_id
+      - name: equipment_code
+        description: 设备编码
+      - name: equipment_name
+        description: 设备名称
+      - name: equipment_type
+        description: 设备类型
+      - name: manufacturer
+        description: 制造商
+      - name: workshop_id
+        description: 车间ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_workshop')
+              field: workshop_id
+      - name: workshop_name
+        description: 车间名称
+      - name: calibration_type
+        description: 校准类型
+        data_tests:
+          - accepted_values:
+              values: ["内部校准", "外部校准", "首次校准", "周期校准"]
+      - name: calibration_date
+        description: 校准日期
+      - name: next_calibration_date
+        description: 下次校准日期
+      - name: calibration_cycle
+        description: 校准周期
+      - name: standard_equipment
+        description: 标准器设备
+      - name: standard_certificate
+        description: 标准器证书号
+      - name: calibration_result
+        description: 校准结果
+        data_tests:
+          - accepted_values:
+              values: ["合格", "不合格", "有条件合格"]
+      - name: deviation_value
+        description: 偏差值
+      - name: tolerance
+        description: 公差范围
+      - name: is_within_tolerance
+        description: 是否在公差范围内
+      - name: calibration_status
+        description: 校准状态
+        data_tests:
+          - accepted_values:
+              values: ["计划中", "进行中", "已完成", "已取消"]
+      - name: is_calibration_overdue
+        description: 是否逾期未校准
+      - name: days_until_calibration
+        description: 距离下次校准天数
+      - name: calibrator
+        description: 校准人员
+      - name: reviewer
+        description: 审核人
+      - name: certificate_no
+        description: 校准证书编号
+      - name: create_date
+        description: 创建日期
+
+  - name: fct_stability_studies
+    description: 稳定性研究事实 - 提供稳定性样品的检验结果和趋势分析，支持产品有效期确定和存储条件验证
+    config:
+      tags: ["lims", "stability", "quality", "pqr"]
+    columns:
+      - name: study_id
+        description: 研究ID (主键)
+        data_tests:
+          - unique
+          - not_null
+      - name: study_code
+        description: 研究编码
+      - name: product_id
+        description: 产品ID
+      - name: batch_number
+        description: 批次号
+      - name: study_type
+        description: 研究类型
+        data_tests:
+          - accepted_values:
+              values: ["加速稳定性", "长期稳定性", "中间稳定性", "强制降解"]
+      - name: storage_condition
+        description: 存储条件
+      - name: timepoint
+        description: 检测时间点
+      - name: timepoint_months
+        description: 检测时间点（月）
+      - name: sample_id
+        description: 样品ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_sample')
+              field: sample_id
+      - name: test_item_id
+        description: 检验项目ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_test_item')
+              field: test_item_id
+      - name: test_item_name
+        description: 检验项目名称
+      - name: test_value
+        description: 检验值
+      - name: test_unit
+        description: 检验单位
+      - name: specification
+        description: 质量标准
+      - name: result_status
+        description: 结果状态
+        data_tests:
+          - accepted_values:
+              values: ["符合", "不符合", "趋势异常", "待判定"]
+      - name: is_within_spec
+        description: 是否符合规格
+      - name: has_trend_alert
+        description: 是否有趋势异常
+      - name: test_date
+        description: 检验日期
+      - name: analyst_id
+        description: 分析员ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_analyst')
+              field: analyst_id
+      - name: analyst_name
+        description: 分析员姓名
+      - name: study_status
+        description: 研究状态
+        data_tests:
+          - accepted_values:
+              values: ["进行中", "已完成", "已终止"]
+      - name: create_date
+        description: 创建日期
+
+  - name: fct_supplier_performance
+    description: 供应商绩效事实 - 整合供应商的交付质量、审计结果、退货情况，提供供应商绩效的综合评估
+    config:
+      tags: ["erp", "supplier", "quality", "pqr"]
+    columns:
+      - name: supplier_id
+        description: 供应商ID (主键)
+        data_tests:
+          - unique
+          - not_null
+      - name: supplier_name
+        description: 供应商名称
+      - name: supplier_type
+        description: 供应商类型
+      - name: qualification_status
+        description: 资质状态
+        data_tests:
+          - accepted_values:
+              values: ["合格", "待审核", "不合格", "暂停合作"]
+      - name: total_receipts
+        description: 总接收批次数
+      - name: total_returns
+        description: 总退货批次数
+      - name: return_rate_percent
+        description: 退货率百分比
+      - name: latest_audit_score
+        description: 最近审计评分
+      - name: latest_audit_result
+        description: 最近审计结果
+        data_tests:
+          - accepted_values:
+              values: ["合格", "待整改", "不合格"]
+      - name: latest_audit_date
+        description: 最近审计日期
+      - name: performance_level
+        description: 绩效等级
+        data_tests:
+          - accepted_values:
+              values: ["A", "B", "C", "D"]
+      - name: create_date
+        description: 创建日期
+
+  - name: fct_training_records
+    description: 培训记录事实 - 提供人员培训活动的完整信息，包括课程、考核结果和证书有效期跟踪
+    config:
+      tags: ["qms", "training", "personnel", "pqr"]
+    columns:
+      - name: training_id
+        description: 培训ID (主键)
+        data_tests:
+          - unique
+          - not_null
+      - name: personnel_id
+        description: 人员ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_personnel')
+              field: personnel_id
+      - name: personnel_code
+        description: 人员编码
+      - name: personnel_name
+        description: 人员姓名
+      - name: department
+        description: 部门
+      - name: job_position
+        description: 岗位
+      - name: course_code
+        description: 课程编码
+      - name: course_name
+        description: 课程名称
+      - name: course_type
+        description: 课程类型
+        data_tests:
+          - accepted_values:
+              values: ["GMP基础", "岗位技能", "安全培训", "质量意识", "法规培训"]
+      - name: training_date
+        description: 培训日期
+      - name: training_duration
+        description: 培训时长
+      - name: trainer
+        description: 培训讲师
+      - name: assessment_score
+        description: 考核分数
+      - name: assessment_result
+        description: 考核结果
+        data_tests:
+          - accepted_values:
+              values: ["通过", "未通过", "待评定"]
+      - name: is_passed
+        description: 是否通过考核
+      - name: certificate_no
+        description: 证书编号
+      - name: valid_from
+        description: 证书生效日期
+      - name: valid_to
+        description: 证书失效日期
+      - name: is_certificate_valid
+        description: 证书是否有效
+      - name: days_until_expiry
+        description: 距离证书过期天数
+      - name: training_status
+        description: 培训状态
+        data_tests:
+          - accepted_values:
+              values: ["计划中", "进行中", "已完成", "已取消"]
+      - name: create_date
+        description: 创建日期
+
+  - name: fct_validation_records
+    description: 验证记录事实 - 提供验证活动的完整信息和状态跟踪，包括设备验证、工艺验证和清洁验证等
+    config:
+      tags: ["qms", "validation", "gxp", "pqr"]
+    columns:
+      - name: validation_id
+        description: 验证ID (主键)
+        data_tests:
+          - unique
+          - not_null
+      - name: validation_code
+        description: 验证编码
+      - name: validation_type
+        description: 验证类型
+        data_tests:
+          - accepted_values:
+              values: ["设备验证", "工艺验证", "清洁验证", "分析方法验证", "计算机系统验证"]
+      - name: validation_title
+        description: 验证标题
+      - name: protocol_no
+        description: 验证方案编号
+      - name: product_id
+        description: 产品ID
+      - name: equipment_id
+        description: 设备ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_equipment')
+              field: equipment_id
+      - name: equipment_code
+        description: 设备编码
+      - name: equipment_name
+        description: 设备名称
+      - name: batch_numbers
+        description: 批次号列表
+      - name: start_date
+        description: 开始日期
+      - name: end_date
+        description: 结束日期
+      - name: validation_duration_days
+        description: 验证持续天数
+      - name: validation_result
+        description: 验证结果
+        data_tests:
+          - accepted_values:
+              values: ["通过", "有条件通过", "未通过", "待评定"]
+      - name: deviation_count
+        description: 偏差数量
+      - name: is_passed
+        description: 是否通过验证
+      - name: responsible
+        description: 负责人
+      - name: reviewer
+        description: 审核人
+      - name: approver
+        description: 批准人
+      - name: approval_date
+        description: 批准日期
+      - name: next_revalidation_date
+        description: 下次再验证日期
+      - name: is_revalidation_overdue
+        description: 再验证是否逾期
+      - name: days_until_revalidation
+        description: 距离再验证天数
+      - name: validation_status
+        description: 验证状态
+        data_tests:
+          - accepted_values:
+              values: ["计划中", "进行中", "已完成", "已取消"]
+      - name: create_date
+        description: 创建日期
+
+  - name: fct_water_quality
+    description: 水质检测事实 - 工艺用水质量监控，从水质检测数据中提供合规分析和趋势跟踪
+    config:
+      tags: ["lims", "water", "quality", "pqr"]
+    columns:
+      - name: test_id
+        description: 检测ID (主键)
+        data_tests:
+          - unique
+          - not_null
+      - name: monitoring_point_id
+        description: 监测点ID
+      - name: monitoring_point_name
+        description: 监测点名称
+      - name: water_type
+        description: 水类型
+        data_tests:
+          - accepted_values:
+              values: ["饮用水", "纯化水", "注射用水", "纯蒸汽"]
+      - name: parameter_name
+        description: 检测参数名称
+      - name: test_value
+        description: 检测值
+      - name: test_unit
+        description: 检测单位
+      - name: limit_min
+        description: 标准下限
+      - name: limit_max
+        description: 标准上限
+      - name: result_status
+        description: 结果状态
+        data_tests:
+          - accepted_values:
+              values: ["合格", "不合格", "待判定"]
+      - name: is_within_limit
+        description: 是否在标准范围内
+      - name: test_date
+        description: 检测日期
+      - name: test_year
+        description: 检测年份
+      - name: test_month
+        description: 检测月份
+      - name: analyst_id
+        description: 分析员ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_analyst')
+              field: analyst_id
+      - name: analyst_name
+        description: 分析员姓名
+      - name: analyst_qualification
+        description: 分析员资质
+      - name: equipment_id
+        description: 设备ID (外键)
+        data_tests:
+          - relationships:
+              to: ref('stg_equipment')
+              field: equipment_id
+      - name: equipment_code
+        description: 设备编码
+      - name: equipment_name
+        description: 设备名称
+      - name: batch_number
+        description: 批次号
+      - name: create_date
+        description: 创建日期

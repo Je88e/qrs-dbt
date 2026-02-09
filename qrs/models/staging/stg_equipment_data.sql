@@ -43,14 +43,14 @@ final as (
         operation_id,
         create_date,
         update_date,
-        _airbyte_extracted_at as loaded_at
+        CAST(_airbyte_extracted_at AT TIME ZONE 'Asia/Shanghai' AS timestamptz) as loaded_at
     from source_data
 )
 
 select * from final
 {% if is_incremental() %}
 where loaded_at > (
-    select coalesce(max(loaded_at), '1900-01-01'::timestamp)
+    select coalesce(max(loaded_at), CAST('1900-01-01 00:00:00.000 +0800' AS timestamptz))
            - interval '{{ var("high_frequency_lookback_minutes", 2) }} minutes'
     from {{ this }}
 )

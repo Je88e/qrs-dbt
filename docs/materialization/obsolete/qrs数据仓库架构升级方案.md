@@ -149,8 +149,8 @@ final as (
 
 select * from final
 {% if is_incremental() %}
-where _loaded_at > (
-    select coalesce(max(_loaded_at), '1900-01-01'::timestamp)
+where loaded_at > (
+    select coalesce(max(loaded_at), CAST('1900-01-01 00:00:00.000 +0800' AS timestamptz))
            - interval '{{ var("incremental_lookback_minutes", 5) }} minutes'
     from {{ this }}
 )
@@ -285,8 +285,8 @@ final as (
 
 select * from final
 {% if is_incremental() %}
-where _loaded_at > (
-    select coalesce(max(_loaded_at), '1900-01-01'::timestamp)
+where loaded_at > (
+    select coalesce(max(loaded_at), CAST('1900-01-01 00:00:00.000 +0800' AS timestamptz))
            - interval '{{ var("incremental_lookback_minutes", 5) }} minutes'
     from {{ this }}
 )

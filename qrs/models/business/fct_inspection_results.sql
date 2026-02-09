@@ -8,6 +8,7 @@
 /*
     Model: fct_inspection_results
     Description: 记录检验结果详细信息，用于质量分析
+    Enhancement: 添加检验仪器关联字段
 */
 
 with inspection_result as (
@@ -24,47 +25,57 @@ sample as (
 
 test_item as (
     select * from {{ ref('stg_test_item') }}
+),
+
+equipment as (
+    select * from {{ ref('stg_equipment') }}
 )
 
 select
     -- 结果主键
     ir.result_id,
-    
+
     -- 关联任务
     ir.task_id,
-    
+
     -- 检验项目
     ir.test_item_id,
     ti.item_code,
     ti.item_name,
     ti.test_method,
-    
+
     -- 样品信息
     ir.sample_id,
     s.sample_code,
     s.batch_number,
-    
+
+    -- 检验设备信息 (新增)
+    it.equipment_id,
+    e.equipment_code,
+    e.equipment_name as inspection_equipment_name,
+    e.equipment_type as inspection_equipment_type,
+
     -- 检验结果
     ir.test_value,
     ir.test_unit,
     ir.standard_min,
     ir.standard_max,
     ir.result_status,
-    
+
     -- 检验时间
     ir.test_date,
-    
+
     -- 分析员
     ir.analyst_id,
-    
+
     -- 审核信息
     ir.reviewer_id,
     ir.review_date,
     ir.review_status,
-    
+
     -- 备注
     ir.remark,
-    
+
     -- 审计字段
     ir.create_date
 
@@ -72,4 +83,4 @@ from inspection_result ir
 left join inspection_task it on ir.task_id = it.task_id
 left join sample s on ir.sample_id = s.sample_id
 left join test_item ti on ir.test_item_id = ti.test_item_id
-
+left join equipment e on it.equipment_id = e.equipment_id
