@@ -66,6 +66,43 @@ seeds:
     config:
       tags: ['erp', 'seed']
 
+  - name: erp_customer_returns
+    description: "PQR §23 投诉与退货：成品退货台账种子数据（当前无结构化源时的过渡方案；需可关联 batch_number）"
+    config:
+      tags: ['seed', 'erp', 'returns']
+      column_types:
+        return_id: varchar(64)
+        return_code: varchar(64)
+        product_id: varchar(64)
+        batch_number: varchar(64)
+        customer_name: varchar(255)
+        return_date: date
+        return_quantity: numeric
+        unit: varchar(50)
+        return_reason: varchar(255)
+        return_type: varchar(50)
+        return_status: varchar(50)
+        create_date: timestamp
+        loaded_at: timestamptz
+    columns:
+      - name: return_id
+        description: "退货记录ID (主键)"
+        data_tests:
+          - unique
+          - not_null
+      - name: batch_number
+        description: "产品批号（核心关联键）"
+        data_tests:
+          - not_null
+      - name: return_date
+        description: "退货日期"
+        data_tests:
+          - not_null
+      - name: loaded_at
+        description: "数据加载时间（审计字段）"
+        data_tests:
+          - not_null
+
   # ============================================
   # MES系统种子数据
   # ============================================
@@ -122,6 +159,56 @@ seeds:
     config:
       tags: ['mes', 'seed']
 
+  - name: mes_equipment_calibration
+    description: 设备校准记录表种子数据
+    config:
+      tags: ['mes', 'seed']
+
+  - name: mes_process_limits
+    description: "PQR §9.2 关键工艺参数(CPP)限度种子数据：定义产品+工序+参数的标准范围，用于超限判定（受控口径建议由QA维护）"
+    config:
+      tags: ['seed', 'mes', 'cpp']
+      column_types:
+        limit_id: varchar(64)
+        product_id: varchar(64)
+        operation_id: varchar(64)
+        param_name: varchar(255)
+        min_value: numeric
+        max_value: numeric
+        unit: varchar(50)
+        effective_start_date: date
+        effective_end_date: date
+        limit_version: varchar(50)
+        limit_status: varchar(50)
+        loaded_at: timestamptz
+    columns:
+      - name: limit_id
+        description: "限度记录ID (主键)"
+        data_tests:
+          - unique
+          - not_null
+      - name: product_id
+        description: "产品ID"
+        data_tests:
+          - not_null
+      - name: operation_id
+        description: "工序/操作ID"
+        data_tests:
+          - not_null
+      - name: param_name
+        description: "工艺参数名称（需与SCADA采集参数名口径一致）"
+        data_tests:
+          - not_null
+      - name: min_value
+        description: "下限（可为空，表示仅控制上限）"
+      - name: max_value
+        description: "上限（可为空，表示仅控制下限）"
+      - name: loaded_at
+        description: "数据加载时间（审计字段）"
+        data_tests:
+          - not_null
+
+
   # ============================================
   # LIMS系统种子数据
   # ============================================
@@ -165,6 +252,16 @@ seeds:
     config:
       tags: ['lims', 'seed']
 
+  - name: lims_stability_study
+    description: 稳定性研究表种子数据
+    config:
+      tags: ['lims', 'seed']
+
+  - name: lims_water_quality
+    description: 水质监控表种子数据
+    config:
+      tags: ['lims', 'seed']
+
   # ============================================
   # QMS系统种子数据
   # ============================================
@@ -172,6 +269,9 @@ seeds:
     description: 变更控制主表种子数据
     config:
       tags: ['qms', 'seed']
+      column_types:
+        approval_date: date
+
 
   - name: qms_change_impact
     description: 变更影响评估表种子数据
@@ -195,6 +295,16 @@ seeds:
 
   - name: qms_supplier_audit
     description: 供应商审计记录表种子数据
+    config:
+      tags: ['qms', 'seed']
+
+  - name: qms_training_record
+    description: 培训记录表种子数据
+    config:
+      tags: ['qms', 'seed']
+
+  - name: qms_validation_record
+    description: 验证记录表种子数据
     config:
       tags: ['qms', 'seed']
 
@@ -245,4 +355,3 @@ seeds:
     description: 产品召回记录表种子数据
     config:
       tags: ['pv', 'seed']
-

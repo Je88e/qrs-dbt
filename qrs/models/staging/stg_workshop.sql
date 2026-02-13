@@ -2,6 +2,8 @@
     config(
         materialized='incremental',
         incremental_strategy='merge',
+        unique_key='workshop_id',
+        merge_exclude_columns=['snowflake_id'],
         on_schema_change='append_new_columns',
         tags=['staging', 'mes', 'master_data']
     )
@@ -43,8 +45,8 @@ final as (
     
     -- 审计字段
     create_date,
-        update_date,
-        CAST(_airbyte_extracted_at AT TIME ZONE 'Asia/Shanghai' AS timestamptz) as loaded_at
+    update_date,
+    CAST(_airbyte_extracted_at AT TIME ZONE 'Asia/Shanghai' AS timestamptz) as loaded_at
     from source_data
 )
 

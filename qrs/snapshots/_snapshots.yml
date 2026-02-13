@@ -1,9 +1,64 @@
 version: 2
 
 snapshots:
-  # ============================================
-  # ERP 系统快照 (2个)
-  # ============================================
+  - name: snap_adverse_event
+    description: |
+      **PV不良反应报告快照**
+      
+      追踪不良反应报告状态变更，支持药物警戒分析和合规审计。
+      
+      **业务价值**:
+      - 分析不良反应报告处理时长
+      - 追踪报告状态变更历史
+      - 支持合规审计要求
+      
+      **数据粒度**: 每行代表不良反应报告在特定时间段的状态
+      **更新频率**: 每日
+      **数据保留**: 永久保留（合规要求）
+    
+    config:
+      tags: ['snapshot', 'pv', 'audit', 'compliance']
+    
+    columns:
+      - name: event_id
+        description: 事件ID（业务主键）
+        data_tests:
+          - not_null
+      
+      - name: event_status
+        description: |
+         不良反应报告状态
+          - 调查中: 正在调查的报告
+          - 已关闭: 已完成调查的报告
+          - 已取消: 已取消的报告
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ["调查中", "已关闭", "已取消"]
+      
+      - name: valid_from
+        description: 记录生效时间（SCD Type 2）
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        description: |
+          记录失效时间（SCD Type 2）
+          - 9999-12-31: 当前有效记录
+          - 其他日期: 历史记录的失效时间
+        data_tests:
+          - not_null
+      
+      - name: is_deleted
+        description: |
+          记录删除标记
+          - 0: 正常记录
+          - 1: 已删除记录
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ['True', 'False']
+
   - name: snap_purchase_orders
     description: |
       **采购订单状态变更快照**
@@ -62,7 +117,7 @@ snapshots:
         data_tests:
           - not_null
           - accepted_values:
-              values: [1, 0]
+              values: ['True', 'False']
 
   - name: snap_material_receipts
     description: |
@@ -94,9 +149,7 @@ snapshots:
         data_tests:
           - not_null
 
-  # ============================================
-  # LIMS 系统快照 (2个) - 高频更新
-  # ============================================
+
   - name: snap_inspection_requests
     description: |
       **检验申请状态变更快照**
@@ -143,9 +196,7 @@ snapshots:
         data_tests:
           - not_null
 
-  # ============================================
-  # QMS 系统快照 (3个)
-  # ============================================
+
   - name: snap_change_controls
     description: |
       **变更控制状态变更快照**
@@ -232,6 +283,1218 @@ snapshots:
         data_tests:
           - not_null
 
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_alarm
+    description: |
+      **SCADA报警记录快照**
+      
+      追踪报警状态变更历史，支持设备故障分析和审计追踪。
+      
+      **业务价值**:
+      - 分析报警处理时长
+      - 追踪报警状态变更历史
+      - 支持设备故障分析
+      
+      **数据粒度**: 每行代表报警记录在特定时间段的状态
+      **更新频率**: 每小时
+      **数据保留**: 永久保留（合规要求）
+    
+    config:
+      tags: ['snapshot', 'scada', 'monitoring', 'audit']
+    
+    columns:
+      - name: alarm_id
+        description: 报警ID（业务主键）
+        data_tests:
+          - not_null
+      
+      - name: alarm_status
+        description: |
+          报警状态（追踪字段）
+          - 待确认: 报警未确认
+          - 已确认: 报警已确认
+          - 处理中: 正在处理
+          - 已解决: 报警已解决
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        description: 记录生效时间（SCD Type 2）
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        description: |
+          记录失效时间（SCD Type 2）
+          - 9999-12-31: 当前有效记录
+          - 其他日期: 历史记录的失效时间
+        data_tests:
+          - not_null
+      
+      - name: is_deleted
+        description: |
+          记录删除标记
+          - 0: 正常记录
+          - 1: 已删除记录
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ['True', 'False']
+
+  - name: snap_analyst
+    description: |
+      **LIMS分析员主数据快照**
+      
+      追踪分析员资格和状态变更，支持实验室人员管理。
+      
+      **更新频率**: 每日
+    
+    config:
+      tags: ['snapshot', 'lims', 'master_data', 'audit']
+    
+    columns:
+      - name: analyst_id
+        description: 分析员ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: analyst_status
+        description: 分析员状态（追踪字段）
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_batch_tracking
+    description: |
+      **SCADA批次追踪记录快照**
+      
+      追踪批次生产状态变更，支持生产进度监控。
+      
+      **更新频率**: 每小时
+    
+    config:
+      tags: ['snapshot', 'scada', 'production', 'audit']
+    
+    columns:
+      - name: tracking_id
+        description: 追踪ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: tracking_status
+        description: 追踪状态（追踪字段）
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_change_impact
+    description: |
+      **QMS变更影响评估快照**
+      
+      追踪变更影响评估状态，支持风险管理。
+      
+      **更新频率**: 每日
+    
+    config:
+      tags: ['snapshot', 'qms', 'quality', 'audit']
+    
+    columns:
+      - name: impact_id
+        description: 影响ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: assessment_status
+        description: 评估状态（追踪字段）
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_change_implementation
+    description: |
+      **QMS变更实施记录快照**
+      
+      追踪变更实施进度，支持变更管理。
+      
+      **更新频率**: 每日
+    
+    config:
+      tags: ['snapshot', 'qms', 'quality', 'audit']
+    
+    columns:
+      - name: implementation_id
+        description: 实施ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: implementation_status
+        description: 实施状态（追踪字段）
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_complaint
+    description: |
+      **PV投诉报告快照**
+      
+      追踪投诉处理状态变更，支持客户投诉分析。
+      
+      **更新频率**: 每日
+    
+    config:
+      tags: ['snapshot', 'pv', 'safety', 'audit']
+    
+    columns:
+      - name: complaint_id
+        description: 投诉ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: complaint_status
+        description: 投诉状态（追踪字段）
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_energy_consumption
+    description: |
+      **SCADA能耗记录快照**
+      
+      追踪能耗数据修正历史，支持能耗分析。
+      
+      **更新频率**: 每日
+    
+    config:
+      tags: ['snapshot', 'scada', 'monitoring', 'audit']
+    
+    columns:
+      - name: consumption_id
+        description: 消耗ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_environment_data
+    description: |
+      **SCADA环境监测数据快照**
+      
+      追踪环境数据修正历史，支持环境监控。
+      
+      **更新频率**: 每日
+    
+    config:
+      tags: ['snapshot', 'scada', 'monitoring', 'audit']
+    
+    columns:
+      - name: environment_id
+        description: 环境ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_equipment_calibration
+    description: |
+      **MES设备校准记录快照**
+      
+      追踪设备校准状态变更，支持设备管理。
+      
+      **更新频率**: 每日
+    
+    config:
+      tags: ['snapshot', 'mes', 'equipment', 'audit']
+    
+    columns:
+      - name: calibration_id
+        description: 校准ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: calibration_status
+        description: 校准状态（追踪字段）
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_equipment_data
+    description: |
+      **SCADA设备运行数据快照**
+      
+      追踪设备运行状态变更，支持设备性能分析。
+      
+      **更新频率**: 每小时
+    
+    config:
+      tags: ['snapshot', 'scada', 'equipment', 'audit']
+    
+    columns:
+      - name: data_id
+        description: 数据ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_equipment_maintenance
+    description: |
+      **MES设备维护记录快照**
+      
+      追踪设备维护状态变更，支持维护管理。
+      
+      **更新频率**: 每日
+    
+    config:
+      tags: ['snapshot', 'mes', 'equipment', 'audit']
+    
+    columns:
+      - name: maintenance_id
+        description: 维护ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: maintenance_status
+        description: 维护状态（追踪字段）
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_equipment
+    description: |
+      **MES设备主数据快照**
+      
+      追踪设备信息变更，支持设备资产管理。
+      
+      **更新频率**: 每日
+    
+    config:
+      tags: ['snapshot', 'mes', 'master_data', 'audit']
+    
+    columns:
+      - name: equipment_id
+        description: 设备ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: equipment_status
+        description: 设备状态（追踪字段）
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_formula_detail
+    description: |
+      **ERP配方明细快照**
+      
+      追踪配方明细变更，支持配方版本管理。
+      
+      **更新频率**: 每日
+    
+    config:
+      tags: ['snapshot', 'erp', 'production', 'audit']
+    
+    columns:
+      - name: detail_id
+        description: 明细ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_formula_master
+    description: |
+      **ERP配方主数据快照**
+      
+      追踪配方信息变更，支持配方管理。
+      
+      **更新频率**: 每日
+    
+    config:
+      tags: ['snapshot', 'erp', 'production', 'audit']
+    
+    columns:
+      - name: formula_id
+        description: 配方ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: formula_status
+        description: 配方状态（追踪字段）
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_inspection_report
+    description: |
+      **LIMS检验报告快照**
+      
+      追踪检验报告状态变更，支持质量管理。
+      
+      **更新频率**: 每日
+    
+    config:
+      tags: ['snapshot', 'lims', 'quality', 'audit']
+    
+    columns:
+      - name: report_id
+        description: 报告ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: report_status
+        description: 报告状态（追踪字段）
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_inspection_result
+    description: |
+      **LIMS检验结果快照**
+      
+      追踪检验结果修正历史，支持数据追溯。
+      
+      **更新频率**: 每日
+    
+    config:
+      tags: ['snapshot', 'lims', 'quality', 'audit']
+    
+    columns:
+      - name: result_id
+        description: 结果ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_inventory_transaction
+    description: |
+      **ERP库存交易记录快照**
+      
+      追踪库存交易数据修正历史，支持库存管理。
+      
+      **更新频率**: 每日
+    
+    config:
+      tags: ['snapshot', 'erp', 'inventory', 'audit']
+    
+    columns:
+      - name: transaction_id
+        description: 交易ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_inventory
+    description: |
+      **ERP库存主数据快照**
+      
+      追踪库存状态变更，支持库存管理。
+      
+      **更新频率**: 每日
+    
+    config:
+      tags: ['snapshot', 'erp', 'inventory', 'audit']
+    
+    columns:
+      - name: inventory_id
+        description: 库存ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_material_consumption
+    description: |
+      **MES物料消耗记录快照**
+      
+      追踪物料消耗数据修正历史，支持成本分析。
+      
+      **更新频率**: 每日
+    
+    config:
+      tags: ['snapshot', 'mes', 'production', 'audit']
+    
+    columns:
+      - name: consumption_id
+        description: 消耗ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_material_master
+    description: |
+      **ERP物料主数据快照**
+      
+      追踪物料信息变更，支持物料管理。
+      
+      **更新频率**: 每日
+    
+    config:
+      tags: ['snapshot', 'erp', 'master_data', 'audit']
+    
+    columns:
+      - name: material_id
+        description: 物料ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: material_status
+        description: 物料状态（追踪字段）
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_material_return
+    description: |
+      **ERP物料退料记录快照**
+      
+      追踪退料状态变更，支持退料管理。
+      
+      **更新频率**: 每日
+    
+    config:
+      tags: ['snapshot', 'erp', 'inventory', 'audit']
+    
+    columns:
+      - name: return_id
+        description: 退料ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: return_status
+        description: 退料状态（追踪字段）
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_operation
+    description: |
+      **MES工序主数据快照**
+      
+      追踪工序信息变更，支持工艺管理。
+      
+      **更新频率**: 每日
+    
+    config:
+      tags: ['snapshot', 'mes', 'production', 'audit']
+    
+    columns:
+      - name: operation_id
+        description: 工序ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: operation_status
+        description: 工序状态（追踪字段）
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_personnel
+    description: |
+      **MES人员主数据快照**
+      
+      追踪人员信息变更，支持人员管理。
+      
+      **更新频率**: 每日
+    
+    config:
+      tags: ['snapshot', 'mes', 'master_data', 'audit']
+    
+    columns:
+      - name: personnel_id
+        description: 人员ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: personnel_status
+        description: 人员状态（追踪字段）
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_product_recall
+    description: |
+      **PV产品召回快照**
+      
+      追踪召回状态变更，支持召回管理。
+      
+      **更新频率**: 每日
+    
+    config:
+      tags: ['snapshot', 'pv', 'safety', 'audit']
+    
+    columns:
+      - name: recall_id
+        description: 召回ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: recall_status
+        description: 召回状态（追踪字段）
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_production_line
+    description: |
+      **MES生产线主数据快照**
+      
+      追踪生产线信息变更，支持生产线管理。
+      
+      **更新频率**: 每日
+    
+    config:
+      tags: ['snapshot', 'mes', 'master_data', 'audit']
+    
+    columns:
+      - name: production_line_id
+        description: 生产线ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: line_status
+        description: 生产线状态（追踪字段）
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_production_report
+    description: |
+      **MES生产报告快照**
+      
+      追踪生产报告状态变更，支持生产管理。
+      
+      **更新频率**: 每日
+    
+    config:
+      tags: ['snapshot', 'mes', 'production', 'audit']
+    
+    columns:
+      - name: report_id
+        description: 报告ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: report_status
+        description: 报告状态（追踪字段）
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_purchase_order_detail
+    description: |
+      **ERP采购订单明细快照**
+      
+      追踪订单明细变更，支持采购管理。
+      
+      **更新频率**: 每日
+    
+    config:
+      tags: ['snapshot', 'erp', 'procurement', 'audit']
+    
+    columns:
+      - name: detail_id
+        description: 明细ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: detail_status
+        description: 明细状态（追踪字段）
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_quality_standard
+    description: |
+      **LIMS质量标准主数据快照**
+      
+      追踪质量标准变更，支持质量管理。
+      
+      **更新频率**: 每日
+    
+    config:
+      tags: ['snapshot', 'lims', 'master_data', 'audit']
+    
+    columns:
+      - name: standard_id
+        description: 标准ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: standard_status
+        description: 标准状态（追踪字段）
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_sample
+    description: |
+      **LIMS样品主数据快照**
+      
+      追踪样品状态变更，支持样品管理。
+      
+      **更新频率**: 每日
+    
+    config:
+      tags: ['snapshot', 'lims', 'quality', 'audit']
+    
+    columns:
+      - name: sample_id
+        description: 样品ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: sample_status
+        description: 样品状态（追踪字段）
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_stability_study
+    description: |
+      **LIMS稳定性研究快照**
+      
+      追踪稳定性研究状态变更，支持研究管理。
+      
+      **更新频率**: 每日
+    
+    config:
+      tags: ['snapshot', 'lims', 'quality', 'audit']
+    
+    columns:
+      - name: study_id
+        description: 研究ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: study_status
+        description: 研究状态（追踪字段）
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_storage_location
+    description: |
+      **ERP存储位置主数据快照**
+      
+      追踪存储位置信息变更，支持库位管理。
+      
+      **更新频率**: 每日
+    
+    config:
+      tags: ['snapshot', 'erp', 'master_data', 'audit']
+    
+    columns:
+      - name: location_id
+        description: 位置ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: location_status
+        description: 位置状态（追踪字段）
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_supplier_audit
+    description: |
+      **QMS供应商审计快照**
+      
+      追踪供应商审计状态变更，支持供应商管理。
+      
+      **更新频率**: 每日
+    
+    config:
+      tags: ['snapshot', 'qms', 'procurement', 'audit']
+    
+    columns:
+      - name: audit_id
+        description: 审计ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: audit_status
+        description: 审计状态（追踪字段）
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_supplier_master
+    description: |
+      **ERP供应商主数据快照**
+      
+      追踪供应商信息变更，支持供应商管理。
+      
+      **更新频率**: 每日
+    
+    config:
+      tags: ['snapshot', 'erp', 'master_data', 'audit']
+    
+    columns:
+      - name: supplier_id
+        description: 供应商ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: supplier_status
+        description: 供应商状态（追踪字段）
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_test_item
+    description: |
+      **LIMS检验项目主数据快照**
+      
+      追踪检验项目信息变更，支持检验管理。
+      
+      **更新频率**: 每日
+    
+    config:
+      tags: ['snapshot', 'lims', 'master_data', 'audit']
+    
+    columns:
+      - name: test_item_id
+        description: 检验项目ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: test_item_status
+        description: 检验项目状态（追踪字段）
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_training_record
+    description: |
+      **QMS培训记录快照**
+      
+      追踪培训状态变更，支持培训管理。
+      
+      **更新频率**: 每日
+    
+    config:
+      tags: ['snapshot', 'qms', 'hr', 'audit']
+    
+    columns:
+      - name: training_id
+        description: 培训ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: training_status
+        description: 培训状态（追踪字段）
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_validation_record
+    description: |
+      **QMS验证记录快照**
+      
+      追踪验证状态变更，支持验证管理。
+      
+      **更新频率**: 每日
+    
+    config:
+      tags: ['snapshot', 'qms', 'quality', 'audit']
+    
+    columns:
+      - name: validation_id
+        description: 验证ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: validation_status
+        description: 验证状态（追踪字段）
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_warehouse
+    description: |
+      **ERP仓库主数据快照**
+      
+      追踪仓库信息变更，支持仓库管理。
+      
+      **更新频率**: 每日
+    
+    config:
+      tags: ['snapshot', 'erp', 'master_data', 'audit']
+    
+    columns:
+      - name: warehouse_id
+        description: 仓库ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: warehouse_status
+        description: 仓库状态（追踪字段）
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_water_quality
+    description: |
+      **LIMS水质监测快照**
+      
+      追踪水质监测数据修正历史，支持质量监控。
+      
+      **更新频率**: 每日
+    
+    config:
+      tags: ['snapshot', 'lims', 'quality', 'audit']
+    
+    columns:
+      - name: quality_id
+        description: 质量ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_work_order_operation
+    description: |
+      **MES工单工序记录快照**
+      
+      追踪工单工序执行状态变更，支持生产管理。
+      
+      **更新频率**: 每日
+    
+    config:
+      tags: ['snapshot', 'mes', 'production', 'audit']
+    
+    columns:
+      - name: operation_record_id
+        description: 工序记录ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: operation_status
+        description: 工序状态（追踪字段）
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_work_order
+    description: |
+      **MES生产工单快照**
+      
+      追踪工单状态变更，支持工单管理。
+      
+      **更新频率**: 每日
+    
+    config:
+      tags: ['snapshot', 'mes', 'production', 'audit']
+    
+    columns:
+      - name: work_order_number
+        description: 工单号（主键）
+        data_tests:
+          - not_null
+      
+      - name: work_order_status
+        description: 工单状态（追踪字段）
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        data_tests:
+          - not_null
+      
+      - name: valid_to
+        data_tests:
+          - not_null
+
+  - name: snap_workshop
+    description: |
+      **MES车间主数据快照**
+      
+      追踪车间信息变更，支持车间管理。
+      
+      **更新频率**: 每日
+    
+    config:
+      tags: ['snapshot', 'mes', 'master_data', 'audit']
+    
+    columns:
+      - name: workshop_id
+        description: 车间ID（主键）
+        data_tests:
+          - not_null
+      
+      - name: workshop_status
+        description: 车间状态（追踪字段）
+        data_tests:
+          - not_null
+      
+      - name: valid_from
+        data_tests:
+          - not_null
+      
       - name: valid_to
         data_tests:
           - not_null

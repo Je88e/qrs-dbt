@@ -2,6 +2,8 @@
     config(
         materialized='incremental',
         incremental_strategy='merge',
+        unique_key='work_order_operation_id',
+        merge_exclude_columns=['snowflake_id'],
         on_schema_change='append_new_columns',
         tags=['staging', 'mes', 'production']
     )

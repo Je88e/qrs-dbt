@@ -53,6 +53,62 @@ models:
       - name: total_actual_qty
         description: 总实际数量
 
+  - name: int_production__batch_genealogy
+    description: PQR 批次谱系/批次质量概览中间模型 - 以工单/批次为粒度聚合偏差、检验与物料消耗指标
+    config:
+      tags: ["intermediate", "production", "genealogy", "quality", "pqr"]
+    columns:
+      - name: work_order_number
+        description: 生产工单号（主键）
+        data_tests:
+          - unique
+          - not_null
+      - name: batch_number
+        description: 产品批号
+      - name: product_id
+        description: 产品ID
+      - name: manufacture_date
+        description: 生产日期（使用实际完工日期，缺失时回退计划完工日期）
+      - name: count_deviations
+        description: 关联偏差数量
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+      - name: count_oos
+        description: OOS/失败检验数量（基于检验结果状态聚合）
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+      - name: total_tests
+        description: 检验总次数
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+      - name: failed_tests
+        description: 失败检验次数
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+      - name: material_consumption_records
+        description: 物料消耗记录数
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+      - name: distinct_materials
+        description: 消耗物料种类数
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+      - name: total_material_planned_qty
+        description: 物料计划消耗总量
+      - name: total_material_actual_qty
+        description: 物料实际消耗总量
+      - name: compliance_status
+        description: 批次合规状态
+        data_tests:
+          - accepted_values:
+              values: ["Critical Issues", "OOS Observed", "Right First Time"]
+
   - name: int_quality__inspection_metrics
     description: 质量检验指标中间模型 - 基于检验申请数据聚合计算质量管理指标
     config:
@@ -95,3 +151,86 @@ models:
         description: 平均处理时长 (天)
       - name: avg_priority_weight
         description: 平均优先级权重
+
+  - name: int_quality__batch_compliance
+    description: 批次合规指标中间模型 - 基于批次谱系计算通过率等合规指标
+    config:
+      tags: ["intermediate", "quality", "batch", "compliance", "pqr"]
+    columns:
+      - name: work_order_number
+        description: 生产工单号（主键）
+        data_tests:
+          - unique
+          - not_null
+      - name: batch_number
+        description: 产品批号
+      - name: product_id
+        description: 产品ID
+      - name: manufacture_date
+        description: 生产日期
+      - name: total_tests
+        description: 检验总次数
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+      - name: failed_tests
+        description: 失败检验次数
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+      - name: passed_tests
+        description: 通过检验次数
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+      - name: test_pass_rate_percent
+        description: 检验通过率（%）
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 100
+      - name: compliance_status
+        description: 批次合规状态
+        data_tests:
+          - accepted_values:
+              values: ["Critical Issues", "OOS Observed", "Right First Time"]
+
+  - name: int_quality__process_capability
+    description: 过程能力（Cpk）统计中间模型 - 按年度/产品/检验项目聚合计算 Cpk
+    config:
+      tags: ["intermediate", "quality", "capability", "statistics", "pqr"]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - review_year
+            - product_id
+            - test_item_id
+    columns:
+      - name: review_year
+        description: 回顾年度（从工单实际完工日期提取）
+        data_tests:
+          - not_null
+      - name: product_id
+        description: 产品ID
+        data_tests:
+          - not_null
+      - name: test_item_id
+        description: 检验项目ID
+        data_tests:
+          - not_null
+      - name: measurement_count
+        description: 参与统计的测量点数量
+        data_tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 1
+      - name: mean_value
+        description: 均值
+      - name: stddev_value
+        description: 样本标准差
+      - name: lsl
+        description: 规格下限
+      - name: usl
+        description: 规格上限
+      - name: cpk
+        description: 过程能力指数 Cpk

@@ -1,8 +1,9 @@
 {{
     config(
         materialized='incremental',
-        unique_key='purchase_order_number',
         incremental_strategy='merge',
+        unique_key='purchase_order_number',
+        merge_exclude_columns=['snowflake_id'],
         on_schema_change='append_new_columns',
         tags=['staging', 'erp', 'procurement']
     )

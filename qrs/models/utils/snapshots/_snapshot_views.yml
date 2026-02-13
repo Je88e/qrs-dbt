@@ -1,0 +1,104 @@
+version: 2
+
+models:
+  - name: current_purchase_orders
+    description: 采购订单当前状态视图（基于 SCD Type 2 快照）
+    columns:
+      - name: purchase_order_number
+        description: 采购订单号（主键）
+        data_tests:
+          - unique
+          - not_null
+
+  - name: current_material_receipts
+    description: 物料接收当前状态视图（基于 SCD Type 2 快照）
+    columns:
+      - name: receipt_id
+        description: 接收单ID（主键）
+        data_tests:
+          - unique
+          - not_null
+
+  - name: current_work_orders
+    description: 生产工单当前状态视图（基于 SCD Type 2 快照）
+    columns:
+      - name: work_order_number
+        description: 工单号（主键）
+        data_tests:
+          - unique
+          - not_null
+
+  - name: current_samples
+    description: 样品当前状态视图（基于 SCD Type 2 快照）
+    columns:
+      - name: sample_id
+        description: 样品ID（主键）
+        data_tests:
+          - unique
+          - not_null
+
+  - name: current_inspection_results
+    description: 检验结果当前状态视图（基于 SCD Type 2 快照）
+    columns:
+      - name: result_id
+        description: 检验结果ID（主键）
+        data_tests:
+          - unique
+          - not_null
+
+  - name: current_material_consumption
+    description: 物料消耗当前状态视图（基于 SCD Type 2 快照）
+    columns:
+      - name: consumption_id
+        description: 消耗记录ID（主键）
+        data_tests:
+          - unique
+          - not_null
+
+  - name: current_inspection_requests
+    description: 检验申请当前状态视图（基于 SCD Type 2 快照）
+    columns:
+      - name: request_id
+        description: 检验申请ID（主键）
+        data_tests:
+          - unique
+          - not_null
+
+  - name: current_inspection_tasks
+    description: 检验任务当前状态视图（基于 SCD Type 2 快照）
+    columns:
+      - name: task_id
+        description: 检验任务ID（主键）
+        data_tests:
+          - unique
+          - not_null
+
+  - name: current_change_controls
+    description: 变更控制当前状态视图（基于 SCD Type 2 快照）
+    columns:
+      - name: change_id
+        description: 变更控制ID（主键）
+        data_tests:
+          - unique
+          - not_null
+
+  - name: current_deviations
+    description: 偏差当前状态视图（基于 SCD Type 2 快照）
+    columns:
+      - name: deviation_id
+        description: 偏差ID（主键）
+        data_tests:
+          - unique
+          - not_null
+
+  - name: current_capas
+    description: CAPA当前状态视图（基于 SCD Type 2 快照）
+    columns:
+      - name: capa_id
+        description: CAPA ID（主键）
+        data_tests:
+          - unique
+          - not_null
+
+  - name: cleanup_candidates_preview
+    description: 清洗候选记录预览视图 - 监控哪些已删除的快照记录即将达到保留期限

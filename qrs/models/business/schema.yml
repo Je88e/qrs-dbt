@@ -2580,3 +2580,73 @@ models:
         description: 批次号
       - name: create_date
         description: 创建日期
+
+  - name: dim_process_limits
+    description: CPP/中控参数限度维度表 - 受控标准范围与版本信息
+    config:
+      tags: ['pqr', 'cpp', 'dim']
+    columns:
+      - name: limit_id
+        description: 限度记录ID (主键)
+        data_tests:
+          - unique
+          - not_null
+      - name: product_id
+        description: 产品ID
+        data_tests:
+          - not_null
+      - name: operation_id
+        description: 工序/操作ID
+        data_tests:
+          - not_null
+      - name: param_name
+        description: 工艺参数名称
+        data_tests:
+          - not_null
+
+  - name: fct_cpp_exceedances
+    description: CPP超限事实表 - 按批次/工序/参数/日期聚合超限统计
+    config:
+      tags: ['pqr', 'cpp', 'fct']
+    columns:
+      - name: cpp_exceedance_id
+        description: 超限聚合记录ID (主键)
+        data_tests:
+          - unique
+          - not_null
+      - name: limit_id
+        description: 限度记录ID (外键)
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('dim_process_limits')
+              field: limit_id
+      - name: batch_number
+        description: 产品批号
+        data_tests:
+          - not_null
+      - name: out_of_spec_points
+        description: 超限点位数
+        data_tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+  - name: fct_customer_returns
+    description: 成品退货事实表 - 退货明细与基础衍生指标
+    config:
+      tags: ['pqr', 'returns', 'fct']
+    columns:
+      - name: return_id
+        description: 退货记录ID (主键)
+        data_tests:
+          - unique
+          - not_null
+      - name: batch_number
+        description: 产品批号
+        data_tests:
+          - not_null
+      - name: return_status
+        description: 退货状态
+        data_tests:
+          - accepted_values:
+              values: ['待处理', '处理中', '已完成', '已关闭', '已取消']

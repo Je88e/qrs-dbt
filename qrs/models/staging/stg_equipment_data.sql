@@ -1,8 +1,9 @@
 {{
     config(
         materialized='incremental',
-        unique_key='data_id',
         incremental_strategy='append',
+        unique_key='data_id',
+        merge_exclude_columns=['snowflake_id'],
         on_schema_change='append_new_columns',
         tags=['staging', 'scada', 'monitoring']
     )

@@ -1,6 +1,10 @@
 {{
     config(
-        materialized='table',
+        materialized='incremental',
+        incremental_strategy='merge',
+        unique_key='calibration_id',
+        merge_exclude_columns=['snowflake_id'],
+        on_schema_change='append_new_columns',
         tags=['mes', 'equipment', 'calibration']
     )
 }}
@@ -54,7 +58,7 @@ final as (
 
         -- 时间字段
         cast(create_date as timestamp) as create_date,
-
+        
         -- 加载时间戳
         CAST(_airbyte_extracted_at AT TIME ZONE 'Asia/Shanghai' AS timestamptz) as loaded_at
 

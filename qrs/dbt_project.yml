@@ -140,6 +140,14 @@ models:
       fct_energy_consumption:
         +materialized: table
 
+    # Utils层: 工具/辅助模型
+    # 策略: view - 轻量级工具视图，供下游模型引用
+    utils:
+      +materialized: view
+      +tags: ["utility"]
+      snapshots:
+        +tags: ["utility", "snapshot_view"]
+
     # Reports层: 最终报告
     # 策略: table - 复杂聚合计算,需要快速查询
     reports:
@@ -154,11 +162,14 @@ snapshots:
     +dbt_valid_to_current: '9999-12-31'
     +hard_deletes: new_record
 
-# Configuring analyses - 审计分析
-analyses:
+# Configuring tests - 测试严重性分级
+tests:
   qrs:
-    audit:
-      +tags: ['audit', 'quality']
+    singular:
+      data_integrity:
+        +severity: error
+        +store_failures: true
+        +tags: ["integrity", "audit"]
 
 # Configuring seeds
 seeds:
