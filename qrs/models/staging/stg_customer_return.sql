@@ -2,7 +2,7 @@
     config(
         materialized='incremental',
         incremental_strategy='merge',
-        unique_key='limit_id',
+        unique_key='return_id',
         merge_exclude_columns=['snowflake_id'],
         on_schema_change='append_new_columns',
         tags=['staging', 'erp', 'returns']
@@ -35,7 +35,7 @@ final as (
         nullif(trim(return_type::text), '') as return_type,
         nullif(trim(return_status::text), '') as return_status,
         nullif(trim(create_date::text), '')::timestamp as create_date,
-        nullif(trim(_airbyte_extracted_at::text), '')::timestamptz as loaded_at
+        CAST(_airbyte_extracted_at AT TIME ZONE 'Asia/Shanghai' AS timestamptz) as loaded_at
     from source_data
 )
 

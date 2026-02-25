@@ -109,6 +109,57 @@ models:
           - accepted_values:
               values: ["Critical Issues", "OOS Observed", "Right First Time"]
 
+  - name: int_production__operation_windows
+    description: 工序窗口中间模型 - 以工单工序执行记录为粒度，形成工序 start/end 窗口用于对齐采集点
+    config:
+      tags: ["intermediate", "production", "operation", "window", "pqr"]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - work_order_operation_id
+    columns:
+      - name: work_order_operation_id
+        description: 工单工序执行记录ID（主键）
+        data_tests:
+          - not_null
+      - name: work_order_number
+        description: 生产工单号（外键）
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('stg_work_order')
+              field: work_order_number
+      - name: batch_number
+        description: 批次号
+        data_tests:
+          - not_null
+      - name: product_id
+        description: 产品ID
+        data_tests:
+          - not_null
+      - name: operation_id
+        description: 工序ID（外键）
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('stg_operation')
+              field: operation_id
+      - name: window_source
+        description: 窗口来源（actual/planned/unknown）
+        data_tests:
+          - accepted_values:
+              values: ["actual", "planned", "unknown"]
+      - name: window_start_at
+        description: 工序窗口开始时间
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: "'1900-01-01'::timestamptz"
+      - name: window_end_at
+        description: 工序窗口结束时间
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: "'1900-01-01'::timestamptz"
+
   - name: int_quality__inspection_metrics
     description: 质量检验指标中间模型 - 基于检验申请数据聚合计算质量管理指标
     config:
@@ -195,8 +246,48 @@ models:
           - accepted_values:
               values: ["Critical Issues", "OOS Observed", "Right First Time"]
 
-  - name: int_quality__process_capability
-    description: 过程能力（Cpk）统计中间模型 - 按年度/产品/检验项目聚合计算 Cpk
+  # - name: int_quality__process_capability
+  #   description: 过程能力（Cpk）统计中间模型 - 按年度/产品/检验项目聚合计算 Cpk
+  #   config:
+  #     tags: ["intermediate", "quality", "capability", "statistics", "pqr"]
+  #   data_tests:
+  #     - dbt_utils.unique_combination_of_columns:
+  #         combination_of_columns:
+  #           - review_year
+  #           - product_id
+  #           - test_item_id
+  #   columns:
+  #     - name: review_year
+  #       description: 回顾年度（从工单实际完工日期提取）
+  #       data_tests:
+  #         - not_null
+  #     - name: product_id
+  #       description: 产品ID
+  #       data_tests:
+  #         - not_null
+  #     - name: test_item_id
+  #       description: 检验项目ID
+  #       data_tests:
+  #         - not_null
+  #     - name: measurement_count
+  #       description: 参与统计的测量点数量
+  #       data_tests:
+  #         - not_null
+  #         - dbt_utils.accepted_range:
+  #             min_value: 1
+  #     - name: mean_value
+  #       description: 均值
+  #     - name: stddev_value
+  #       description: 样本标准差
+  #     - name: lsl
+  #       description: 规格下限
+  #     - name: usl
+  #       description: 规格上限
+  #     - name: cpk
+  #       description: 过程能力指数 Cpk
+
+  - name: int_quality__process_capability_v2
+    description: 过程能力（Cpk）统计中间模型（v2）- 基于统一检验结果口径计算 Cpk
     config:
       tags: ["intermediate", "quality", "capability", "statistics", "pqr"]
     data_tests:
@@ -205,9 +296,12 @@ models:
             - review_year
             - product_id
             - test_item_id
+            - uom
+            - standard_id
+            - standard_version
     columns:
       - name: review_year
-        description: 回顾年度（从工单实际完工日期提取）
+        description: 回顾年度（优先取工单实际完工日期，缺失回退检验日期）
         data_tests:
           - not_null
       - name: product_id
@@ -218,6 +312,18 @@ models:
         description: 检验项目ID
         data_tests:
           - not_null
+      - name: uom
+        description: 结果单位
+        data_tests:
+          - dbt_utils.not_empty_string
+      - name: standard_id
+        description: 质量标准ID
+        data_tests:
+          - dbt_utils.not_empty_string
+      - name: standard_version
+        description: 质量标准版本
+        data_tests:
+          - dbt_utils.not_empty_string
       - name: measurement_count
         description: 参与统计的测量点数量
         data_tests:
@@ -226,11 +332,31 @@ models:
               min_value: 1
       - name: mean_value
         description: 均值
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: -1000000000000
+              max_value: 1000000000000
       - name: stddev_value
         description: 样本标准差
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 1000000000000
       - name: lsl
         description: 规格下限
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: -1000000000000
+              max_value: 1000000000000
       - name: usl
         description: 规格上限
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: -1000000000000
+              max_value: 1000000000000
       - name: cpk
         description: 过程能力指数 Cpk
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 1000

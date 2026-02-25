@@ -1,0 +1,10 @@
+mapping_id,source_system,event_type,raw_value,risk_level_code,priority,is_active,create_date,update_date,_airbyte_extracted_at
+RLM001,pv,complaint,高,high,10,true,2024-01-01,2024-01-01,2026-01-23 10:08:20.993 +0800
+RLM002,pv,complaint,中,medium,20,true,2024-01-01,2024-01-01,2026-01-23 10:08:20.993 +0800
+RLM003,pv,complaint,低,low,30,true,2024-01-01,2024-01-01,2026-01-23 10:08:20.993 +0800
+RLM004,qms,change_control,高,high,10,true,2024-01-01,2024-01-01,2026-01-23 10:08:20.993 +0800
+RLM005,qms,change_control,中,medium,20,true,2024-01-01,2024-01-01,2026-01-23 10:08:20.993 +0800
+RLM006,qms,change_control,低,low,30,true,2024-01-01,2024-01-01,2026-01-23 10:08:20.993 +0800
+RLM007,pv,product_recall,一级召回,critical,10,true,2024-01-01,2024-01-01,2026-01-23 10:08:20.993 +0800
+RLM008,pv,product_recall,二级召回,high,20,true,2024-01-01,2024-01-01,2026-01-23 10:08:20.993 +0800
+RLM009,pv,product_recall,三级召回,medium,30,true,2024-01-01,2024-01-01,2026-01-23 10:08:20.993 +0800

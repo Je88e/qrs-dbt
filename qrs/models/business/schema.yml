@@ -591,6 +591,12 @@ models:
         description: 样品编码
       - name: batch_number
         description: 批次号
+      - name: material_id
+        description: 物料ID（来自样品主数据）
+        data_tests:
+          - relationships:
+              to: ref('dim_materials')
+              field: material_id
       - name: test_value
         description: 检验值
       - name: test_unit
@@ -622,6 +628,171 @@ models:
         description: 备注
       - name: create_date
         description: 创建日期
+
+  - name: fct_quality_test_results
+    description: 统一质量检验结果事实表 - 面向趋势/能力分析/OOS统计的统一口径
+    config:
+      tags: ["lims", "quality", "inspection", "pqr"]
+    columns:
+      - name: result_id
+        description: 检验结果ID（主键）
+        data_tests:
+          - unique
+          - not_null
+      - name: sample_id
+        description: 样品ID（外键）
+        data_tests:
+          - relationships:
+              to: ref('stg_sample')
+              field: sample_id
+      - name: batch_number
+        description: 批次号
+        data_tests:
+          - not_null
+      - name: material_id
+        description: 物料ID
+        data_tests:
+          - relationships:
+              to: ref('dim_materials')
+              field: material_id
+      - name: test_item_id
+        description: 检验项目ID
+        data_tests:
+          - relationships:
+              to: ref('stg_test_item')
+              field: test_item_id
+      - name: test_date
+        description: 检验时间
+        data_tests:
+          - not_null
+      - name: result_numeric
+        description: 统一解析后的数值型检验结果
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: -1000000000000
+              max_value: 1000000000000
+      - name: result_text
+        description: 无法解析为数值时保留的原始检验结果
+        data_tests:
+          - dbt_utils.not_empty_string
+      - name: uom
+        description: 结果单位
+        data_tests:
+          - dbt_utils.not_empty_string
+      - name: lower_limit
+        description: 规格/标准下限（优先取结果记录，缺失回补主数据）
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: -1000000000000
+              max_value: 1000000000000
+      - name: upper_limit
+        description: 规格/标准上限（优先取结果记录，缺失回补主数据）
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: -1000000000000
+              max_value: 1000000000000
+      - name: is_oos
+        description: 是否超出规格（基于上下限与结果数值判定）
+        data_tests:
+          - accepted_values:
+              values: [true, false]
+      - name: limit_source
+        description: 限度来源（result_record/test_item_default）
+        data_tests:
+          - accepted_values:
+              values: ["result_record", "test_item_default"]
+      - name: standard_id
+        description: 质量标准ID
+        data_tests:
+          - relationships:
+              to: ref('stg_quality_standard')
+              field: standard_id
+      - name: standard_version
+        description: 质量标准版本
+        data_tests:
+          - dbt_utils.not_empty_string
+      - name: standard_effective_date
+        description: 标准生效日期
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: "'1900-01-01'::date"
+      - name: standard_expiry_date
+        description: 标准失效日期
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: "'1900-01-01'::date"
+      - name: is_standard_effective_at_test_date
+        description: 标准在检验日期是否处于有效期内
+        data_tests:
+          - accepted_values:
+              values: [true, false]
+      - name: source_loaded_at
+        description: 源系统抽取时间（用于增量/审计）
+        data_tests:
+          - not_null
+      - name: create_date
+        description: 源记录创建时间
+        data_tests:
+          - not_null
+      - name: update_date
+        description: 源记录更新时间
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: "'1900-01-01'::timestamp"
+
+  - name: dim_materials
+    description: 物料维度表（带兜底记录）- 统一 material_id 口径并覆盖样品侧缺失主数据场景
+    config:
+      tags: ["erp", "master_data", "material", "pqr"]
+    columns:
+      - name: material_id
+        description: 物料ID（主键，统一大写去空格）
+        data_tests:
+          - unique
+          - not_null
+      - name: material_name
+        description: 物料名称
+        data_tests:
+          - dbt_utils.not_empty_string
+      - name: material_type
+        description: 物料类型
+        data_tests:
+          - dbt_utils.not_empty_string
+      - name: material_specification
+        description: 物料规格
+        data_tests:
+          - dbt_utils.not_empty_string
+      - name: unit
+        description: 物料主单位
+        data_tests:
+          - dbt_utils.not_empty_string
+      - name: supplier_id
+        description: 主供应商ID
+        data_tests:
+          - dbt_utils.not_empty_string
+      - name: approval_status
+        description: 审批状态
+        data_tests:
+          - dbt_utils.not_empty_string
+      - name: is_deleted
+        description: 删除标识
+        data_tests:
+          - dbt_utils.not_empty_string
+      - name: create_date
+        description: 创建时间
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: "'1900-01-01'::timestamp"
+      - name: update_date
+        description: 更新时间
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: "'1900-01-01'::timestamp"
+      - name: loaded_at
+        description: 源系统抽取时间
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: "'1900-01-01'::timestamptz"
 
   - name: dim_samples
     description: 样品管理业务模型 - 样品主数据
@@ -1760,6 +1931,146 @@ models:
       - name: create_date
         description: 创建日期
 
+  - name: dim_root_cause_categories
+    description: "H3 统一质量事件：根因分类维度表 - 标准化根因分类（人机料法环测）"
+    config:
+      tags: ["quality", "events", "dim", "pqr", "h3"]
+    columns:
+      - name: root_cause_category_code
+        description: 根因分类编码（主键）
+        data_tests:
+          - unique
+          - not_null
+      - name: root_cause_category_name
+        description: 根因分类名称
+        data_tests:
+          - not_null
+      - name: source_system
+        description: 上游业务系统来源
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ["qms", "pv", "erp", "mes", "lims", "scada"]
+      - name: is_active
+        description: 是否启用
+        data_tests:
+          - accepted_values:
+              values: [true, false]
+      - name: source_loaded_at
+        description: 源系统抽取时间（审计）
+
+  - name: dim_risk_levels
+    description: "H3 统一质量事件：风险等级维度表 - 标准化风险等级（critical/high/medium/low）"
+    config:
+      tags: ["quality", "events", "dim", "pqr", "h3"]
+    columns:
+      - name: risk_level_code
+        description: 风险等级编码（主键）
+        data_tests:
+          - unique
+          - not_null
+      - name: risk_level_name
+        description: 风险等级名称
+        data_tests:
+          - not_null
+      - name: source_system
+        description: 上游业务系统来源
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ["qms", "pv", "erp", "mes", "lims", "scada"]
+      - name: is_active
+        description: 是否启用
+        data_tests:
+          - accepted_values:
+              values: [true, false]
+      - name: source_loaded_at
+        description: 源系统抽取时间（审计）
+
+  - name: fct_quality_events
+    description: "H3 统一质量事件事实表 - 汇总偏差/CAPA/投诉/召回/变更为统一事件口径，支撑PQR跨域统计与关联分析"
+    config:
+      tags: ["quality", "events", "pqr", "h3"]
+    columns:
+      - name: event_id
+        description: 统一事件ID（主键）
+        data_tests:
+          - unique
+          - not_null
+      - name: source_system
+        description: 来源系统（qms/pv）
+        data_tests:
+          - accepted_values:
+              values: ["qms", "pv"]
+      - name: event_type
+        description: 事件类型（deviation/capa/complaint/product_recall/change_control）
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ["deviation", "capa", "complaint", "product_recall", "change_control"]
+      - name: source_event_id
+        description: 源系统事件ID
+        data_tests:
+          - not_null
+      - name: event_code
+        description: 事件编码
+      - name: event_title
+        description: 事件标题
+      - name: event_subtype
+        description: 事件子类型
+      - name: event_category
+        description: 事件分类
+      - name: event_description
+        description: 事件描述/原因摘要
+      - name: product_id
+        description: 产品ID（可用则填）
+      - name: batch_number
+        description: 批次号（可用则填）
+      - name: create_date
+        description: 创建日期
+        data_tests:
+          - not_null
+      - name: close_date
+        description: 关闭/完成日期（可为空）
+      - name: status_raw
+        description: 源系统状态原值
+      - name: status_code
+        description: 统一状态编码（closed/in_progress/pending/unknown）
+        data_tests:
+          - accepted_values:
+              values: ["closed", "in_progress", "pending", "unknown"]
+      - name: is_closed
+        description: 是否已关闭/完成
+        data_tests:
+          - accepted_values:
+              values: [true, false]
+      - name: risk_level_code
+        description: 风险等级编码（映射自 priority/recall_level 等，可能为空）
+        data_tests:
+          - dbt_utils.relationships_where:
+              to: ref('dim_risk_levels')
+              field: risk_level_code
+              from_condition: "risk_level_code is not null"
+      - name: root_cause_category_code
+        description: 根因分类编码（映射自 root_cause 文本，可能为空）
+        data_tests:
+          - dbt_utils.relationships_where:
+              to: ref('dim_root_cause_categories')
+              field: root_cause_category_code
+              from_condition: "root_cause_category_code is not null"
+      - name: root_cause_raw
+        description: 根因文本原值（可为空）
+      - name: cycle_time_days
+        description: 周期天数（close_date - create_date，可为空）
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 36500
+      - name: source_loaded_at
+        description: 源系统抽取时间（审计）
+        data_tests:
+          - not_null
+
   - name: fct_supplier_audits
     description: 供应商审计业务模型 - 供应商审计记录
     config:
@@ -2630,6 +2941,150 @@ models:
         data_tests:
           - dbt_utils.expression_is_true:
               expression: ">= 0"
+
+  - name: fct_batch_process_parameters
+    description: 批次×工序×参数过程参数汇总事实表 - 按工序窗口聚合采集点并输出超限统计
+    config:
+      tags: ['pqr', 'cpp', 'scada', 'fct']
+    columns:
+      - name: batch_process_parameter_id
+        description: 批次工序参数汇总记录ID（主键）
+        data_tests:
+          - unique
+          - not_null
+      - name: limit_id
+        description: 限度记录ID（外键）
+        data_tests:
+          - relationships:
+              to: ref('dim_process_limits')
+              field: limit_id
+      - name: product_id
+        description: 产品ID
+        data_tests:
+          - not_null
+      - name: batch_number
+        description: 批次号
+        data_tests:
+          - not_null
+      - name: work_order_number
+        description: 生产工单号（外键）
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('stg_work_order')
+              field: work_order_number
+      - name: work_order_operation_id
+        description: 工单工序执行记录ID（外键）
+        data_tests:
+          - relationships:
+              to: ref('stg_work_order_operation')
+              field: work_order_operation_id
+      - name: operation_id
+        description: 工序ID（外键）
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('stg_operation')
+              field: operation_id
+      - name: param_name
+        description: 参数名称
+        data_tests:
+          - not_null
+      - name: spec_min_value
+        description: 受控限度下限
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: -1000000000000
+              max_value: 1000000000000
+      - name: spec_max_value
+        description: 受控限度上限
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: -1000000000000
+              max_value: 1000000000000
+      - name: spec_unit
+        description: 限度单位
+        data_tests:
+          - dbt_utils.not_empty_string
+      - name: limit_version
+        description: 限度版本
+        data_tests:
+          - dbt_utils.not_empty_string
+      - name: window_source
+        description: 工序窗口来源（actual/planned/unknown）
+        data_tests:
+          - accepted_values:
+              values: ["actual", "planned", "unknown"]
+      - name: window_start_at
+        description: 工序窗口开始时间
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: "'1900-01-01'::timestamptz"
+      - name: window_end_at
+        description: 工序窗口结束时间
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: "'1900-01-01'::timestamptz"
+      - name: total_points
+        description: 采集点总数
+        data_tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 1
+      - name: out_of_spec_points
+        description: 超限点数
+        data_tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+      - name: oos_rate
+        description: 超限比例（out_of_spec_points / total_points）
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 1
+      - name: observed_min_value
+        description: 观测最小值
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: -1000000000000
+              max_value: 1000000000000
+      - name: observed_max_value
+        description: 观测最大值
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: -1000000000000
+              max_value: 1000000000000
+      - name: observed_avg_value
+        description: 观测均值
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: -1000000000000
+              max_value: 1000000000000
+      - name: first_collected_at
+        description: 窗口内首次采集时间
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: "'1900-01-01'::timestamptz"
+      - name: last_collected_at
+        description: 窗口内末次采集时间
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: "'1900-01-01'::timestamptz"
+      - name: first_oos_at
+        description: 首次超限时间
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: "'1900-01-01'::timestamptz"
+      - name: last_oos_at
+        description: 末次超限时间
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: "'1900-01-01'::timestamptz"
+      - name: source_loaded_at_max
+        description: 源系统抽取时间最大值（审计）
+        data_tests:
+          - not_null
 
   - name: fct_customer_returns
     description: 成品退货事实表 - 退货明细与基础衍生指标

@@ -75,4 +75,3 @@ select
 from {{ ref('stg_deviation') }}
 
 {% endsnapshot %}
-

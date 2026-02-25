@@ -48,6 +48,7 @@ select
     ir.sample_id,
     s.sample_code,
     s.batch_number,
+    nullif(upper(trim(s.material_id::text)), '') as material_id,
 
     -- 检验设备信息 (新增)
     it.equipment_id,

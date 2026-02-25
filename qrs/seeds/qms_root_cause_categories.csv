@@ -1,0 +1,7 @@
+root_cause_category_code,root_cause_category_name,description,sort_order,is_active,source_system,create_date,update_date,_airbyte_extracted_at
+man,人,人员操作/培训/执行偏差,10,true,qms,2024-01-01,2024-01-01,2026-01-23 10:08:20.993 +0800
+machine,机,设备/设施/仪表故障或状态异常,20,true,qms,2024-01-01,2024-01-01,2026-01-23 10:08:20.993 +0800
+material,料,原辅料/包材/供应商质量问题,30,true,qms,2024-01-01,2024-01-01,2026-01-23 10:08:20.993 +0800
+method,法,工艺/方法/SOP/参数设定问题,40,true,qms,2024-01-01,2024-01-01,2026-01-23 10:08:20.993 +0800
+environment,环,环境/温湿度/洁净区/公用系统等影响,50,true,qms,2024-01-01,2024-01-01,2026-01-23 10:08:20.993 +0800
+measurement,测,检测/量测/系统记录与数据完整性问题,60,true,qms,2024-01-01,2024-01-01,2026-01-23 10:08:20.993 +0800

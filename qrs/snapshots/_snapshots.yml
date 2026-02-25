@@ -149,7 +149,6 @@ snapshots:
         data_tests:
           - not_null
 
-
   - name: snap_inspection_requests
     description: |
       **检验申请状态变更快照**
@@ -195,7 +194,6 @@ snapshots:
         description: 任务状态（追踪字段）
         data_tests:
           - not_null
-
 
   - name: snap_change_controls
     description: |

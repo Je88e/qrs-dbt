@@ -1,0 +1,7 @@
+mapping_id,source_system,event_type,match_type,match_value,root_cause_category_code,priority,is_active,create_date,update_date,_airbyte_extracted_at
+RCM001,qms,deviation,contains,设备,machine,10,true,2024-01-01,2024-01-01,2026-01-23 10:08:20.993 +0800
+RCM002,qms,deviation,contains,空调,environment,20,true,2024-01-01,2024-01-01,2026-01-23 10:08:20.993 +0800
+RCM003,qms,deviation,contains,供应商,material,30,true,2024-01-01,2024-01-01,2026-01-23 10:08:20.993 +0800
+RCM004,qms,capa,contains,设备,machine,10,true,2024-01-01,2024-01-01,2026-01-23 10:08:20.993 +0800
+RCM005,qms,capa,contains,供应商,material,30,true,2024-01-01,2024-01-01,2026-01-23 10:08:20.993 +0800
+RCM006,qms,capa,contains,空调,environment,20,true,2024-01-01,2024-01-01,2026-01-23 10:08:20.993 +0800

@@ -1,0 +1,5 @@
+risk_level_code,risk_level_name,description,sort_order,is_active,source_system,create_date,update_date,_airbyte_extracted_at
+critical,严重,对患者/合规/供应链造成重大风险，需重点跟踪,10,true,qms,2024-01-01,2024-01-01,2026-01-23 10:08:20.993 +0800
+high,高,高风险事件或高优先级事项,20,true,qms,2024-01-01,2024-01-01,2026-01-23 10:08:20.993 +0800
+medium,中,中等风险或一般优先级事项,30,true,qms,2024-01-01,2024-01-01,2026-01-23 10:08:20.993 +0800
+low,低,低风险或低优先级事项,40,true,qms,2024-01-01,2024-01-01,2026-01-23 10:08:20.993 +0800

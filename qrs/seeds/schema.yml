@@ -83,7 +83,7 @@ seeds:
         return_type: varchar(50)
         return_status: varchar(50)
         create_date: timestamp
-        loaded_at: timestamptz
+        _airbyte_extracted_at: timestamptz
     columns:
       - name: return_id
         description: "退货记录ID (主键)"
@@ -98,7 +98,7 @@ seeds:
         description: "退货日期"
         data_tests:
           - not_null
-      - name: loaded_at
+      - name: _airbyte_extracted_at
         description: "数据加载时间（审计字段）"
         data_tests:
           - not_null
@@ -180,7 +180,7 @@ seeds:
         effective_end_date: date
         limit_version: varchar(50)
         limit_status: varchar(50)
-        loaded_at: timestamptz
+        _airbyte_extracted_at: timestamptz
     columns:
       - name: limit_id
         description: "限度记录ID (主键)"
@@ -203,7 +203,7 @@ seeds:
         description: "下限（可为空，表示仅控制上限）"
       - name: max_value
         description: "上限（可为空，表示仅控制下限）"
-      - name: loaded_at
+      - name: _airbyte_extracted_at
         description: "数据加载时间（审计字段）"
         data_tests:
           - not_null
@@ -271,42 +271,202 @@ seeds:
       tags: ['qms', 'seed']
       column_types:
         approval_date: date
+        _airbyte_extracted_at: timestamptz
 
 
   - name: qms_change_impact
     description: 变更影响评估表种子数据
     config:
       tags: ['qms', 'seed']
+      column_types:
+        _airbyte_extracted_at: timestamptz
 
   - name: qms_change_implementation
     description: 变更实施记录表种子数据
     config:
       tags: ['qms', 'seed']
+      column_types:
+        _airbyte_extracted_at: timestamptz
 
   - name: qms_deviation
     description: 偏差记录主表种子数据
     config:
       tags: ['qms', 'seed']
+      column_types:
+        _airbyte_extracted_at: timestamptz
 
   - name: qms_capa
     description: CAPA主表种子数据
     config:
       tags: ['qms', 'seed']
+      column_types:
+        _airbyte_extracted_at: timestamptz
+
+  - name: qms_root_cause_categories
+    description: "H3 统一质量事件：根因分类维表种子数据（人机料法环测）"
+    config:
+      tags: ['seed', 'quality', 'h3']
+      column_types:
+        root_cause_category_code: varchar(64)
+        root_cause_category_name: varchar(64)
+        description: varchar(255)
+        sort_order: integer
+        is_active: boolean
+        source_system: varchar(32)
+        create_date: date
+        update_date: date
+        _airbyte_extracted_at: timestamptz
+    columns:
+      - name: root_cause_category_code
+        description: 根因分类编码（主键）
+        data_tests:
+          - unique
+          - not_null
+      - name: root_cause_category_name
+        description: 根因分类名称
+        data_tests:
+          - not_null
+      - name: source_system
+        description: 上游业务系统来源（QMS配置/主数据）
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ["qms", "pv", "erp", "mes", "lims", "scada"]
+
+  - name: qms_root_cause_mapping
+    description: "H3 统一质量事件：根因文本到根因分类的映射规则种子数据"
+    config:
+      tags: ['seed', 'quality', 'h3']
+      column_types:
+        mapping_id: varchar(64)
+        source_system: varchar(32)
+        event_type: varchar(64)
+        match_type: varchar(32)
+        match_value: varchar(255)
+        root_cause_category_code: varchar(64)
+        priority: integer
+        is_active: boolean
+        create_date: date
+        update_date: date
+        _airbyte_extracted_at: timestamptz
+    columns:
+      - name: mapping_id
+        description: 映射规则ID（主键）
+        data_tests:
+          - unique
+          - not_null
+      - name: source_system
+        description: 上游业务系统来源（产生 root_cause 原始文本的系统）
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ["qms", "pv", "erp", "mes", "lims", "scada"]
+      - name: event_type
+        description: 事件类型（deviation/capa/complaint/product_recall/change_control）
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ["deviation", "capa", "complaint", "product_recall", "change_control"]
+      - name: match_type
+        description: 匹配方式（contains/equals）
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ["contains", "equals"]
+      - name: root_cause_category_code
+        description: 根因分类编码
+        data_tests:
+          - not_null
+
+  - name: qms_risk_levels
+    description: "H3 统一质量事件：风险等级维表种子数据"
+    config:
+      tags: ['seed', 'quality', 'h3']
+      column_types:
+        risk_level_code: varchar(64)
+        risk_level_name: varchar(64)
+        description: varchar(255)
+        sort_order: integer
+        is_active: boolean
+        source_system: varchar(32)
+        create_date: date
+        update_date: date
+        _airbyte_extracted_at: timestamptz
+    columns:
+      - name: risk_level_code
+        description: 风险等级编码（主键）
+        data_tests:
+          - unique
+          - not_null
+      - name: risk_level_name
+        description: 风险等级名称
+        data_tests:
+          - not_null
+      - name: source_system
+        description: 上游业务系统来源（QMS配置/主数据）
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ["qms", "pv", "erp", "mes", "lims", "scada"]
+
+  - name: qms_risk_mapping
+    description: "H3 统一质量事件：源系统风险字段到风险等级的映射规则种子数据"
+    config:
+      tags: ['seed', 'quality', 'h3']
+      column_types:
+        mapping_id: varchar(64)
+        source_system: varchar(32)
+        event_type: varchar(64)
+        raw_value: varchar(255)
+        risk_level_code: varchar(64)
+        priority: integer
+        is_active: boolean
+        create_date: date
+        update_date: date
+        _airbyte_extracted_at: timestamptz
+    columns:
+      - name: mapping_id
+        description: 映射规则ID（主键）
+        data_tests:
+          - unique
+          - not_null
+      - name: source_system
+        description: 上游业务系统来源（产生 raw_value 的系统）
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ["qms", "pv", "erp", "mes", "lims", "scada"]
+      - name: event_type
+        description: 事件类型（deviation/capa/complaint/product_recall/change_control）
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ["deviation", "capa", "complaint", "product_recall", "change_control"]
+      - name: risk_level_code
+        description: 风险等级编码
+        data_tests:
+          - not_null
 
   - name: qms_supplier_audit
     description: 供应商审计记录表种子数据
     config:
       tags: ['qms', 'seed']
+      column_types:
+        _airbyte_extracted_at: timestamptz
 
   - name: qms_training_record
     description: 培训记录表种子数据
     config:
       tags: ['qms', 'seed']
+      column_types:
+        _airbyte_extracted_at: timestamptz
 
   - name: qms_validation_record
     description: 验证记录表种子数据
     config:
       tags: ['qms', 'seed']
+      column_types:
+        _airbyte_extracted_at: timestamptz
 
   # ============================================
   # SCADA系统种子数据
@@ -350,8 +510,11 @@ seeds:
       tags: ['pv', 'seed']
       column_types:
         contact_phone: varchar(20)
+        _airbyte_extracted_at: timestamptz
 
   - name: pv_product_recall
     description: 产品召回记录表种子数据
     config:
       tags: ['pv', 'seed']
+      column_types:
+        _airbyte_extracted_at: timestamptz

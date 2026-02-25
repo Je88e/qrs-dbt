@@ -2965,7 +2965,7 @@ models:
           - not_null
 
   - name: stg_process_limits
-    description: PQR关键工艺参数(CPP)限度Staging层 - 清洗seed_process_limits并标准化类型
+    description: "PQR关键工艺参数(CPP)限度Staging层"
     columns:
       - name: snowflake_id
         description: 雪花ID
@@ -2995,7 +2995,7 @@ models:
           - not_null
 
   - name: stg_customer_return
-    description: PQR成品退货台账Staging层 - 清洗seed_customer_returns并标准化类型
+    description: 成品退货台账Staging层 - 清洗seed_customer_returns并标准化类型
     columns:
       - name: snowflake_id
         description: 雪花ID
@@ -3022,5 +3022,75 @@ models:
               values: ["待处理", "处理中", "已完成", "已关闭", "已取消"]
       - name: loaded_at
         description: 加载时间
+        data_tests:
+          - not_null
+
+  - name: stg_root_cause_categories
+    description: "统一质量事件：根因分类维表Staging层"
+    columns:
+      - name: root_cause_category_code
+        description: 根因分类编码（主键）
+        data_tests:
+          - unique
+          - not_null
+      - name: root_cause_category_name
+        description: 根因分类名称
+        data_tests:
+          - not_null
+      - name: loaded_at
+        description: 加载时间
+
+  - name: stg_root_cause_mapping
+    description: "统一质量事件：根因映射规则Staging层"
+    columns:
+      - name: mapping_id
+        description: 映射规则ID（主键）
+        data_tests:
+          - unique
+          - not_null
+      - name: source_system
+        description: 来源系统（qms/pv/erp/mes/lims）
+        data_tests:
+          - not_null
+      - name: event_type
+        description: 事件类型（deviation/capa/complaint/product_recall/change_control）
+        data_tests:
+          - not_null
+      - name: root_cause_category_code
+        description: 根因分类编码
+        data_tests:
+          - not_null
+
+  - name: stg_risk_levels
+    description: "统一质量事件：风险等级维表Staging层"
+    columns:
+      - name: risk_level_code
+        description: 风险等级编码（主键）
+        data_tests:
+          - unique
+          - not_null
+      - name: risk_level_name
+        description: 风险等级名称
+        data_tests:
+          - not_null
+
+  - name: stg_risk_mapping
+    description: "统一质量事件：风险等级映射规则Staging层"
+    columns:
+      - name: mapping_id
+        description: 映射规则ID（主键）
+        data_tests:
+          - unique
+          - not_null
+      - name: source_system
+        description: 来源系统（qms/pv/erp/mes/lims）
+        data_tests:
+          - not_null
+      - name: event_type
+        description: 事件类型（deviation/capa/complaint/product_recall/change_control）
+        data_tests:
+          - not_null
+      - name: risk_level_code
+        description: 风险等级编码
         data_tests:
           - not_null

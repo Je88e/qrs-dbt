@@ -67,4 +67,3 @@ select
 from {{ ref('stg_change_control') }}
 
 {% endsnapshot %}
-

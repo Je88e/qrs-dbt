@@ -217,7 +217,7 @@ sources:
         description: 库位主数据表
 
       - name: erp_customer_returns
-        description: "PQR §23 投诉与退货：成品退货台账种子数据（当前无结构化源时的过渡方案；需可关联 batch_number）"
+        description: "投诉与退货：成品退货台账种子数据"
         columns:
           - name: return_id
             description: "退货记录ID (主键)"
@@ -708,6 +708,77 @@ sources:
           - name: _airbyte_extracted_at
             description: 抽取时间
 
+      - name: qms_risk_levels
+        description: 风险等级表
+        columns:
+          - name: risk_level_id
+            description: 风险等级ID (主键)
+          - name: risk_level_code
+            description: 风险等级编码
+          - name: risk_level_name
+            description: 风险等级名称
+          - name: description
+            description: 风险等级描述
+          - name: create_date
+            description: 创建日期
+          - name: update_date
+            description: 更新日期
+          - name: _airbyte_extracted_at
+            description: 抽取时间
+      
+      - name: qms_risk_mapping
+        description: 风险等级映射表
+        columns:
+          - name: mapping_id
+            description: 映射ID (主键)
+          - name: risk_level_id
+            description: 风险等级ID (外键)
+          - name: source_system
+            description: 来源系统
+          - name: source_code
+            description: 来源编码
+          - name: create_date
+            description: 创建日期
+          - name: update_date
+            description: 更新日期
+          - name: _airbyte_extracted_at
+            description: 抽取时间
+
+      - name: qms_root_cause_categories
+        description: 根因分类表
+        columns:
+          - name: category_id
+            description: 分类ID (主键)
+          - name: category_code
+            description: 分类编码
+          - name: category_name
+            description: 分类名称
+          - name: description
+            description: 分类描述
+          - name: create_date
+            description: 创建日期
+          - name: update_date
+            description: 更新日期
+          - name: _airbyte_extracted_at
+            description: 抽取时间
+      
+      - name: qms_root_cause_mapping
+        description: 根因分类映射表
+        columns:
+          - name: mapping_id
+            description: 映射ID (主键)
+          - name: category_id
+            description: 分类ID (外键)
+          - name: source_system
+            description: 来源系统
+          - name: source_code
+            description: 来源编码
+          - name: create_date
+            description: 创建日期
+          - name: update_date
+            description: 更新日期
+          - name: _airbyte_extracted_at
+            description: 抽取时间
   # ============================================
   # SCADA系统源表 (5个表)
   # ============================================

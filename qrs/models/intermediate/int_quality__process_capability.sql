@@ -48,15 +48,15 @@ results_typed as (
         test_item_id,
         sample_id,
         case
-            when test_value ~ '^[0-9]+(\\.[0-9]+)?$' then cast(test_value as numeric)
+            when cast(test_value as varchar) ~ '^[0-9]+(\\.[0-9]+)?$' then cast(test_value as numeric)
             else null
         end as test_value_num,
         case
-            when standard_min ~ '^[0-9]+(\\.[0-9]+)?$' then cast(standard_min as numeric)
+            when cast(standard_min as varchar) ~ '^[0-9]+(\\.[0-9]+)?$' then cast(standard_min as numeric)
             else null
         end as lsl,
         case
-            when standard_max ~ '^[0-9]+(\\.[0-9]+)?$' then cast(standard_max as numeric)
+            when cast(standard_max as varchar) ~ '^[0-9]+(\\.[0-9]+)?$' then cast(standard_max as numeric)  
             else null
         end as usl
     from inspection_results
