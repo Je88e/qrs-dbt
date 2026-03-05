@@ -67,7 +67,7 @@ seeds:
       tags: ['erp', 'seed']
 
   - name: erp_customer_returns
-    description: "PQR §23 投诉与退货：成品退货台账种子数据（当前无结构化源时的过渡方案；需可关联 batch_number）"
+    description: "投诉与退货：成品退货台账种子数据（当前无结构化源时的过渡方案；需可关联 batch_number）"
     config:
       tags: ['seed', 'erp', 'returns']
       column_types:
@@ -99,6 +99,122 @@ seeds:
         data_tests:
           - not_null
       - name: _airbyte_extracted_at
+        description: "数据加载时间（审计字段）"
+        data_tests:
+          - not_null
+
+  - name: seed_pqr_review_scope
+    description: "PQR Scope 输入契约：定义回顾范围（Scope）及冻结/版本边界"
+    config:
+      tags: ['seed', 'pqr', 'scope']
+      column_types:
+        review_scope_id: varchar(64)
+        product_id: varchar(64)
+        product_variant_id: varchar(64)
+        period_start_date: date
+        period_end_date: date
+        version_no: varchar(32)
+        is_frozen: boolean
+        frozen_at: timestamptz
+        generated_at: timestamptz
+        source_loaded_at_max: timestamptz
+        loaded_at: timestamptz
+    columns:
+      - name: review_scope_id
+        description: "Scope 主键"
+        data_tests:
+          - unique
+          - not_null
+      - name: product_id
+        description: "产品ID"
+        data_tests:
+          - not_null
+      - name: product_variant_id
+        description: "产品规格/包装ID"
+        data_tests:
+          - not_null
+      - name: period_start_date
+        description: "回顾期起始日期"
+        data_tests:
+          - not_null
+      - name: period_end_date
+        description: "回顾期结束日期"
+        data_tests:
+          - not_null
+      - name: version_no
+        description: "Scope 版本号"
+        data_tests:
+          - not_null
+      - name: loaded_at
+        description: "数据加载时间（审计字段）"
+        data_tests:
+          - not_null
+
+  - name: seed_pqr_scope_workshops
+    description: "PQR Scope-Workshop 输入契约：Scope 覆盖的车间清单"
+    config:
+      tags: ['seed', 'pqr', 'scope']
+      column_types:
+        review_scope_id: varchar(64)
+        workshop_id: varchar(64)
+        version_no: varchar(32)
+        loaded_at: timestamptz
+    columns:
+      - name: review_scope_id
+        description: "Scope 主键"
+        data_tests:
+          - not_null
+      - name: workshop_id
+        description: "车间ID"
+        data_tests:
+          - not_null
+      - name: version_no
+        description: "Scope 版本号"
+        data_tests:
+          - not_null
+      - name: loaded_at
+        description: "数据加载时间（审计字段）"
+        data_tests:
+          - not_null
+
+  - name: seed_product_variant_map
+    description: "PQR Product Variant 输入契约：产品到规格/包装的映射与主数据字段"
+    config:
+      tags: ['seed', 'pqr', 'variant']
+      column_types:
+        product_variant_id: varchar(64)
+        product_id: varchar(64)
+        variant_code: varchar(64)
+        variant_name: varchar(255)
+        packaging: varchar(255)
+        specification: varchar(255)
+        effective_start_date: date
+        effective_end_date: date
+        is_active: boolean
+        loaded_at: timestamptz
+    columns:
+      - name: product_variant_id
+        description: "规格/包装ID（主键）"
+        data_tests:
+          - unique
+          - not_null
+      - name: product_id
+        description: "产品ID"
+        data_tests:
+          - not_null
+      - name: variant_code
+        description: "规格编码"
+        data_tests:
+          - not_null
+      - name: variant_name
+        description: "规格名称"
+        data_tests:
+          - not_null
+      - name: is_active
+        description: "是否启用"
+        data_tests:
+          - not_null
+      - name: loaded_at
         description: "数据加载时间（审计字段）"
         data_tests:
           - not_null

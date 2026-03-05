@@ -1,7 +1,7 @@
 {{
     config(
         materialized='view',
-        schema='audit'
+        target_schema='audit'
     )
 }}
 

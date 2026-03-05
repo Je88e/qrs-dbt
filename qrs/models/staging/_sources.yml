@@ -890,3 +890,14 @@ sources:
         description: 产品投诉记录表
       - name: pv_product_recall
         description: 产品召回记录表
+
+  - name: pqr_raw
+    description: pqr报告
+    schema: raw
+    tables:
+      - name: seed_pqr_review_scope
+        description: 定义回顾范围（Scope）及冻结/版本边界
+      - name: seed_pqr_scope_workshops
+        description: PQR Scope-Workshop 输入契约：Scope 覆盖的车间清单
+      - name: seed_product_variant_map
+        description: PQR Product Variant 输入契约：产品到规格/包装的映射与主数据字段

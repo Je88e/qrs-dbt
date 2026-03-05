@@ -1,0 +1,5 @@
+product_variant_id,product_id,variant_code,variant_name,packaging,specification,effective_start_date,effective_end_date,is_active,loaded_at
+PROD001-V1,PROD001,PROD001-10,PROD001 10片装,瓶装,10片/瓶,2020-01-01,,true,2026-02-25 00:00:00.000 +0800
+PROD001-V2,PROD001,PROD001-20,PROD001 20片装,瓶装,20片/瓶,2020-01-01,,true,2026-02-25 00:00:00.000 +0800
+PROD002-V1,PROD002,PROD002-5,PROD002 5粒装,盒装,5粒/盒,2020-01-01,,true,2026-02-25 00:00:00.000 +0800
+PROD003-V1,PROD003,PROD003-120,PROD003 120ml,瓶装,120ml/瓶,2020-01-01,,true,2026-02-25 00:00:00.000 +0800

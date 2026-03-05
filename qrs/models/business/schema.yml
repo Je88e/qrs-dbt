@@ -3105,3 +3105,252 @@ models:
         data_tests:
           - accepted_values:
               values: ['待处理', '处理中', '已完成', '已关闭', '已取消']
+
+  - name: fct_pqr_batch_summary
+    description: "批次级 PQR 宽表"
+    config:
+      tags: ["business_model", "pqr", "scope"]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [review_scope_id, version_no, batch_number]
+    columns:
+      - name: review_scope_id
+        description: "Scope 主键（外键）"
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('dim_pqr_review_scope')
+              field: review_scope_id
+      - name: version_no
+        description: "Scope 版本号"
+        data_tests:
+          - not_null
+      - name: batch_number
+        description: "批号"
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('fct_work_orders')
+              field: batch_number
+      - name: product_id
+        description: "产品ID"
+        data_tests:
+          - not_null
+      - name: product_variant_id
+        description: "产品规格/包装ID（外键）"
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('dim_product_variant')
+              field: product_variant_id
+      - name: workshop_id
+        description: "车间ID（外键）"
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('dim_workshops')
+              field: workshop_id
+      - name: batch_start_at
+        description: "批次开始时间"
+        data_tests:
+          - not_null
+      - name: batch_end_at
+        description: "批次结束时间"
+        data_tests:
+          - not_null
+      - name: work_order_count
+        description: "工单数"
+        data_tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+      - name: planned_quantity
+        description: "计划产量（聚合）"
+        data_tests:
+          - not_null
+      - name: actual_quantity
+        description: "实际产量（聚合）"
+        data_tests:
+          - not_null
+      - name: completion_rate_percent
+        description: "完成率（%）"
+        data_tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 200
+
+  - name: fct_pqr_review_scope_summary
+    description: "Scope 级汇总指标（章节输出主轴）"
+    config:
+      tags: ["business_model", "pqr", "scope"]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [review_scope_id, version_no]
+    columns:
+      - name: review_scope_id
+        description: "Scope 主键（外键）"
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('dim_pqr_review_scope')
+              field: review_scope_id
+      - name: version_no
+        description: "Scope 版本号"
+        data_tests:
+          - not_null
+      - name: batch_count
+        description: "批次数"
+        data_tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+      - name: workshop_count
+        description: "车间数（基于批次集合）"
+        data_tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+
+  - name: fct_pqr_complaint_return_recall
+    description: "Scope 事件统一口径事实（投诉/退货/召回）"
+    config:
+      tags: ["business_model", "pqr", "events", "scope"]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [review_scope_id, version_no, event_type, event_id, batch_number]
+    columns:
+      - name: review_scope_id
+        description: "Scope 主键（外键）"
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('dim_pqr_review_scope')
+              field: review_scope_id
+      - name: version_no
+        description: "Scope 版本号"
+        data_tests:
+          - not_null
+      - name: event_type
+        description: "事件类型"
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ["complaint", "return", "recall"]
+      - name: event_id
+        description: "事件ID（来源主键）"
+        data_tests:
+          - not_null
+      - name: batch_number
+        description: "批号"
+        data_tests:
+          - not_null
+
+  - name: dim_product_variant
+    description: "产品规格/包装维度（支撑多规格拆分）"
+    config:
+      tags: ["business_model", "pqr", "variant"]
+    columns:
+      - name: product_variant_id
+        description: "规格/包装ID（主键）"
+        data_tests:
+          - unique
+          - not_null
+      - name: product_id
+        description: "产品ID"
+        data_tests:
+          - not_null
+      - name: variant_code
+        description: "规格编码"
+        data_tests:
+          - not_null
+      - name: variant_name
+        description: "规格名称"
+        data_tests:
+          - not_null
+      - name: is_active
+        description: "是否启用"
+        data_tests:
+          - not_null
+      - name: is_current
+        description: "是否当前有效（基于有效期与启用状态）"
+        data_tests:
+          - not_null
+      - name: loaded_at
+        description: "数据加载时间（审计字段）"
+        data_tests:
+          - not_null
+
+  - name: dim_pqr_review_scope
+    description: "PQR 回顾范围（Scope）维表（含冻结/复算边界）"
+    config:
+      tags: ["business_model", "pqr", "scope"]
+    data_tests:
+      - dbt_utils.expression_is_true:
+          expression: "period_end_date >= period_start_date"
+      - dbt_utils.expression_is_true:
+          expression: "case when is_frozen then frozen_at is not null else true end"
+      - dbt_utils.expression_is_true:
+          expression: "case when is_frozen then source_loaded_at_max is not null else true end"
+    columns:
+      - name: review_scope_id
+        description: "Scope 主键"
+        data_tests:
+          - unique
+          - not_null
+      - name: product_id
+        description: "产品ID"
+        data_tests:
+          - not_null
+      - name: product_variant_id
+        description: "产品规格/包装ID（外键）"
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('dim_product_variant')
+              field: product_variant_id
+      - name: period_start_date
+        description: "回顾期起始日期"
+        data_tests:
+          - not_null
+      - name: period_end_date
+        description: "回顾期结束日期"
+        data_tests:
+          - not_null
+      - name: version_no
+        description: "Scope 版本号"
+        data_tests:
+          - not_null
+      - name: is_frozen
+        description: "是否冻结"
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      - name: frozen_at
+        description: "冻结时间"
+        data_tests:
+          - not_null_where:
+              condition: "is_frozen"
+      - name: generated_at
+        description: "生成时间"
+        data_tests:
+          - not_null
+      - name: source_loaded_at_max
+        description: "Scope 生成时刻依赖上游数据最大抽取时间"
+        data_tests:
+          - not_null
+      - name: workshop_count
+        description: "Scope 覆盖车间数"
+        data_tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+      - name: workshop_list
+        description: "车间名称清单"
+        data_tests:
+          - not_null_where:
+              condition: "workshop_count > 0"
+      - name: loaded_at
+        description: "数据加载时间（审计字段）"
+        data_tests:
+          - not_null

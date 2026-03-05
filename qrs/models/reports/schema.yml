@@ -125,3 +125,56 @@ models:
         description: 报告生成时间
         data_tests:
           - not_null
+
+  - name: rpt_pqr_scope_header
+    description: "PQR Scope 报告头信息（按 scope 输出）"
+    config:
+      tags: ["reports", "pqr", "scope"]
+    columns:
+      - name: review_scope_id
+        description: "Scope 主键"
+        data_tests:
+          - not_null
+      - name: version_no
+        description: "Scope 版本号"
+        data_tests:
+          - not_null
+
+  - name: rpt_pqr_section_03_production
+    description: "PQR §03 生产情况（按 scope/batch 输出）"
+    config:
+      tags: ["reports", "pqr", "section_03"]
+    columns:
+      - name: review_scope_id
+        description: "Scope 主键"
+        data_tests:
+          - not_null
+      - name: version_no
+        description: "Scope 版本号"
+        data_tests:
+          - not_null
+      - name: batch_number
+        description: "批号"
+        data_tests:
+          - not_null
+
+  - name: rpt_pqr_section_23_events
+    description: "PQR §23 投诉/退货/召回事件汇总（按 scope 输出）"
+    config:
+      tags: ["reports", "pqr", "section_23"]
+    columns:
+      - name: review_scope_id
+        description: "Scope 主键"
+        data_tests:
+          - not_null
+      - name: version_no
+        description: "Scope 版本号"
+        data_tests:
+          - not_null
+      - name: event_type
+        description: "事件类型"
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ["complaint", "return", "recall"]
+

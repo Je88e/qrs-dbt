@@ -1,0 +1,33 @@
+version: 2
+
+models:
+  - name: bridge_pqr_scope_workshop
+    description: "Scope 与车间的多对多桥表（证据链保留）"
+    config:
+      tags: ["business_model", "pqr", "scope"]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [review_scope_id, version_no, workshop_id]
+    columns:
+      - name: review_scope_id
+        description: "Scope 主键（外键）"
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('dim_pqr_review_scope')
+              field: review_scope_id
+      - name: version_no
+        description: "Scope 版本号"
+        data_tests:
+          - not_null
+      - name: workshop_id
+        description: "车间ID（外键）"
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('dim_workshops')
+              field: workshop_id
+      - name: loaded_at
+        description: "数据加载时间（审计字段）"
+        data_tests:
+          - not_null

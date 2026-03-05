@@ -1,6 +1,6 @@
 {{
     config(
-        materialized='table',
+        materialized='view',
         tags=['lims', 'quality', 'inspection', 'pqr']
     )
 }}

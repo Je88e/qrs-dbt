@@ -3094,3 +3094,119 @@ models:
         description: 风险等级编码
         data_tests:
           - not_null
+
+  - name: stg_pqr_review_scope
+    description: "PQR 回顾范围（Scope）清洗层：规范类型与审计字段（P0 seed 过渡）"
+    config:
+      tags: ["staging", "pqr", "scope"]
+    data_tests:
+      - dbt_utils.expression_is_true:
+          expression: "period_end_date >= period_start_date"
+    columns:
+      - name: review_scope_id
+        description: "Scope 主键"
+        data_tests:
+          - unique
+          - not_null
+      - name: product_id
+        description: "产品ID"
+        data_tests:
+          - not_null
+      - name: product_variant_id
+        description: "产品规格/包装ID"
+        data_tests:
+          - not_null
+      - name: period_start_date
+        description: "回顾期起始日期"
+        data_tests:
+          - not_null
+      - name: period_end_date
+        description: "回顾期结束日期"
+        data_tests:
+          - not_null
+      - name: version_no
+        description: "Scope 版本号"
+        data_tests:
+          - not_null
+      - name: is_frozen
+        description: "是否冻结"
+        data_tests:
+          - accepted_values:
+              values: [true, false]
+      - name: frozen_at
+        description: "冻结时间"
+        data_tests:
+          - not_null_where:
+              condition: "is_frozen"
+      - name: generated_at
+        description: "生成时间"
+        data_tests:
+          - not_null
+      - name: source_loaded_at_max
+        description: "Scope 生成时刻依赖上游数据最大抽取时间"
+        data_tests:
+          - not_null
+      - name: loaded_at
+        description: "数据加载时间（审计字段）"
+        data_tests:
+          - not_null
+
+  - name: stg_pqr_scope_workshops
+    description: "PQR Scope 与车间映射清洗层（P0 seed 过渡）"
+    config:
+      tags: ["staging", "pqr", "scope"]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [review_scope_id, version_no, workshop_id]
+    columns:
+      - name: review_scope_id
+        description: "Scope 主键"
+        data_tests:
+          - not_null
+      - name: version_no
+        description: "Scope 版本号"
+        data_tests:
+          - not_null
+      - name: workshop_id
+        description: "车间ID"
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('stg_workshop')
+              field: workshop_id
+      - name: loaded_at
+        description: "数据加载时间（审计字段）"
+        data_tests:
+          - not_null
+
+  - name: stg_product_variant_map
+    description: "产品到规格/包装映射清洗层（P0 seed 过渡）"
+    config:
+      tags: ["staging", "pqr", "variant"]
+    columns:
+      - name: product_variant_id
+        description: "规格/包装ID（主键）"
+        data_tests:
+          - unique
+          - not_null
+      - name: product_id
+        description: "产品ID"
+        data_tests:
+          - not_null
+      - name: variant_code
+        description: "规格编码"
+        data_tests:
+          - not_null
+      - name: variant_name
+        description: "规格名称"
+        data_tests:
+          - not_null
+      - name: is_active
+        description: "是否启用"
+        data_tests:
+          - accepted_values:
+              values: [true, false]
+      - name: loaded_at
+        description: "数据加载时间（审计字段）"
+        data_tests:
+          - not_null

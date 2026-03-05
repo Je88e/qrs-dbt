@@ -22,7 +22,6 @@ with source_data as (
 
 final as (
     select
-        -- 新增雪花ID
         {{ generate_snowflake_id() }}::text as snowflake_id,
         recall_id,
         recall_code,

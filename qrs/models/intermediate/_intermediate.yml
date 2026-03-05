@@ -246,45 +246,45 @@ models:
           - accepted_values:
               values: ["Critical Issues", "OOS Observed", "Right First Time"]
 
-  # - name: int_quality__process_capability
-  #   description: 过程能力（Cpk）统计中间模型 - 按年度/产品/检验项目聚合计算 Cpk
-  #   config:
-  #     tags: ["intermediate", "quality", "capability", "statistics", "pqr"]
-  #   data_tests:
-  #     - dbt_utils.unique_combination_of_columns:
-  #         combination_of_columns:
-  #           - review_year
-  #           - product_id
-  #           - test_item_id
-  #   columns:
-  #     - name: review_year
-  #       description: 回顾年度（从工单实际完工日期提取）
-  #       data_tests:
-  #         - not_null
-  #     - name: product_id
-  #       description: 产品ID
-  #       data_tests:
-  #         - not_null
-  #     - name: test_item_id
-  #       description: 检验项目ID
-  #       data_tests:
-  #         - not_null
-  #     - name: measurement_count
-  #       description: 参与统计的测量点数量
-  #       data_tests:
-  #         - not_null
-  #         - dbt_utils.accepted_range:
-  #             min_value: 1
-  #     - name: mean_value
-  #       description: 均值
-  #     - name: stddev_value
-  #       description: 样本标准差
-  #     - name: lsl
-  #       description: 规格下限
-  #     - name: usl
-  #       description: 规格上限
-  #     - name: cpk
-  #       description: 过程能力指数 Cpk
+  - name: int_quality__process_capability
+    description: 过程能力（Cpk）统计中间模型 - 按年度/产品/检验项目聚合计算 Cpk
+    config:
+      tags: ["intermediate", "quality", "capability", "statistics", "pqr"]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - review_year
+            - product_id
+            - test_item_id
+    columns:
+      - name: review_year
+        description: 回顾年度（从工单实际完工日期提取）
+        data_tests:
+          - not_null
+      - name: product_id
+        description: 产品ID
+        data_tests:
+          - not_null
+      - name: test_item_id
+        description: 检验项目ID
+        data_tests:
+          - not_null
+      - name: measurement_count
+        description: 参与统计的测量点数量
+        data_tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 1
+      - name: mean_value
+        description: 均值
+      - name: stddev_value
+        description: 样本标准差
+      - name: lsl
+        description: 规格下限
+      - name: usl
+        description: 规格上限
+      - name: cpk
+        description: 过程能力指数 Cpk
 
   - name: int_quality__process_capability_v2
     description: 过程能力（Cpk）统计中间模型（v2）- 基于统一检验结果口径计算 Cpk
@@ -360,3 +360,75 @@ models:
           - dbt_utils.accepted_range:
               min_value: 0
               max_value: 1000
+
+  - name: int_pqr__batch_universe
+    description: "PQR Scope 总线：纳入回顾范围的批次集合（所有章节统计口径基准）"
+    config:
+      tags: ["intermediate", "pqr", "scope"]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [version_no, batch_number]
+    columns:
+      - name: review_scope_id
+        description: "Scope 主键"
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('stg_pqr_review_scope')
+              field: review_scope_id
+      - name: version_no
+        description: "Scope 版本号"
+        data_tests:
+          - not_null
+      - name: batch_number
+        description: "批号"
+        data_tests:
+          - not_null
+      - name: product_id
+        description: "产品ID"
+        data_tests:
+          - not_null
+      - name: product_variant_id
+        description: "产品规格/包装ID"
+        data_tests:
+          - not_null
+      - name: workshop_id
+        description: "车间ID"
+        data_tests:
+          - not_null
+      - name: batch_start_at
+        description: "批次开始时间（按工单聚合）"
+        data_tests:
+          - not_null
+      - name: batch_end_at
+        description: "批次结束时间（按工单聚合）"
+        data_tests:
+          - not_null
+
+  - name: int_pqr__scope_workshop_agg
+    description: "PQR Scope 车间聚合：车间计数与展示清单"
+    config:
+      tags: ["intermediate", "pqr", "scope"]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [review_scope_id, version_no]
+    columns:
+      - name: review_scope_id
+        description: "Scope 主键"
+        data_tests:
+          - not_null
+      - name: version_no
+        description: "Scope 版本号"
+        data_tests:
+          - not_null
+      - name: workshop_count
+        description: "Scope 覆盖的车间数"
+        data_tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+      - name: workshop_list
+        description: "车间名称清单（用于展示）"
+        data_tests:
+          - not_null_where:
+              condition: "workshop_count > 0"
