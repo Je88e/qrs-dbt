@@ -1,0 +1,37 @@
+qrs:
+  target: prod
+  outputs:
+    dev:
+      type: postgres
+      host: "{{ env_var('DBT_HOST') }}"
+      user: "{{ env_var('DBT_USER') }}"
+      password: "{{ env_var('DBT_PASSWORD') }}"
+      port: "{{ env_var('DBT_PORT', '5432') | int }}"
+      dbname: "{{ env_var('DBT_DBNAME') }}"
+      schema: "qrs_dev_{{ env_var('DBT_SCHEMA_SUFFIX', 'user') }}"
+      threads: 8
+      keepalives_idle: 0
+      connect_timeout: 10
+    uat:
+      type: postgres
+      host: "{{ env_var('DBT_HOST') }}"
+      user: "{{ env_var('DBT_USER') }}"
+      password: "{{ env_var('DBT_PASSWORD') }}"
+      port: "{{ env_var('DBT_PORT', '5432') | int }}"
+      dbname: "{{ env_var('DBT_DBNAME') }}"
+      schema: qrs_uat
+      threads: 8
+      keepalives_idle: 0
+      connect_timeout: 10
+    prod:
+      type: postgres
+      host: "{{ env_var('DBT_HOST') }}"
+      user: "{{ env_var('DBT_USER') }}"
+      password: "{{ env_var('DBT_PASSWORD') }}"
+      port: "{{ env_var('DBT_PORT', '5432') | int }}"
+      dbname: "{{ env_var('DBT_DBNAME') }}"
+      schema: qrs
+      threads: 16
+      keepalives_idle: 0
+      connect_timeout: 10
+

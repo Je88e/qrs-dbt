@@ -1,0 +1,43 @@
+qrs:
+  outputs:
+    dev:
+      dbname: postgres
+      host: 172.16.1.233
+      pass: admin
+      port: 5432
+      schema: public
+      threads: 4
+      type: postgres
+      user: postgres
+    
+    raw:
+      dbname: postgres
+      host: 172.16.1.233
+      pass: admin
+      port: 5432
+      schema: raw
+      threads: 4
+      type: postgres
+      user: postgres  
+      
+    audit:
+      dbname: postgres
+      host: 172.16.1.233
+      pass: admin
+      port: 5432
+      schema: audit
+      threads: 4
+      type: postgres
+      user: postgres
+      
+    snapshots:
+      dbname: postgres
+      host: 172.16.1.233
+      pass: admin
+      port: 5432
+      schema: snapshots
+      threads: 4
+      type: postgres
+      user: postgres
+      
+  target: dev

@@ -428,6 +428,8 @@ sources:
             description: 审核日期
           - name: review_status
             description: 审核状态
+          - name: test_plan
+            description: 测试计划
           - name: remark
             description: 备注
           - name: create_date
@@ -897,6 +899,47 @@ sources:
     tables:
       - name: seed_pqr_review_scope
         description: 定义回顾范围（Scope）及冻结/版本边界
+        columns:
+          - name: review_scope_id
+            description: "Scope 主键（唯一标识）"
+          - name: product_id
+            description: "产品 ID"
+          - name: product_variant_id
+            description: "产品规格/包装 ID"
+          - name: period_start_date
+            description: "回顾期起始日期"
+          - name: period_end_date
+            description: "回顾期结束日期"
+          - name: version_no
+            description: "Scope 版本号"
+          - name: scope_type
+            description: "回顾范围类型（年度回顾/月度回顾/季度回顾/专项回顾/临时回顾）"
+          - name: review_year
+            description: "回顾年度"
+          - name: review_month
+            description: "回顾月份（用于月度/季度回顾，年度回顾为空）"
+          - name: scope_reason
+            description: "回顾原因/触发原因（如：定期回顾、工艺变更、质量事件等）"
+          - name: qa_owner
+            description: "QA 负责人/回顾责任人"
+          - name: review_status
+            description: "回顾状态（草稿/进行中/待审核/已完成/已批准）"
+          - name: is_frozen
+            description: "是否冻结"
+          - name: frozen_at
+            description: "冻结时间"
+          - name: approved_at
+            description: "批准时间"
+          - name: approver
+            description: "批准人"
+          - name: generated_at
+            description: "Scope 生成时间"
+          - name: source_loaded_at_max
+            description: "Scope 生成时刻依赖上游数据最大抽取时间（审计字段）"
+          - name: loaded_at
+            description: "数据加载时间（审计字段）"
+          - name: remark
+            description: "备注说明"
       - name: seed_pqr_scope_workshops
         description: PQR Scope-Workshop 输入契约：Scope 覆盖的车间清单
       - name: seed_product_variant_map

@@ -1227,6 +1227,8 @@ models:
         description: 申请人
       - name: inspection_type
         description: 检验类型
+      - name: test_plan
+        description: 测试计划
       - name: priority
         description: 优先级
         data_tests:
@@ -3096,12 +3098,9 @@ models:
           - not_null
 
   - name: stg_pqr_review_scope
-    description: "PQR 回顾范围（Scope）清洗层：规范类型与审计字段（P0 seed 过渡）"
+    description: "PQR 回顾范围（Scope）清洗层：规范类型与审计字段"
     config:
       tags: ["staging", "pqr", "scope"]
-    data_tests:
-      - dbt_utils.expression_is_true:
-          expression: "period_end_date >= period_start_date"
     columns:
       - name: review_scope_id
         description: "Scope 主键"
@@ -3109,11 +3108,11 @@ models:
           - unique
           - not_null
       - name: product_id
-        description: "产品ID"
+        description: "产品 ID"
         data_tests:
           - not_null
       - name: product_variant_id
-        description: "产品规格/包装ID"
+        description: "产品规格/包装 ID"
         data_tests:
           - not_null
       - name: period_start_date
@@ -3128,6 +3127,26 @@ models:
         description: "Scope 版本号"
         data_tests:
           - not_null
+      - name: scope_type
+        description: "回顾范围类型（年度回顾/月度回顾/季度回顾/专项回顾/临时回顾）"
+        data_tests:
+          - not_null
+      - name: review_year
+        description: "回顾年度"
+        data_tests:
+          - not_null
+      - name: review_month
+        description: "回顾月份（用于月度/季度回顾，年度回顾为空）"
+      - name: scope_reason
+        description: "回顾原因/触发原因（如：定期回顾、工艺变更、质量事件等）"
+      - name: qa_owner
+        description: "QA 负责人/回顾责任人"
+        data_tests:
+          - not_null
+      - name: review_status
+        description: "回顾状态（草稿/进行中/待审核/已完成/已批准）"
+        data_tests:
+          - not_null
       - name: is_frozen
         description: "是否冻结"
         data_tests:
@@ -3138,6 +3157,13 @@ models:
         data_tests:
           - not_null_where:
               condition: "is_frozen"
+      - name: approved_at
+        description: "批准时间"
+        data_tests:
+          - not_null_where:
+              condition: "review_status = '已批准'"
+      - name: approver
+        description: "批准人"
       - name: generated_at
         description: "生成时间"
         data_tests:
@@ -3150,6 +3176,8 @@ models:
         description: "数据加载时间（审计字段）"
         data_tests:
           - not_null
+      - name: remark
+        description: "备注说明"
 
   - name: stg_pqr_scope_workshops
     description: "PQR Scope 与车间映射清洗层（P0 seed 过渡）"

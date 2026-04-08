@@ -1,0 +1,55 @@
+services:
+  pg_dwh:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: dwh
+      POSTGRES_USER: dwh_admin
+      POSTGRES_PASSWORD: ${PG_DWH_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_dwh_data:/var/lib/postgresql/data
+
+  pg_airflow:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: airflow
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: ${PG_AIRFLOW_PASSWORD}
+    volumes:
+      - pg_airflow_data:/var/lib/postgresql/data
+
+  docker_socket_proxy:
+    image: tecnativa/docker-socket-proxy:0.1.1
+    environment:
+      CONTAINERS: 1
+      IMAGES: 1
+      NETWORKS: 1
+      VOLUMES: 1
+      POST: 1
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    ports:
+      - "2375:2375"
+
+  airflow:
+    image: apache/airflow:2.10.2-python3.11
+    depends_on:
+      - pg_airflow
+      - docker_socket_proxy
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:${PG_AIRFLOW_PASSWORD}@pg_airflow:5432/airflow
+      DOCKER_HOST: tcp://docker_socket_proxy:2375
+    ports:
+      - "8080:8080"
+    volumes:
+      - airflow_dags:/opt/airflow/dags
+      - airflow_logs:/opt/airflow/logs
+
+volumes:
+  pg_dwh_data:
+  pg_airflow_data:
+  airflow_dags:
+  airflow_logs:
+

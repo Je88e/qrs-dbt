@@ -75,7 +75,7 @@ class Lineage:
         for key, value in self.manifest["nodes"].items():
             # 跳过不适用的节点类型
             node_type = key.split('.')[0]
-            if node_type in ['seed', 'test', 'analysis', 'snapshot']:
+            if node_type in ['seed', 'test', 'analysis', 'snapshot', 'operation']:
                 print(key, " skipped (node type: {})".format(node_type))
                 continue
 

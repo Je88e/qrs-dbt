@@ -332,51 +332,81 @@ seeds:
     description: 检验申请单表种子数据
     config:
       tags: ['lims', 'seed']
+      column_types:
+        approval_date: date
+        _airbyte_extracted_at: timestamptz
 
   - name: lims_inspection_task
     description: 检验任务表种子数据
     config:
       tags: ['lims', 'seed']
+      column_types:
+        approval_date: date
+        _airbyte_extracted_at: timestamptz
 
   - name: lims_inspection_result
     description: 检验结果记录表种子数据
     config:
       tags: ['lims', 'seed']
+      column_types:
+        approval_date: date
+        _airbyte_extracted_at: timestamptz
 
   - name: lims_sample
     description: 样品主数据表种子数据
     config:
       tags: ['lims', 'seed']
+      column_types:
+        approval_date: date
+        _airbyte_extracted_at: timestamptz
 
   - name: lims_quality_standard
     description: 质量标准主表种子数据
     config:
       tags: ['lims', 'seed']
+      column_types:
+        approval_date: date
+        _airbyte_extracted_at: timestamptz
 
   - name: lims_test_item
     description: 检验项目定义表种子数据
     config:
       tags: ['lims', 'seed']
+      column_types:
+        approval_date: date
+        _airbyte_extracted_at: timestamptz
 
   - name: lims_analyst
     description: 分析员主数据表种子数据
     config:
       tags: ['lims', 'seed']
+      column_types:
+        approval_date: date
+        _airbyte_extracted_at: timestamptz
 
   - name: lims_inspection_report
     description: 检验报告表种子数据
     config:
       tags: ['lims', 'seed']
+      column_types:
+        approval_date: date
+        _airbyte_extracted_at: timestamptz
 
   - name: lims_stability_study
     description: 稳定性研究表种子数据
     config:
       tags: ['lims', 'seed']
+      column_types:
+        approval_date: date
+        _airbyte_extracted_at: timestamptz
 
   - name: lims_water_quality
     description: 水质监控表种子数据
     config:
       tags: ['lims', 'seed']
+      column_types:
+        approval_date: date
+        _airbyte_extracted_at: timestamptz
 
   # ============================================
   # QMS系统种子数据

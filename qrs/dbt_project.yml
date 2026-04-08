@@ -179,6 +179,3 @@ seeds:
     +column_types:
       create_date: timestamp
       update_date: timestamp
-      actual_start_date: timestamp
-      actual_end_date: timestamp
-      actual_completion_date: timestamp

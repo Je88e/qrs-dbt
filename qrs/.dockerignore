@@ -1,0 +1,12 @@
+.git
+.github
+.venv
+.pytest_cache
+__pycache__
+target
+logs
+dbt_packages
+profiles
+.env
+.env.*
+.DS_Store

@@ -1,3 +1,9 @@
+本文档为早期草案，示例中包含明文密钥、host network、直接暴露 docker.sock、以及 snapshot 增量口径混用等不适合直接生产落地的内容。
+
+生产可落地版本请参考：
+
+- [实施方案：基于 Postgres + dbt + Airflow 的 GxP 数据平台（优化版）.md](file:///mnt/d/Work/NovaTech/QRS/dbt/docs/dev/实施方案：基于%20Postgres%20+%20dbt%20+%20Airflow%20的%20GxP%20数据平台（优化版）.md)
+
 ## 1. 系统架构与流程图 (Mermaid)
 
 该图表明确了 **CI/CD 构建域**（左侧）与 **生产运行域**（右侧）的边界，以及 Airflow 内部的子工作流逻辑。

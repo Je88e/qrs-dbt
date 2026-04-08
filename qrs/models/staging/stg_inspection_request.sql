@@ -37,6 +37,7 @@ final as (
         actual_completion_date,
         sample_qty as sample_quantity,
         sample_unit,
+        test_plan,
         CAST(_airbyte_extracted_at AT TIME ZONE 'Asia/Shanghai' AS timestamptz) as loaded_at
     from source_data
 )

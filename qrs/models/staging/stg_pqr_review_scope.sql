@@ -22,11 +22,20 @@ final as (
         cast(period_start_date as date) as period_start_date,
         cast(period_end_date as date) as period_end_date,
         version_no::text as version_no,
+        scope_type::text as scope_type,
+        review_year::int as review_year,
+        review_month::int as review_month,
+        scope_reason::text as scope_reason,
+        qa_owner::text as qa_owner,
+        review_status::text as review_status,
         cast(is_frozen as boolean) as is_frozen,
         cast(frozen_at as timestamptz) as frozen_at,
+        cast(approved_at as timestamptz) as approved_at,
+        approver::text as approver,
         cast(generated_at as timestamptz) as generated_at,
         cast(source_loaded_at_max as timestamptz) as source_loaded_at_max,
-        cast(loaded_at as timestamptz) as loaded_at
+        cast(loaded_at as timestamptz) as loaded_at,
+        remark::text as remark
     from source_data
 )
 

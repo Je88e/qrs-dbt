@@ -193,6 +193,9 @@ class ColumnLineage:
             self._extract_from_cond(plan)
             if self.cte_name in self.cte_column.keys():
                 for idx, val in enumerate(self.cte_column[self.cte_name]):
+                    # Bounds check to prevent IndexError when subquery output has fewer columns
+                    if idx >= len(self.subquery_final_output):
+                        break
                     cte_col = re.split(self.split_regex, self.subquery_final_output[idx].strip())
                     all_cols = list(
                         set(set(cte_col) & set(self.possible_columns)).union(
@@ -352,6 +355,9 @@ class ColumnLineage:
             temp_dict = {}
             self._extract_from_cond(plan)
             for idx, val in enumerate(self.cte_column[self.cte_name]):
+                # Bounds check to prevent IndexError when plan output has fewer columns
+                if idx >= len(plan["Output"]):
+                    break
                 cte_col = re.split(self.split_regex, plan["Output"][idx].strip())
                 all_cols = list(
                     set(set(cte_col) & set(self.possible_columns)).union(
@@ -535,7 +541,11 @@ class ColumnLineage:
                 else:
                     ret_cols.append(i)
             else:
-                ret_cols.append(self.column_prefix_dict[i])
+                # Check if it's a valid column reference in column_prefix_dict
+                # Literal expressions (like 'value'::text) won't be in the dict
+                if i in self.column_prefix_dict:
+                    ret_cols.append(self.column_prefix_dict[i])
+                # Skip non-column expressions like literals, function calls, etc.
         return list(set(ret_cols))
 
     def _find_table(self, cte: CTE = None) -> Tuple[dict, List]:
@@ -576,7 +586,11 @@ class ColumnLineage:
 
     def _find_cte_col_func(self, cte: CTE = None, cte_col_dict: dict = None) -> dict:
         # Find each CTE
-        cte_name = cte.find(exp.TableAlias).alias_or_name
+        table_alias = cte.find(exp.TableAlias)
+        if table_alias is None:
+            # Skip CTEs/subqueries without explicit aliases
+            return cte_col_dict
+        cte_name = table_alias.alias_or_name
         cte_col_dict[cte_name] = []
         # Iterate column for each CTE
         for projection in cte.find(exp.Select).expressions:

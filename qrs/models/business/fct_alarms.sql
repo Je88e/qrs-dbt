@@ -1,6 +1,6 @@
 {{
     config(
-        materialized='c',
+        materialized='view',
         tags=['scada', 'alarm', 'monitoring', 'pqr']
     )
 }}

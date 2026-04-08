@@ -3354,3 +3354,64 @@ models:
         description: "数据加载时间（审计字段）"
         data_tests:
           - not_null
+
+  - name: fct_spc_test_results
+    description: spc 检验结果事实表 - 用于 PQR 质量回顾
+    config:
+      tags: ["lims", "quality", "inspection", "pqr", "spc"]
+    columns:
+      - name: index
+        description: 序号（行号）
+        data_tests:
+          - unique
+          - not_null
+      - name: batch_no
+        description: 批次号 (BatchNo)
+        data_tests:
+          - not_null
+      - name: ord_no
+        description: 检验申请单号/订单号 (OrdNo)
+        data_tests:
+          - not_null
+      - name: mat_code
+        description: 物料代码 (MatCode)
+        data_tests:
+          - not_null
+      - name: test_no
+        description: 检验项目编号 (TestNo)
+        data_tests:
+          - not_null
+      - name: analyte
+        description: 分析物/检验项目名称 (Analyte)
+        data_tests:
+          - not_null
+      - name: samp_date
+        description: 采样日期 (SampDate)
+        data_tests:
+          - not_null
+      - name: final
+        description: 检验结果值 (Final)
+        data_tests:
+          - not_null
+      - name: units
+        description: 单位 (Units)
+      - name: s
+        description: 状态 (S) - 检验结果状态
+        data_tests:
+          - not_null
+      - name: low_a
+        description: 标准下限 A (LowA)
+      - name: high_a
+        description: 标准上限 A (HighA)
+      - name: low_b
+        description: 标准下限 B (LowB) - 预留字段
+      - name: high_b
+        description: 标准上限 B (HighB) - 预留字段
+      - name: sinonym
+        description: 同义词 (Sinonym) - 检验项目同义词
+      - name: numres
+        description: 数字结果 (Numres) - 预留字段
+      - name: full_name
+        description: 分析员姓名 (FullName)
+      - name: test_plan
+        description: 检验计划 (TestPlan)
